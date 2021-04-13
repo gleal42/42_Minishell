@@ -1,0 +1,7 @@
+cub3D
+*.o
+*.a
+*.sh
+wsl_cmds/
+build/
+*.bmp
