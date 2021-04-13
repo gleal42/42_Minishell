@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 16:47:34 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/13 16:49:11 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/13 17:34:57 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	main(int argc, char *argv[])
 	(void)argc;
 	(void)argv;
 
-	printf("%s\n", "test");
+	printf("%s\n", "test2");
 
 	return (0);
 
