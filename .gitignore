@@ -1,7 +1,5 @@
-cub3D
+minishell
 *.o
 *.a
 *.sh
-wsl_cmds/
 build/
-*.bmp

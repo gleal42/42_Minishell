@@ -3,32 +3,26 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dds <dda-silv@student.42lisboa.com>        +#+  +:+       +#+         #
+#    By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/11 09:33:15 by dda-silv          #+#    #+#              #
-#    Updated: 2021/03/29 14:37:31 by dda-silv         ###   ########.fr        #
+#    Updated: 2021/04/13 17:01:52 by dda-silv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Name of the program built
-NAME				:=		cub3D
+NAME				:=		minishell
 
 # Name directory
 PATH_SRC			:=		src
 PATH_BUILD			:=		build
-PATH_LIBS			:=		libs
-PATH_LIBFT			:=		$(PATH_LIBS)/libft
-PATH_LIBMLX_MAC		:=		$(PATH_LIBS)/libmlx-mac-opengl
-PATH_LIBMLX_LINUX	:=		$(PATH_LIBS)/libmlx-linux
+PATH_LIBFT			:=		libft
 
 # List of sources
 SRCS				:=		$(shell find $(PATH_SRC) -name *.c)
 OBJS				:=		$(SRCS:%.c=$(PATH_BUILD)/%.o)
 DEPS				:=		$(OBJS:.o=.d)
 INC_DIRS			:=		$(shell find $(PATH_SRC) -type d)
-
-# Name of screnshot
-BMP_SCREENSHOT		:=		screenshot.bmp
 
 # Compiler
 CC					:=		gcc
@@ -45,14 +39,6 @@ FLAG_MEM_LEAK		:= 		-fsanitize=address
 
 # Flags - linking
 FLAG_LIBFT			:=		-L$(PATH_LIBFT) -lft 
-FLAG_LIBMLX_MAC		:=		-L$(PATH_LIBMLX_MAC) -lmlx -framework OpenGL -framework AppKit -lz
-FLAG_LIBMLX_LINUX	:=		-L$(PATH_LIBMLX_LINUX) -lmlx -lX11 -lbsd -lXext
-ifeq ($(OS),)
-	FLAGS_LINKINKG := -lm $(FLAG_LIBFT) $(FLAG_LIBMLX_MAC)
-else
-	FLAGS_LINKINKG := -lm $(FLAG_LIBFT) $(FLAG_LIBMLX_LINUX)
-	OS_DEFINE			:=		-D OS=$(OS)
-endif
 
 # Others commands
 RM					:=		rm -rf
@@ -66,34 +52,26 @@ _SUCCESS			:=		[$(_GREEN)SUCCESS$(_RESET)]
 
 # General functions
 all:						init $(NAME)
-							@ echo "$(_SUCCESS) Compilation done"
+							@ printf "$(_SUCCESS) Compilation done\n"
 
 init:
-							@ echo "$(_INFO) Initialize $(NAME)"
+							@ printf "$(_INFO) Initialize $(NAME)\n"
 							@ make -C $(PATH_LIBFT)
-ifeq ($(OS),)
-	@ make -C $(PATH_LIBMLX_MAC)
-else
-	@ make -C $(PATH_LIBMLX_LINUX)
-endif
 
 $(NAME):					$(OBJS)
-							$(CC) $(FLAGS_COMP) -o $@ $(OBJS) $(FLAGS_LINKINKG)
+							@ $(CC) $(FLAGS_COMP) -o $@ $(OBJS) $(FLAG_LIBFT)
 
 
-$(PATH_BUILD)/%.o:	%.c
+$(PATH_BUILD)/%.o:			%.c
 							mkdir -p $(dir $@)
-							$(CC) $(FLAGS_COMP) -c $< -o $@ $(OS_DEFINE)
+							$(CC) $(FLAGS_COMP) -c $< -o $@
 
 bonus:						all
 
 clean:
 							@ $(RM) $(PATH_BUILD)
-							@ $(RM) $(BMP_SCREENSHOT)
 							@ make -C $(PATH_LIBFT) clean
-							@ make -C $(PATH_LIBMLX_MAC) clean
-							@ make -C $(PATH_LIBMLX_LINUX) clean
-							@ echo "$(_INFO) Deleted files and directory"
+							@ printf "$(_INFO) Deleted files and directory\n"
 
 fclean:						clean
 							@ $(RM) $(NAME)
@@ -104,7 +82,6 @@ re:							fclean all
 # Debugging functions
 
 debug:						FLAGS_COMP += $(FLAG_MEM_LEAK)
-debug:						FLAGS_LINKINKG += $(FLAG_MEM_LEAK)
 debug:						re
 
 # Format functions
@@ -118,16 +95,6 @@ normC:
 							@ make -C $(PATH_LIBFT) normC
 
 norm:						normH normC
-
-old_normH:
-							~/.old_norminette/norminette.rb $(shell find $(PATH_SRC) -name *.h)
-							@ make -C $(PATH_LIBFT) old_normH
-
-old_normC:
-							~/.old_norminette/norminette.rb $(SRCS)
-							@ make -C $(PATH_LIBFT) old_normC
-
-old_norm:					old_normH old_normC
 
 .PHONY:						all clean fclean re
 
