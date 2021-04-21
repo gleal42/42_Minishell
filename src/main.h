@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 16:48:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/21 16:31:32 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/21 18:49:54 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 
 # include <string.h>
 # include <curses.h>
-# include <term.h>
+# include <termcap.h>
+
 # include <errno.h>
 # include <signal.h>
 # include <dirent.h>
