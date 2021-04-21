@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   writing.h                                          :+:      :+:    :+:   */
+/*   shell_subsystems.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/21 10:45:05 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/21 10:45:32 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/04/21 15:13:22 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/04/21 15:18:53 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef WRITING_H
-# define WRITING_H
+#ifndef SHELL_SUBSYSTEMS_H
+# define SHELL_SUBSYSTEMS_H
 
 # include "main.h"
 

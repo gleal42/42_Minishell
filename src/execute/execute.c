@@ -1,26 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/13 16:47:34 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/21 15:25:20 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/04/21 14:42:15 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/04/21 15:27:06 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "main.h"
+#include "execute.h"
 
-int	main(void)
+int	execute_cmd(t_cmd_table *cmd_table)
 {
-	t_cmd_table	*cmd_table;
-
-	while (1)
-	{
-		write_prompt();
-		get_cmd(&cmd_table);
-		execute_cmd(cmd_table);
-	}
+	(void)cmd_table;
 	return (0);
 }

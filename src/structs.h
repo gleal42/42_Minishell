@@ -1,26 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/13 16:47:34 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/21 15:25:20 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/04/21 15:24:56 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "main.h"
+#ifndef STRUCTS_H
+# define STRUCTS_H
 
-int	main(void)
+typedef struct s_cmd
 {
-	t_cmd_table	*cmd_table;
+	char	**args;
+	int		nb_args;
+}			t_cmd;
 
-	while (1)
-	{
-		write_prompt();
-		get_cmd(&cmd_table);
-		execute_cmd(cmd_table);
-	}
-	return (0);
-}
+typedef struct s_cmd_table
+{
+	char	*raw_input;
+	int		nb_cmds;
+	t_cmd	**cmds;
+	char	*output_file;
+	char	*input_file;
+	char	*error_file;
+}			t_cmd_table;
+
+#endif

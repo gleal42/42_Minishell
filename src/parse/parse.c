@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.h                                          :+:      :+:    :+:   */
+/*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/21 10:41:00 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/21 10:46:17 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/04/21 10:37:25 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/04/21 15:21:57 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSING_H
-# define PARSING_H
+#include "parse.h"
 
-# include "main.h"
-
-#endif
+int	get_cmd(t_cmd_table **cmd_table)
+{
+	(void)cmd_table;
+	return (0);
+}
