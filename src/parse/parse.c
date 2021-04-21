@@ -6,14 +6,13 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 10:37:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/21 15:21:57 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/21 16:11:48 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 
-int	get_cmd(t_cmd_table **cmd_table)
+t_cmd_table	*get_cmd(void)
 {
-	(void)cmd_table;
 	return (0);
 }
