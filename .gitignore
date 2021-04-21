@@ -1,5 +1,10 @@
 minishell
+a.out
+*.swp
+*.txt
 *.o
 *.a
 *.sh
 build/
+tmp/
+bin/

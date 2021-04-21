@@ -6,7 +6,7 @@
 #    By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/11 09:33:15 by dda-silv          #+#    #+#              #
-#    Updated: 2021/04/13 17:01:52 by dda-silv         ###   ########.fr        #
+#    Updated: 2021/04/21 11:47:35 by dda-silv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,8 +63,8 @@ $(NAME):					$(OBJS)
 
 
 $(PATH_BUILD)/%.o:			%.c
-							mkdir -p $(dir $@)
-							$(CC) $(FLAGS_COMP) -c $< -o $@
+							@ mkdir -p $(dir $@)
+							@ $(CC) $(FLAGS_COMP) -c $< -o $@
 
 bonus:						all
 

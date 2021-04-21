@@ -1,24 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/13 16:47:34 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/13 17:34:57 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/04/21 10:37:25 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/04/21 16:11:48 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "main.h"
+#include "parse.h"
 
-int	main(int argc, char *argv[])
+t_cmd_table	*get_cmd(void)
 {
-	(void)argc;
-	(void)argv;
-
-	printf("%s\n", "test2");
-
 	return (0);
-
 }
