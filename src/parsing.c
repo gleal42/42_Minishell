@@ -1,22 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.h                                             :+:      :+:    :+:   */
+/*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/13 16:48:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/21 12:10:38 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/04/21 10:37:25 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/04/21 12:11:49 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAIN_H
-# define MAIN_H
+#include "parsing.h"
 
-# include <sys/wait.h>
-# include "../libft/src/libft.h"
+char	**read_prompt(void)
+{
+	char	**args;
 
-void	write_prompt(void);
-char	**read_prompt(void);
-
-#endif
+	args = ft_calloc(3, sizeof(char **));
+	if (!args)
+		exit(EXIT_FAILURE);
+	args[0] = ft_strdup("./bin/ft_cat");
+	args[1] = ft_strdup("./hello.txt");
+	return (args);
+}
