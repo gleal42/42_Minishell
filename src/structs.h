@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/22 21:10:16 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/22 21:43:10 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,16 @@ typedef struct s_cmd
 }				t_cmd;
 
 /*
-** 
+** A command table with one or more simple commands.
+** In case the raw_input is invalid (open quotes or finished by '|'), the raw
+** input stays as first entered and all the other fields stay NULL / 0 
+** @fields:
+** [const char *raw_input] String entered by user in the stdin
+** [t_list *cmds] linked list with simple commands (t_cmd *) as nodes
+** [int nb_cmds] number of simple commands in the command table
+** [char *output_file] file name after '>'
+** [char *input_file] file name between '<' and '>'
+** [char *output_file] file name '&>'
 */
 
 typedef struct s_cmd_table
