@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 16:48:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/21 18:49:54 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/22 16:03:20 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # include "shell_subsystems.h"
 
 void		write_prompt(void);
-t_cmd_table	*get_cmd(void);
+t_cmd_table	*get_cmd_table(void);
 int			execute_cmd(t_cmd_table *cmd_table);
 
 #endif
