@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/23 10:54:13 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/23 18:30:23 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,20 @@ typedef struct s_cmd
 
 typedef struct s_cmd_table
 {
-	const char	*raw_input;
 	t_list		*cmds;
 	int			nb_cmds;
 	char		*output_file;
 	char		*input_file;
 	char		*error_file;
+	char		delimiter;
+	int			return_value;
 }				t_cmd_table;
+
+typedef struct s_ast
+{
+	const char	*raw_input;
+	t_list		*cmd_tables;
+	int			nb_cmd_tables;
+}				t_ast;
 
 #endif
