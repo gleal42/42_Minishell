@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 10:37:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/23 17:16:40 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/23 17:33:35 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,8 @@ char	*get_token(const char *raw_input, int *curr_pos)
 	token = ft_substr(raw_input, *curr_pos, i - *curr_pos);
 	if (!token)
 		exit(EXIT_FAILURE);
+	if (has_double_quotes_open || has_single_quotes_open)
+		i++;
 	*curr_pos = i;
 	return (token);
 }
