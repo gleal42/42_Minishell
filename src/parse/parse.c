@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 10:37:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/23 11:21:29 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/23 12:22:35 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ t_cmd	*get_cmd(const char *raw_input, int *curr_pos)
 	if (!cmd->tokens)
 		exit(EXIT_FAILURE);
 	i = 0;
+	while (ft_isspace(raw_input[*curr_pos]))
+		(*curr_pos)++;
 	while (raw_input[*curr_pos])
 	{
 		cmd->tokens = ft_realloc(cmd->tokens,
@@ -72,16 +74,16 @@ t_cmd	*get_cmd(const char *raw_input, int *curr_pos)
 								(i + 2) * sizeof(char *));
 		if (!cmd->tokens)
 			exit(EXIT_FAILURE);
+		cmd->tokens[i++] = get_token(raw_input, curr_pos);
 		while (ft_isspace(raw_input[*curr_pos]))
 			(*curr_pos)++;
-		cmd->tokens[i++] = get_token(raw_input, curr_pos);
-		if (raw_input[*curr_pos - 1] == ';' || raw_input[*curr_pos - 1] == '|')
+		if (raw_input[*curr_pos] == ';' || raw_input[*curr_pos] == '|')
 		{
-			cmd->delimiter = raw_input[*curr_pos - 1];
+			cmd->delimiter = raw_input[(*curr_pos)++];
 			break ;
 		}
 	}
-	cmd->tokens[i + 1] = 0;
+	cmd->tokens[i] = 0;
 	cmd->nb_tokens = i;
 	return (cmd);
 }
