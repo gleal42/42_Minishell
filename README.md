@@ -40,6 +40,8 @@ https://nickolasteixeira.medium.com/want-to-build-a-simple-shell-heres-how-you-d
 - https://github.com/cclaude42/minishell
 - https://github.com/pankratdodo/minishell-42
 - https://adrienblanc.com/projects/42/minishell
+- https://github.com/jraleman/42.Minishell
+- https://git.42l.fr/Fabien/minishell
 
 ### Example of exercise from CS course
 http://cs.brown.edu/courses/csci0330/shell1/
