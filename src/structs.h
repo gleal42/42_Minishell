@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/22 21:43:10 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/23 10:54:13 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,18 @@
 ** - tokens[0] = "ls" / [1] = "-al" / [2] = "dir" / [3] = 0
 ** - tokens[1] = "echo" / [1] = "Hello, World!" / [2] = 0
 ** [int nb_tokens] Number of tokens (excl. the NULL terminator)
-** [char split] Indicates what is separating this simple command from the next
+** [char delimiter] Indicates what is separating this simple command from the next
 ** Potential values:
-** - split = '\0' (nothing after this simple command)
-** - split = '|' (redirect output)
-** - split = ';' (output to stdout)
+** - delimiter = '\0' (nothing after this simple command)
+** - delimiter = '|' (redirect output)
+** - delimiter = ';' (output to stdout)
 */
 
 typedef struct s_cmd
 {
 	char		**tokens;
 	int			nb_tokens;
-	char		split;			
+	char		delimiter;			
 }				t_cmd;
 
 /*

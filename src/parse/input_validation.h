@@ -1,23 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.h                                            :+:      :+:    :+:   */
+/*   input_validation.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/21 10:41:00 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/23 11:18:32 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/04/23 11:06:35 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/04/23 11:28:40 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSE_H
-# define PARSE_H
+#ifndef INPUT_VALIDATION_H
+# define INPUT_VALIDATION_H
 
 # include "main.h"
 
-char	*get_raw_input(void);
-int		is_input_valid(const char* raw_input);
-t_cmd	*get_cmd(const char *raw_input, int *curr_pos);
-char	*get_token(const char *raw_input, int *curr_pos);
+static int	has_quotes_open(const char *raw_input);
+static int	has_pipe_at_end(const char *raw_input);
 
 #endif

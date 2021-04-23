@@ -6,7 +6,7 @@
 #    By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/11 09:33:15 by dda-silv          #+#    #+#              #
-#    Updated: 2021/04/21 11:47:35 by dda-silv         ###   ########.fr        #
+#    Updated: 2021/04/23 10:57:33 by dda-silv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,11 +28,12 @@ INC_DIRS			:=		$(shell find $(PATH_SRC) -type d)
 CC					:=		gcc
 
 # Flags - compilation
-FLAG_WARNING		:=		-O3 -Wall -Wextra -Werror
+FLAG_WARNING		:=		-Wall -Wextra -Werror
 FLAG_INC			:= 		$(addprefix -I, $(INC_DIRS))
 FLAG_MAKEFILE		:=		-MMD -MP
 FLAG_DEBUG			:= 		-g
-FLAGS_COMP			:= 		$(FLAG_WARNING) $(FLAG_INC) $(FLAG_MAKEFILE) $(FLAG_DEBUG)
+FLAG_OPTIMIZATION	:=		-O3
+FLAGS_COMP			:= 		$(FLAG_WARNING) $(FLAG_INC) $(FLAG_MAKEFILE) $(FLAG_DEBUG) #$(FLAG_OPTIMIZATION)
 
 # Flags - memory leak check
 FLAG_MEM_LEAK		:= 		-fsanitize=address
