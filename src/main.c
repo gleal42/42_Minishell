@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 17:33:17 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/23 15:53:56 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/23 16:32:20 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	main(void)
 		if (!new_node)
 			exit(EXIT_FAILURE);
 		ft_lstadd_front(&cmd_history, new_node);
-		if (!((t_cmd_table *)cmd_history->data)->cmds)
+		if (((t_cmd_table *)cmd_history->data)->cmds)
 			execute_cmd((t_cmd_table *)cmd_history->data);
 	}
 	return (0);

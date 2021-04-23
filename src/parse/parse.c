@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 10:37:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/23 15:41:32 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/23 16:21:05 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,10 @@ char	*get_token(const char *raw_input, int *curr_pos)
 				(raw_input[i] == '\'' && has_single_quotes_open))
 			break ;
 		else if (has_double_quotes_open || has_single_quotes_open)
+		{
+			i++;
 			continue ;
+		}
 		else if (raw_input[i] == ' ' || raw_input[i] == ';'
 				|| raw_input[i] == '|')
 			break ;
