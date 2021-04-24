@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/24 09:24:43 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/24 10:38:02 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@ typedef struct s_ast
 ** @fields:
 ** [t_list *cmds] linked list with simple commands (t_cmd *) as nodes
 ** [int nb_cmds] number of simple commands in the command table
-** /* MIGHT CHANGE /!\ we might need that info per simple command 
+** /!\ MIGHT CHANGE /!\ we might need that info per simple command 
 ** [char *output_file] file name after '>'
 ** [char *input_file] file name between '<' and '>'
 ** [char *error_file] file name before '>'
-** /* MIGHT CHANGE /!\ we might need that info per simple command 
+** /!\ MIGHT CHANGE /!\ we might need that info per simple command 
 ** [char *delimiter] Indicates what is separating this cmd table from the next
 ** Potential values:
 ** - delimiter = "\0" (last command table)
