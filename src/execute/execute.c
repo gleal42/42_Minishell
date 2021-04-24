@@ -6,14 +6,14 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:42:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/21 15:27:06 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/24 11:53:28 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
-int	execute_cmd(t_cmd_table *cmd_table)
+int	execute_cmd(t_ast *ast)
 {
-	(void)cmd_table;
+	(void)ast;
 	return (0);
 }

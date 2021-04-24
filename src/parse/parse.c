@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 10:37:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/24 10:59:21 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/24 12:47:44 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_ast	*get_ast(void)
 		cmd_table = ft_lstnew((void *)get_cmd_table(ast->raw_input, &curr_pos));
 		if (!cmd_table)
 			exit(EXIT_FAILURE);
-		ft_lstadd_front(&ast->cmd_tables, cmd_table);
+		ft_lstadd_back(&ast->cmd_tables, cmd_table);
 		ast->nb_cmd_tables++;
 	}
 	return (ast);
@@ -53,8 +53,14 @@ t_cmd_table	*get_cmd_table(const char *raw_input, int *curr_pos)
 		cmd = ft_lstnew((void *)get_cmd(raw_input, curr_pos));
 		if (!cmd)
 			exit(EXIT_FAILURE);
-		ft_lstadd_front(&cmd_table->cmds, cmd);
+		ft_lstadd_back(&cmd_table->cmds, cmd);
 		cmd_table->nb_cmds++;
+		if (raw_input[*curr_pos] == ';')
+		{
+			*cmd_table->delimiter = ';';
+			(*curr_pos)++;
+			break ;
+		}
 	}
 	return (cmd_table);
 }
@@ -85,7 +91,8 @@ t_cmd	*get_cmd(const char *raw_input, int *curr_pos)
 			(*curr_pos)++;
 		if (raw_input[*curr_pos] == ';' || raw_input[*curr_pos] == '|')
 		{
-			cmd->delimiter = raw_input[(*curr_pos)++];
+			if (raw_input[*curr_pos] == '|')
+				cmd->delimiter = '|';
 			break ;
 		}
 	}
