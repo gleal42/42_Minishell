@@ -6,51 +6,57 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 10:37:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/23 16:21:05 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/24 10:59:21 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 
-t_cmd_table	*get_cmd_table(void)
+t_ast	*get_ast(void)
+{
+	t_ast	*ast;
+	t_list	*cmd_table;
+	int		curr_pos;
+
+	ast = ft_calloc(1, sizeof(t_ast));
+	if (!ast)
+		exit(EXIT_FAILURE);
+	ast->raw_input = get_raw_input();
+	if (!is_input_valid(ast->raw_input))
+		return (ast);
+	curr_pos = 0;
+	while (ast->raw_input[curr_pos])
+	{
+		cmd_table = ft_lstnew((void *)get_cmd_table(ast->raw_input, &curr_pos));
+		if (!cmd_table)
+			exit(EXIT_FAILURE);
+		ft_lstadd_front(&ast->cmd_tables, cmd_table);
+		ast->nb_cmd_tables++;
+	}
+	return (ast);
+}
+
+/*
+** Gets a command table, which is a series of simple commands to execute
+*/
+
+t_cmd_table	*get_cmd_table(const char *raw_input, int *curr_pos)
 {
 	t_cmd_table	*cmd_table;
-	t_list		*new_cmd;
-	int			raw_input_len;
-	int			curr_pos;
+	t_list		*cmd;
 
 	cmd_table = ft_calloc(1, sizeof(t_cmd_table));
 	if (!cmd_table)
 		exit(EXIT_FAILURE);
-	cmd_table->raw_input = get_raw_input();
-	if (!is_input_valid(cmd_table->raw_input))
-		return (cmd_table);
-	curr_pos = 0;
-	raw_input_len = ft_strlen(cmd_table->raw_input);
-	while (curr_pos < raw_input_len)
+	while (raw_input[*curr_pos])
 	{
-		new_cmd = ft_lstnew((void *)get_cmd(cmd_table->raw_input, &curr_pos));
-		if (!new_cmd)
+		cmd = ft_lstnew((void *)get_cmd(raw_input, curr_pos));
+		if (!cmd)
 			exit(EXIT_FAILURE);
-		ft_lstadd_front(&cmd_table->cmds, new_cmd);
+		ft_lstadd_front(&cmd_table->cmds, cmd);
 		cmd_table->nb_cmds++;
 	}
 	return (cmd_table);
-}
-
-/*
-** Gets the characters entered in the command line by user. Multiline commands
-** aren't supported so we only call get_next_line once
-** @return:	[char *] Line entered without any alterations nor checks
-*/
-
-char	*get_raw_input(void)
-{
-	char	*raw_input;
-
-	if (get_next_line(STDIN_FILENO, &raw_input) == -1)
-		exit(EXIT_FAILURE);
-	return (raw_input);
 }
 
 t_cmd	*get_cmd(const char *raw_input, int *curr_pos)
@@ -124,6 +130,8 @@ char	*get_token(const char *raw_input, int *curr_pos)
 	token = ft_substr(raw_input, *curr_pos, i - *curr_pos);
 	if (!token)
 		exit(EXIT_FAILURE);
+	if (has_double_quotes_open || has_single_quotes_open)
+		i++;
 	*curr_pos = i;
 	return (token);
 }

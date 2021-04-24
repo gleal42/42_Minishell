@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 11:06:43 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/23 11:28:33 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/23 17:29:24 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 ** @return:	[int] true or false
 */
 
-int	is_input_valid(const char* raw_input)
+int	is_input_valid(const char *raw_input)
 {
 	int	check;
 
@@ -33,6 +33,8 @@ int	is_input_valid(const char* raw_input)
 							"token `|'");
 		check = 0;
 	}
+	else if (*raw_input == '\0' && ft_strisspace((char *)raw_input))
+		check = 0;
 	else
 		check = 1;
 	return (check);

@@ -1,33 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/21 17:33:17 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/24 14:34:31 by gleal            ###   ########.fr       */
+/*   Created: 2021/04/24 10:26:41 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/04/24 10:27:58 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "main.h"
+#include "parse_utils.h"
 
-int	main(int argc, char **argv, char **envp)
+/*
+** Gets the characters entered in the command line by user. Multiline commands
+** aren't supported so we only call get_next_line once
+** @return:	[char *] Line entered without any alterations nor checks
+*/
+
+char	*get_raw_input(void)
 {
-	(void)argc;
-	(void)argv;
-	t_list	*cmd_history;
-	t_list	*ast;
+	char	*raw_input;
 
-	while (1)
-	{
-		write_prompt();
-		ast = ft_lstnew((void *)get_ast());
-		if (!ast)
-			exit(EXIT_FAILURE);
-		ft_lstadd_front(&cmd_history, ast);
-		if (((t_ast *)cmd_history->data)->nb_cmd_tables > 0)
-			execute_cmd((t_ast *)cmd_history->data);
-	}
-	return (0);
+	if (get_next_line(STDIN_FILENO, &raw_input) == -1)
+		exit(EXIT_FAILURE);
+	return (raw_input);
 }
