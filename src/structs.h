@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/24 21:06:33 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/24 21:08:36 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ typedef struct s_cmd
 ** [int is_file] true or false. If is file, simply redirect.
 **				 Else, execute & redirect
 ** Examples:
-** - direction = "file1.txt" / type = ">" / int = 1
-** - direction = "ls" / type = "<" / int = 0
+** - direction = "file1.txt" / type = ">" / is_executable = 1
+** - direction = "ls" / type = "<" / is_executable = 0
 */
 
 typedef struct s_redir
