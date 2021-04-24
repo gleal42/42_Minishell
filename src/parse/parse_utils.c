@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 10:26:41 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/24 12:27:24 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/24 17:10:41 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ void	print_cmd(t_cmd *cmd)
 	printf("\n");
 	printf("print_cmd\n");
 	printf("nb_tokens: %d\n", cmd->nb_tokens);
-	printf("delimiter: \"%c\"\n", cmd->delimiter);
 	i = 0;
 	while (i <= cmd->nb_tokens)
 	{

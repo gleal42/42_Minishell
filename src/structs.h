@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/24 10:38:02 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/24 17:11:29 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,6 @@ typedef struct s_ast
 ** @fields:
 ** [t_list *cmds] linked list with simple commands (t_cmd *) as nodes
 ** [int nb_cmds] number of simple commands in the command table
-** /!\ MIGHT CHANGE /!\ we might need that info per simple command 
-** [char *output_file] file name after '>'
-** [char *input_file] file name between '<' and '>'
-** [char *error_file] file name before '>'
-** /!\ MIGHT CHANGE /!\ we might need that info per simple command 
 ** [char *delimiter] Indicates what is separating this cmd table from the next
 ** Potential values:
 ** - delimiter = "\0" (last command table)
@@ -56,9 +51,6 @@ typedef struct s_cmd_table
 {
 	t_list		*cmds;
 	int			nb_cmds;
-	char		*output_file;
-	char		*input_file;
-	char		*error_file;
 	char		delimiter[2];
 	int			return_value;
 }				t_cmd_table;
@@ -74,17 +66,18 @@ typedef struct s_cmd_table
 ** - tokens[0] = "ls" / [1] = "-al" / [2] = "dir" / [3] = 0
 ** - tokens[1] = "echo" / [1] = "Hello, World!" / [2] = 0
 ** [int nb_tokens] Number of tokens (excl. the NULL terminator)
-** [char delimiter] Indicates what is separating this simple command from the next
-** Potential values:
-** - delimiter = '\0' (last simple command of this command table)
-** - delimiter = '|' (redirect output to stdin of next simple command)
+** [char *output_file] file name after '>'
+** [char *input_file] file name between '<' and '>'
+** [char *error_file] file name before '>'
 */
 
 typedef struct s_cmd
 {
 	char		**tokens;
 	int			nb_tokens;
-	char		delimiter;			
+	char		*output_file;
+	char		*input_file;
+	char		*error_file;
 }				t_cmd;
 
 #endif

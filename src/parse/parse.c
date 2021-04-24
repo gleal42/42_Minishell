@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 10:37:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/24 12:47:44 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/24 17:13:09 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ t_cmd	*get_cmd(const char *raw_input, int *curr_pos)
 	i = 0;
 	while (ft_isspace(raw_input[*curr_pos]))
 		(*curr_pos)++;
-	while (raw_input[*curr_pos])
+	while (raw_input[*curr_pos] && raw_input[*curr_pos] != ';')
 	{
 		cmd->tokens = ft_realloc(cmd->tokens,
 								(i + 1) * sizeof(char *),
@@ -89,10 +89,9 @@ t_cmd	*get_cmd(const char *raw_input, int *curr_pos)
 		cmd->tokens[i++] = get_token(raw_input, curr_pos);
 		while (ft_isspace(raw_input[*curr_pos]))
 			(*curr_pos)++;
-		if (raw_input[*curr_pos] == ';' || raw_input[*curr_pos] == '|')
+		if (raw_input[*curr_pos] == '|')
 		{
-			if (raw_input[*curr_pos] == '|')
-				cmd->delimiter = '|';
+			(*curr_pos)++;
 			break ;
 		}
 	}
