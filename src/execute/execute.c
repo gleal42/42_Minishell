@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:42:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/24 17:44:22 by gleal            ###   ########.fr       */
+/*   Updated: 2021/04/24 21:16:06 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 int		execute_ast(t_ast *ast, t_list **env)
 {
-	t_list	*cmd_tables;
+	t_list	*cmd_table;
 
-	cmd_tables = ast->cmd_tables;
-	while (cmd_tables)
+	cmd_table = ast->cmd_tables;
+	while (cmd_table)
 	{
-		execute_cmd_table((t_cmd_table *)cmd_tables->data, env);
-		cmd_tables = cmd_tables->next;
+		execute_cmd_table((t_cmd_table *)cmd_table->data, env);
+		cmd_table = cmd_table->next;
 	}
 	return (0);
 }
@@ -28,25 +28,33 @@ int		execute_ast(t_ast *ast, t_list **env)
 int		execute_cmd_table(t_cmd_table *cmd_table, t_list **env)
 {
 	t_list	*cmds;
+	int		pipe;
 
 	cmds = cmd_table->cmds;
-
 	while (cmds)
 	{
 		//redirection
-		execute_cmd((t_cmd *)cmds->data, env);
+		if (cmds->next == NULL)
+			pipe = 0;
+		else
+			pipe = 1;
+		execute_cmd((t_cmd *)cmds->data, env, pipe);
 		cmds = cmds->next;
 	}
 	return (0);
 }
 
-int		execute_cmd(t_cmd *cmd, t_list **env)
+int		execute_cmd(t_cmd *cmd, t_list **env, int pipe)
 {
 	(void)env;
 	char **tokens;
 
 	tokens = cmd->tokens;
-	if (ft_strcmp(tokens[0], "exit") == 0)
+	printf("%s\n", tokens[0]);
+	if (tokens[1] != 0)
+	printf("%s\n", tokens[1]);
+
+	if (ft_strcmp(tokens[0], "exit") == 0 && pipe == 0)
 		ft_exit(0);
 	return (0);
 }
