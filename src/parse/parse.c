@@ -6,11 +6,20 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 10:37:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/23 17:33:35 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/23 18:31:35 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
+
+/*
+** Gets a command table, which is a series of simple commands to execute
+** @param:	- [type] param_value
+**			- [type] param_value
+** @return:	[type] return_value
+** Line-by-line comments:
+** @line-line	comment
+*/
 
 t_cmd_table	*get_cmd_table(void)
 {
