@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 16:48:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/24 14:34:00 by gleal            ###   ########.fr       */
+/*   Updated: 2021/04/24 17:31:19 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,9 @@
 # include "utils.h"
 # include "shell_subsystems.h"
 
+t_list	*dup_env(char **envp);
 void	write_prompt(void);
 t_ast	*get_ast(void);
-int		execute_cmd(t_ast *ast);
+int		execute_ast(t_ast *ast, t_list **env);
 
 #endif

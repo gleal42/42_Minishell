@@ -1,22 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute.h                                          :+:      :+:    :+:   */
+/*   environment.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/21 14:44:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/24 17:43:07 by gleal            ###   ########.fr       */
+/*   Created: 2021/04/24 14:59:16 by gleal             #+#    #+#             */
+/*   Updated: 2021/04/24 15:38:52 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXECUTE_H
-# define EXECUTE_H
+#ifndef ENVIRONMENT_H
+# define ENVIRONMENT_H
 
 # include "main.h"
-
-void	ft_exit(int status);
-int		execute_cmd_table(t_cmd_table *cmd_table, t_list **env);
-int		execute_cmd(t_cmd *cmd, t_list **env);
 
 #endif
