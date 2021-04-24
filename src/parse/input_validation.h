@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 11:06:35 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/23 17:29:26 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/24 20:32:26 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 
 # include "main.h"
 
-static int	has_quotes_open(const char *raw_input);
-static int	has_pipe_at_end(const char *raw_input);
+int	is_input_valid(const char *raw_input);
+int	has_quotes_open(const char *raw_input);
+int	has_pipe_at_end(const char *raw_input);
 
 #endif

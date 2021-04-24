@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/24 17:35:43 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/24 21:06:33 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 ** @fields:
 ** [const char *raw_input] string entered by user in stdin
 ** [t_list *cmd_tables] linked list with command tables (t_cmd_table *) as nodes
-** [int nb_cmds] number of command tables in the AST
 ** [int *return_value] pointer to the return_value of the last cmd_table.
 **					   The pointer is set in get_cmd_table()
 */
@@ -37,7 +36,7 @@ typedef struct s_ast
 ** @fields:
 ** [t_list *cmds] linked list with simple commands (t_cmd *) as nodes
 ** [int nb_cmds] number of simple commands in the command table
-** [char *delimiter] Indicates what is separating this cmd table from the next
+** [char delimiter[2]] Indicates what is separating this cmd table from the next
 ** Potential values:
 ** - delimiter = "\0" (last command table)
 ** - delimiter = ";" (consecutive execution of the next cmd table)
@@ -63,18 +62,37 @@ typedef struct s_cmd_table
 ** Examples: 
 ** - tokens[0] = "ls" / [1] = "-al" / [2] = "dir" / [3] = 0
 ** - tokens[1] = "echo" / [1] = "Hello, World!" / [2] = 0
-** [int nb_tokens] Number of tokens (excl. the NULL terminator)
-** [char *output_file] file name after '>'
-** [char *input_file] file name between '<' and '>'
-** [char *error_file] file name before '>'
+** [t_list *redirs] linked list with all the redirections (t_redir *) targeting
+** this simple command
 */
 
 typedef struct s_cmd
 {
 	char		**tokens;
-	char		*output_file;
-	char		*input_file;
-	char		*error_file;
+	t_list		*redirs;
 }				t_cmd;
+
+/*
+** A single redirection targeting a simple command
+** @fields:
+** [char *direction] name of file or executable
+** [char type[2]] type of redirection.
+** Potential values:
+** - ">"  - redirect stdout (for files: also overwrite file's content)
+** - ">>" - redirect stdout (for files: also append to file's content)
+** - "<"  - redirect stdin
+** [int is_file] true or false. If is file, simply redirect.
+**				 Else, execute & redirect
+** Examples:
+** - direction = "file1.txt" / type = ">" / int = 1
+** - direction = "ls" / type = "<" / int = 0
+*/
+
+typedef struct s_redir
+{
+	char		*direction;
+	char		type[2];
+	int			is_executable;
+}				t_redir;
 
 #endif

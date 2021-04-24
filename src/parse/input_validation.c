@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 11:06:43 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/24 17:10:52 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/24 20:31:46 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	is_input_valid(const char *raw_input)
 ** @12-13	Exact same logic as for the double quotes
 */
 
-static int	has_quotes_open(const char *raw_input)
+int	has_quotes_open(const char *raw_input)
 {
 	int	check;
 	int	has_double_quotes_open;
@@ -95,7 +95,7 @@ static int	has_quotes_open(const char *raw_input)
 **			not changing the initial input
 */
 
-static int	has_pipe_at_end(const char *raw_input)
+int	has_pipe_at_end(const char *raw_input)
 {
 	int		check;
 	char	*cpy;
