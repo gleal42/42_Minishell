@@ -70,3 +70,6 @@ See what implement AST means
 Bash overview
 
 https://www.gnu.org/software/bash/manual/bash.html#Shell-Operation
+
+Environmental Variables
+https://stackoverflow.com/questions/2085302/printing-all-environment-variables-in-c-c
