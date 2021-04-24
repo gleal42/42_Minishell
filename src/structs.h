@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/24 17:11:29 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/24 17:35:43 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ typedef struct s_ast
 {
 	const char	*raw_input;
 	t_list		*cmd_tables;
-	int			nb_cmd_tables;
 	int			*return_value;
 }				t_ast;
 
@@ -50,7 +49,6 @@ typedef struct s_ast
 typedef struct s_cmd_table
 {
 	t_list		*cmds;
-	int			nb_cmds;
 	char		delimiter[2];
 	int			return_value;
 }				t_cmd_table;
@@ -74,7 +72,6 @@ typedef struct s_cmd_table
 typedef struct s_cmd
 {
 	char		**tokens;
-	int			nb_tokens;
 	char		*output_file;
 	char		*input_file;
 	char		*error_file;

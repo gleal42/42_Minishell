@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 10:37:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/24 17:13:09 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/24 17:52:56 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ t_ast	*get_ast(void)
 		if (!cmd_table)
 			exit(EXIT_FAILURE);
 		ft_lstadd_back(&ast->cmd_tables, cmd_table);
-		ast->nb_cmd_tables++;
 	}
 	return (ast);
 }
@@ -54,7 +53,6 @@ t_cmd_table	*get_cmd_table(const char *raw_input, int *curr_pos)
 		if (!cmd)
 			exit(EXIT_FAILURE);
 		ft_lstadd_back(&cmd_table->cmds, cmd);
-		cmd_table->nb_cmds++;
 		if (raw_input[*curr_pos] == ';')
 		{
 			*cmd_table->delimiter = ';';
@@ -68,35 +66,28 @@ t_cmd_table	*get_cmd_table(const char *raw_input, int *curr_pos)
 t_cmd	*get_cmd(const char *raw_input, int *curr_pos)
 {
 	t_cmd	*cmd;
-	int		i;
+	t_list	*lst_tokens;
+	t_list	*token;
 
 	cmd = ft_calloc(1, sizeof(t_cmd));
 	if (!cmd)
 		exit(EXIT_FAILURE);
-	cmd->tokens = ft_calloc(1, sizeof(char *));
-	if (!cmd->tokens)
-		exit(EXIT_FAILURE);
-	i = 0;
-	while (ft_isspace(raw_input[*curr_pos]))
-		(*curr_pos)++;
+	skip_spaces(raw_input, curr_pos);
+	lst_tokens = 0;
 	while (raw_input[*curr_pos] && raw_input[*curr_pos] != ';')
 	{
-		cmd->tokens = ft_realloc(cmd->tokens,
-								(i + 1) * sizeof(char *),
-								(i + 2) * sizeof(char *));
-		if (!cmd->tokens)
+		token = ft_lstnew((void *)get_token(raw_input, curr_pos));
+		if (!token)
 			exit(EXIT_FAILURE);
-		cmd->tokens[i++] = get_token(raw_input, curr_pos);
-		while (ft_isspace(raw_input[*curr_pos]))
-			(*curr_pos)++;
+		ft_lstadd_back(&lst_tokens, token);
+		skip_spaces(raw_input, curr_pos);
 		if (raw_input[*curr_pos] == '|')
 		{
 			(*curr_pos)++;
 			break ;
 		}
 	}
-	cmd->tokens[i] = 0;
-	cmd->nb_tokens = i;
+	cmd->tokens = convert_list_to_arr(&lst_tokens);
 	return (cmd);
 }
 

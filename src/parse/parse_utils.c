@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 10:26:41 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/24 17:10:41 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/24 17:50:25 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,42 @@ char	*get_raw_input(void)
 	return (raw_input);
 }
 
+void	skip_spaces(const char *raw_input, int *curr_pos)
+{
+	while (ft_isspace(raw_input[*curr_pos]))
+		(*curr_pos)++;
+}
+
+char	**convert_list_to_arr(t_list **lst)
+{
+	t_list	*tmp;
+	char	**strs;
+	int		i;
+	int		len;
+
+	i = 0;
+	len = ft_lstsize(*lst);
+	strs = ft_calloc(len + 1, sizeof(char *));
+	tmp = *lst;
+	while (i < len)
+	{
+		strs[i++] = (char *)tmp->data;
+		tmp = tmp->next;
+	}
+	ft_lstclear(lst, ft_lstdel_int);
+	return (strs);
+}
+
+/*
+** Functions below will be deleted when project is finished
+*/
+
 void	print_ast(t_ast *ast)
 {
 	t_list	*cmd_table;
 
 	printf("print_ast:\n");
 	printf("raw_input: \"%s\"\n", ast->raw_input);
-	printf("nb_cmd_tables: %d\n", ast->nb_cmd_tables);
 	cmd_table = ast->cmd_tables;
 	while (cmd_table)
 	{
@@ -49,7 +78,6 @@ void	print_cmd_table(t_cmd_table *cmd_table)
 
 	printf("\n");
 	printf("print_cmd_table:\n");
-	printf("nb_cmds: %d\n", cmd_table->nb_cmds);
 	printf("delimiter: \"%s\"\n", cmd_table->delimiter);
 	cmd = cmd_table->cmds;
 	while (cmd)
@@ -66,9 +94,8 @@ void	print_cmd(t_cmd *cmd)
 
 	printf("\n");
 	printf("print_cmd\n");
-	printf("nb_tokens: %d\n", cmd->nb_tokens);
 	i = 0;
-	while (i <= cmd->nb_tokens)
+	while (cmd->tokens[i])
 	{
 		printf("Tokens[%d]: \"%s\"\n", i, cmd->tokens[i]);
 		i++;
