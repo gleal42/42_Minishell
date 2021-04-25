@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 16:48:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/24 17:31:19 by gleal            ###   ########.fr       */
+/*   Updated: 2021/04/25 14:10:00 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,17 @@
 # include "shell_subsystems.h"
 
 t_list	*dup_env(char **envp);
+
+/*
+** TO DELETE WHEN PROJECT FINISHED
+*/
+
+# include "print_ast.h"
+
+/*
+** TO DELETE WHEN PROJECT FINISHED
+*/
+
 void	write_prompt(void);
 t_ast	*get_ast(void);
 int		execute_ast(t_ast *ast, t_list **env);
