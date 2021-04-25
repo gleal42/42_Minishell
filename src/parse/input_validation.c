@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 11:06:43 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/24 20:31:46 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/25 09:19:36 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /*
 ** Checks if input entered in cmd line is valid while displaying error messsage
-** @param:	- [const char *] input entered in cmd line
+** @param:	- [const char *] the unchanged line entered in stdin
 ** @return:	[int] true or false
 */
 
@@ -50,7 +50,7 @@ int	is_input_valid(const char *raw_input)
 ** - " "
 ** - " ' "
 ** - " ' ' "
-** @param:	- [char *] the unchanged line entered in stdin
+** @param:	- [const char *] the unchanged line entered in stdin
 ** @return:	[int] true or false
 ** Line-by-line comments:
 ** @10-11	If we find a double quotes and single quotes are not open,
@@ -88,7 +88,7 @@ int	has_quotes_open(const char *raw_input)
 
 /*
 ** Checks if there is a pipe at the end of input
-** @param:	- [const char *] input entered in cmd line
+** @param:	- [const char *] the unchanged line entered in stdin
 ** @return:	[int] true or false
 ** Line-by-line comments:
 ** @5-8		We need to trim white space from the input while
