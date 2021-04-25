@@ -6,7 +6,7 @@
 /*   By: dds <dda-silv@student.42lisboa.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 17:33:17 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/25 14:08:17 by gleal            ###   ########.fr       */
+/*   Updated: 2021/04/25 15:55:46 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	env = dup_env(envp);
-	//ft_lst_print_s(env);
+	ft_lst_print_s(env);
 	while (1)
 	{
 		write_prompt();
@@ -31,7 +31,7 @@ int	main(int argc, char **argv, char **envp)
 		ft_dlstadd_front(&cmd_history, ast);
 		// print_ast((t_ast *)cmd_history->data);
 		if (((t_ast *)cmd_history->data)->cmd_tables)
-			execute_cmd((t_ast *)cmd_history->data, &env);
+			execute_ast((t_ast *)cmd_history->data, &env);
 	}
 	return (0);
 }
