@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 16:48:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/24 12:26:01 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/25 10:43:17 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,18 @@
 # include "utils.h"
 # include "shell_subsystems.h"
 
+/*
+** TO DELETE WHEN PROJECT FINISHED
+*/
+
+# include "print_ast.h"
+
+/*
+** TO DELETE WHEN PROJECT FINISHED
+*/
+
 void	write_prompt(void);
 t_ast	*get_ast(void);
 int		execute_cmd(t_ast *ast);
-void	print_ast(t_ast *ast);
 
 #endif

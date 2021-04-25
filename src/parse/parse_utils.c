@@ -6,17 +6,34 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 10:26:41 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/24 21:06:48 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/25 10:40:49 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse_utils.h"
+
+/*
+** Skips all spaces starting at curr_pos while incrementing *curr_pos
+** @param:	- [const char *] the unchanged line entered in stdin
+**			- [int *] the current parsing position within the raw_input  
+*/
 
 void	skip_spaces(const char *raw_input, int *curr_pos)
 {
 	while (ft_isspace(raw_input[*curr_pos]))
 		(*curr_pos)++;
 }
+
+/*
+** Converts a linked list to a NULL-terminated array of strings
+** @param:	- [t_list *] list with string as data
+**			- [type] param_value
+** @return:	[char **] NULL-terminated array of strings
+** Line-by-line comments:
+** @12&15	We don't want to free the strings within each node of the list
+**			because we'll keep their address in strs. The ft_lstdel_int does
+**			nothing to the data within each node
+*/
 
 char	**convert_list_to_arr(t_list **lst)
 {
@@ -37,6 +54,15 @@ char	**convert_list_to_arr(t_list **lst)
 	ft_lstclear(lst, ft_lstdel_int);
 	return (strs);
 }
+
+/*
+** Checks if the char is a cmd delimiter
+** @param:	- [char] the characters
+** @return:	[int] true or false
+** Line-by-line comments:
+** @9-10	& isn't supposed to be a delimiter. But "&&" is. If '&' is on its
+**			own, the function is_input_valid() will flag that
+*/
 
 int	is_delimiter(char c)
 {
@@ -59,6 +85,14 @@ int	is_delimiter(char c)
 	return (check);
 }
 
+/*
+** Checks if the string refers to an executable or a file
+** @param:	- [char *] token
+** @return:	[int] true or false
+** Line-by-line comments:
+** @line-line	Work In Progress
+*/
+
 int	is_executable(char *str)
 {
 	int	check;
@@ -67,6 +101,18 @@ int	is_executable(char *str)
 	return (check);
 	(void)str;
 }
+
+/*
+** Sets the values of has_dquotes_open and has_squotes_open depending on the
+** value of raw_input[*curr_pos]
+** @param:	- [const char *] the unchanged line entered in stdin
+**			- [int *] the current parsing position within the raw_input  
+**			- [int *] reference to the uninitialised var has_dquotes_open
+**			- [int *] reference to the uninitialised var has_squotes_open
+** @return:	[type] return_value
+** Line-by-line comments:
+** @9		We need to increment once if we found quotes
+*/
 
 void	set_quotes(const char *raw_input,
 					int *curr_pos,
@@ -83,71 +129,4 @@ void	set_quotes(const char *raw_input,
 			*has_squotes_open = 1;
 		(*curr_pos)++;
 	}
-}
-
-/*
-** Functions below will be deleted when project is finished
-*/
-
-void	print_ast(t_ast *ast)
-{
-	t_list	*cmd_table;
-
-	printf("print_ast:\n");
-	printf("raw_input: \"%s\"\n", ast->raw_input);
-	printf("nb_cmd_tables: %d\n", ft_lstsize(ast->cmd_tables));
-	cmd_table = ast->cmd_tables;
-	while (cmd_table)
-	{
-		print_cmd_table(cmd_table->data);
-		cmd_table = cmd_table->next;
-		printf("\n");
-	}
-}
-
-void	print_cmd_table(t_cmd_table *cmd_table)
-{
-	t_list	*cmd;
-
-	printf("\n");
-	printf("print_cmd_table:\n");
-	printf("nb_cmds: %d\n", ft_lstsize(cmd_table->cmds));
-	printf("delimiter: \"%s\"\n", cmd_table->delimiter);
-	cmd = cmd_table->cmds;
-	while (cmd)
-	{
-		print_cmd(cmd->data);
-		cmd = cmd->next;
-		printf("\n");
-	}
-}
-
-void	print_cmd(t_cmd *cmd)
-{
-	int		i;
-	t_list	*tmp;
-
-	printf("\n");
-	printf("print_cmd\n");
-	i = 0;
-	while (cmd->tokens[i])
-	{
-		printf("Tokens[%d]: \"%s\"\n", i, cmd->tokens[i]);
-		i++;
-	}
-	tmp = cmd->redirs;
-	printf("nb_redirs: %d\n", ft_lstsize(cmd->redirs));
-	while (tmp)
-	{
-		print_redir(tmp->data);
-		tmp = tmp->next;
-		printf("\n");
-	}
-}
-
-void	print_redir(t_redir *redir)
-{
-	printf("direction: \"%s\"\n", redir->direction);
-	printf("type: \"%s\"\n", redir->type);
-	printf("is_executable: %d\n", redir->is_executable);
 }
