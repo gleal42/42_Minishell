@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: dds <dda-silv@student.42lisboa.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 10:26:41 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/25 10:40:49 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/25 13:58:06 by dds              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,23 +83,6 @@ int	is_delimiter(char c)
 	else
 		check = 0;
 	return (check);
-}
-
-/*
-** Checks if the string refers to an executable or a file
-** @param:	- [char *] token
-** @return:	[int] true or false
-** Line-by-line comments:
-** @line-line	Work In Progress
-*/
-
-int	is_executable(char *str)
-{
-	int	check;
-
-	check = 1;
-	return (check);
-	(void)str;
 }
 
 /*

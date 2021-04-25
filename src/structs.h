@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: dds <dda-silv@student.42lisboa.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/24 21:08:36 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/25 13:57:50 by dds              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,18 +81,12 @@ typedef struct s_cmd
 ** - ">"  - redirect stdout (for files: also overwrite file's content)
 ** - ">>" - redirect stdout (for files: also append to file's content)
 ** - "<"  - redirect stdin
-** [int is_file] true or false. If is file, simply redirect.
-**				 Else, execute & redirect
-** Examples:
-** - direction = "file1.txt" / type = ">" / is_executable = 1
-** - direction = "ls" / type = "<" / is_executable = 0
 */
 
 typedef struct s_redir
 {
 	char		*direction;
 	char		type[2];
-	int			is_executable;
 }				t_redir;
 
 #endif

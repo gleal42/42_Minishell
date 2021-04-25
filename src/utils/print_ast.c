@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_ast.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: dds <dda-silv@student.42lisboa.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 10:40:58 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/25 10:43:54 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/25 13:58:35 by dds              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,5 +76,4 @@ void	print_redir(t_redir *redir)
 {
 	printf("direction: \"%s\"\n", redir->direction);
 	printf("type: \"%s\"\n", redir->type);
-	printf("is_executable: %d\n", redir->is_executable);
 }
