@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 16:48:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/25 10:43:17 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/25 14:38:13 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # include "constants.h"
 # include "utils.h"
 # include "shell_subsystems.h"
+# include "cmd_history.h"
 
 /*
 ** TO DELETE WHEN PROJECT FINISHED

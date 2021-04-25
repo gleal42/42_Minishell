@@ -6,7 +6,7 @@
 #    By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/11 09:33:15 by dda-silv          #+#    #+#              #
-#    Updated: 2021/04/23 10:57:33 by dda-silv         ###   ########.fr        #
+#    Updated: 2021/04/25 13:18:36 by dda-silv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,9 @@ FLAGS_COMP			:= 		$(FLAG_WARNING) $(FLAG_INC) $(FLAG_MAKEFILE) $(FLAG_DEBUG) #$(
 FLAG_MEM_LEAK		:= 		-fsanitize=address
 
 # Flags - linking
-FLAG_LIBFT			:=		-L$(PATH_LIBFT) -lft 
+FLAG_LIBFT			:=		-L$(PATH_LIBFT) -lft
+FLAG_TERMCAPS		:=		-lncurses -ltermcap
+FLAGS_LINKING		:=		$(FLAG_LIBFT) $(FLAG_TERMCAPS)
 
 # Others commands
 RM					:=		rm -rf
@@ -60,7 +62,7 @@ init:
 							@ make -C $(PATH_LIBFT)
 
 $(NAME):					$(OBJS)
-							@ $(CC) $(FLAGS_COMP) -o $@ $(OBJS) $(FLAG_LIBFT)
+							@ $(CC) $(FLAGS_COMP) -o $@ $(OBJS) $(FLAGS_LINKING)
 
 
 $(PATH_BUILD)/%.o:			%.c
