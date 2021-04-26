@@ -1,20 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.h                                         :+:      :+:    :+:   */
+/*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/25 20:17:08 by gleal             #+#    #+#             */
-/*   Updated: 2021/04/26 14:26:06 by gleal            ###   ########.fr       */
+/*   Created: 2021/04/26 14:59:48 by gleal             #+#    #+#             */
+/*   Updated: 2021/04/26 16:05:00 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTINS_H
-# define BUILTINS_H
+# include "builtins.h"
 
-# include "main.h"
-
-int		has_repeated_char_in_str(char repeat_chr, char *str, unsigned int start);
-
-#endif
+int		ft_cd(char **args, t_list **env)
+{
+	(void)env;
+	char	buf[1024];
+	chdir(args[0]);
+	getcwd(buf, 1024);
+	printf("%s\n", buf);
+	return(0);
+}

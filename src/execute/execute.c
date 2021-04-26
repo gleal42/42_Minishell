@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:42:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/25 21:33:19 by gleal            ###   ########.fr       */
+/*   Updated: 2021/04/26 14:12:40 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int		execute_cmd(t_cmd *cmd, t_list **env, int pipe)
 	if (ft_strcmp(tokens[0], "exit") == 0 && pipe == 0)
 		ft_exit(0);
 	else if (is_builtin(tokens[0]))
-		execute_builtin(tokens);
+		execute_builtin(tokens, env);
 	return (0);
 }
 

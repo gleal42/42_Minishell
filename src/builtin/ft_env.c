@@ -1,20 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.h                                         :+:      :+:    :+:   */
+/*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/25 20:17:08 by gleal             #+#    #+#             */
-/*   Updated: 2021/04/26 14:26:06 by gleal            ###   ########.fr       */
+/*   Created: 2021/04/26 14:19:39 by gleal             #+#    #+#             */
+/*   Updated: 2021/04/26 14:58:32 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTINS_H
-# define BUILTINS_H
+# include "builtins.h"
 
-# include "main.h"
+int		ft_env(t_list *env)
+{
+	int		i;
 
-int		has_repeated_char_in_str(char repeat_chr, char *str, unsigned int start);
-
-#endif
+	i = 0;
+	while (env)
+	{
+		ft_putstr_fd((char *)env->data, 1);
+		ft_putchar_fd('\n', 1);
+		env = env->next;
+	}
+	return (0);
+}

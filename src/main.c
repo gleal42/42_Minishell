@@ -6,7 +6,7 @@
 /*   By: dds <dda-silv@student.42lisboa.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 17:33:17 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/25 15:55:46 by gleal            ###   ########.fr       */
+/*   Updated: 2021/04/26 14:28:49 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	env = dup_env(envp);
-	ft_lst_print_s(env);
 	while (1)
 	{
 		write_prompt();
