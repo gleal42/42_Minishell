@@ -73,3 +73,7 @@ https://www.gnu.org/software/bash/manual/bash.html#Shell-Operation
 
 Environmental Variables
 https://stackoverflow.com/questions/2085302/printing-all-environment-variables-in-c-c
+
+chdir
+https://stackoverflow.com/questions/4998530/can-chdir-accept-relative-paths
+https://stackoverflow.com/questions/3642050/chdir-not-affecting-environment-variable-pwd
