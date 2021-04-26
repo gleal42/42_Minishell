@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/25 15:57:34 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/26 18:34:54 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,5 +94,14 @@ typedef struct s_redir
 	char		type[2];
 	int			is_executable;
 }				t_redir;
+
+typedef struct s_termcaps
+{
+	char		*cursor_motion;
+	char		*clear_curr_line;
+	char		*clear_end_line;
+	char		*save_cursor;
+	int			resolution;
+}				t_termcaps;
 
 #endif

@@ -6,62 +6,22 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 14:35:47 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/26 16:24:02 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/26 19:04:11 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd_history.h"
 
-void	set_termcaps(t_dlist **cmd_history)
+void	set_termcaps(t_dlist *cmd_history)
 {
-	char	*buffer;
+	t_termcaps	*termcaps;
 
-	buffer = 0;
-	init_termcaps(cmd_history, &buffer);
-	turn_off_canonical_processing();
-
-	output_cmd(((t_ast *)(*cmd_history)->data)->raw_input);
-	tputs(tgetstr("ic", &buffer), 1, putchar);
-	// int width = tgetnum("co");
-	// printf("Width: \"%d\"\n", width);
-	// int height = tgetnum("li");
-	// printf("Height: \"%d\"\n", height);
-
-	// char *cl_str = tgetstr("cd", &buffer);
-	// ft_putstr(cl_str);
-	// printf("Cl_str: \"%s\"\n", cl_str);
-	// char *cm_str = tgetstr("cm", &buffer);
-	// ft_putstr(cm_str);
-	// printf("Cm_str: \"%s\"\n", cm_str);
-
-	(void)cmd_history;
-}
-
-void	init_termcaps(t_dlist **cmd_history, char **buffer)
-{
-	char	*term_name;
-	char	*tmp;
-
-	term_name = getenv("TERM");
-	if (!term_name)
+	termcaps = ft_calloc(1, sizeof(t_termcaps));
+	if (!termcaps)
 		exit(EXIT_FAILURE);
-	tgetent(*buffer, term_name);
-	tmp = tgetstr("pc", buffer);
-	if (tmp)
-		PC = *tmp;
-	else
-		PC = 0;
-	BC = tgetstr("le", buffer);
-	UP = tgetstr("up", buffer);
-
-	(void)cmd_history;
-}
-
-void	output_cmd(const char *raw_input)
-{
-	// printf("Raw_input: \"%s\"\n", raw_input);	
-	// tputs(tgetstr("le", buffer), 1, pchr);
-	(void)raw_input;
+	turn_off_canonical_processing();
+	init_termcaps(termcaps);
+	parse_cmd_history(cmd_history, termcaps);
 }
 
 /*
@@ -79,7 +39,8 @@ void	output_cmd(const char *raw_input)
 **			compares with original setting, effectively setting the bits
 **			relating to ICANON to 0 and leaving the others intact
 ** @4		Turn off canonical processing
-** @5		Disable local echo
+** @5		Disable local echo so that pressing up/down arrow doesn't output
+**			^[[A and ^[[B
 ** @6-7		Changing control characters settings:
 ** @6		Read returns every single byte
 ** @7		No timeout so process every input without delay
@@ -87,12 +48,67 @@ void	output_cmd(const char *raw_input)
 
 void	turn_off_canonical_processing(void)
 {
-	struct termios	term;
+	struct termios	term_config;
 
-	tcgetattr(STDIN_FILENO, &term);
-	term.c_lflag &= ~ICANON;
-	term.c_lflag &= ~ECHO;
-	term.c_cc[VMIN] = 1;
-	term.c_cc[VTIME] = 0;
-	tcsetattr(STDIN_FILENO, TCSANOW, &term);
+	tcgetattr(STDIN_FILENO, &term_config);
+	term_config.c_lflag &= ~ICANON;
+	term_config.c_lflag &= ~ECHO;
+	term_config.c_cc[VMIN] = 1;
+	term_config.c_cc[VTIME] = 0;
+	tcsetattr(STDIN_FILENO, TCSANOW, &term_config);
+}
+
+/*
+** Initiate termcaps settings to use terminal capabilites
+** Line-by-line comments:
+** @4-5		Protect against a "TERM" env varible being unset
+** @5		Indicate to the termcap lib with type of terminal we are using.
+**			It will save that info internally so that use its capabilities later
+*/
+
+void	init_termcaps(t_termcaps *termcaps)
+{
+	char	*term_type;
+
+	term_type = getenv("TERM");
+	if (!term_type)
+		exit(EXIT_FAILURE);
+	tgetent(NULL, term_type);
+	termcaps->cursor_motion = tgetstr("cm", NULL);
+	termcaps->clear_curr_line = tgetstr("cd", NULL);
+	termcaps->clear_end_line = tgetstr("ce", NULL);
+	termcaps->save_cursor = tgetstr("sc", NULL);
+	termcaps->resolution = tgetnum("li") * tgetnum("co");
+}
+
+void	parse_cmd_history(t_dlist *cmd_history, t_termcaps *termcaps)
+{
+	int c;
+	int	col;
+	int	row;
+
+	while (read(0, &c, sizeof(c)) > 0)
+	{
+		get_cursor_position(&col, &row, termcaps);
+		// printf("Col: \"%d\"\n", col);
+		// printf("Row: \"%d\"\n", row);
+		if (c == UP_ARROW)
+		{
+			// delete previously writen chars
+			// write prev command
+		}
+		else if (c == DOWN_ARROW)
+		{
+			// delete previously writen chars
+			// write next command
+		}
+		else
+		{
+			col++;
+			write(STDIN_FILENO, &c, 1);
+		}
+       	c = 0; // flush buffer
+	}
+	(void)cmd_history;
+	(void)termcaps;
 }

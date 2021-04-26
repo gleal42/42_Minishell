@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 17:33:17 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/26 15:27:31 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/26 17:18:14 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ int	main(void)
 	while (1)
 	{
 		write_prompt();
+		set_termcaps(cmd_history);
 		ast = ft_dlstnew((void *)get_ast());
 		if (!ast)
 			exit(EXIT_FAILURE);
 		ft_dlstadd_front(&cmd_history, ast);
-		set_termcaps(&cmd_history);
 		// print_ast((t_ast *)cmd_history->data);
 		if (((t_ast *)cmd_history->data)->cmd_tables)
 			execute_cmd((t_ast *)cmd_history->data);
