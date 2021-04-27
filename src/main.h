@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 16:48:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/26 11:22:28 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/27 19:05:14 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # include "utils.h"
 # include "shell_subsystems.h"
 # include "cmd_history.h"
+# include "termcaps.h"
 
 /*
 ** TO DELETE WHEN PROJECT FINISHED

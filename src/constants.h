@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:48:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/26 16:57:01 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/27 19:02:38 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,11 @@
 # define DOWN_ARROW 4348699
 # define BACKSPACE 127
 # define ENTER 10
+
+# ifdef unix
+#  define IS_UNIX 1
+# else
+#  define IS_UNIX 0
+# endif
 
 #endif

@@ -6,23 +6,24 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 14:35:47 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/26 19:04:11 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/27 19:04:31 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd_history.h"
 
-void	set_termcaps(t_dlist *cmd_history)
-{
-	t_termcaps	*termcaps;
+// void	set_termcaps(t_dlist *cmd_history)
+// {
+// 	t_termcaps	*tc;
 
-	termcaps = ft_calloc(1, sizeof(t_termcaps));
-	if (!termcaps)
-		exit(EXIT_FAILURE);
-	turn_off_canonical_processing();
-	init_termcaps(termcaps);
-	parse_cmd_history(cmd_history, termcaps);
-}
+// 	tc = ft_calloc(1, sizeof(t_termcaps));
+// 	if (!tc)
+// 		exit(EXIT_FAILURE);
+// 	turn_off_canonical_processing();
+// 	init_termcaps(tc);
+// 	parse_cmd_history(cmd_history, tc);
+// 	free_termcaps(tc);
+// }
 
 /*
 ** The terminal has canonical processing on by default, meaning that the read
@@ -46,17 +47,17 @@ void	set_termcaps(t_dlist *cmd_history)
 ** @7		No timeout so process every input without delay
 */
 
-void	turn_off_canonical_processing(void)
-{
-	struct termios	term_config;
+// void	turn_off_canonical_processing(void)
+// {
+// 	struct termios	term_config;
 
-	tcgetattr(STDIN_FILENO, &term_config);
-	term_config.c_lflag &= ~ICANON;
-	term_config.c_lflag &= ~ECHO;
-	term_config.c_cc[VMIN] = 1;
-	term_config.c_cc[VTIME] = 0;
-	tcsetattr(STDIN_FILENO, TCSANOW, &term_config);
-}
+// 	tcgetattr(STDIN_FILENO, &term_config);
+// 	term_config.c_lflag &= ~ICANON;
+// 	// term_config.c_lflag &= ~ECHO;
+// 	term_config.c_cc[VMIN] = 1;
+// 	term_config.c_cc[VTIME] = 0;
+// 	tcsetattr(STDIN_FILENO, TCSANOW, &term_config);
+// }
 
 /*
 ** Initiate termcaps settings to use terminal capabilites
@@ -66,49 +67,50 @@ void	turn_off_canonical_processing(void)
 **			It will save that info internally so that use its capabilities later
 */
 
-void	init_termcaps(t_termcaps *termcaps)
-{
-	char	*term_type;
+// void	init_termcaps(t_termcaps *tc)
+// {
+// 	char	*term_type;
+// 	char	*tmp;
 
-	term_type = getenv("TERM");
-	if (!term_type)
-		exit(EXIT_FAILURE);
-	tgetent(NULL, term_type);
-	termcaps->cursor_motion = tgetstr("cm", NULL);
-	termcaps->clear_curr_line = tgetstr("cd", NULL);
-	termcaps->clear_end_line = tgetstr("ce", NULL);
-	termcaps->save_cursor = tgetstr("sc", NULL);
-	termcaps->resolution = tgetnum("li") * tgetnum("co");
-}
+// 	term_type = getenv("TERM");
+// 	if (!term_type)
+// 		exit(EXIT_FAILURE);
+// 	tgetent(NULL, term_type);
+// 	tmp = tgetstr("pc", NULL);
+// 	if (tmp)
+// 		PC = *tmp;
+// 	else
+// 		PC = 0;
+// 	BC = tgetstr("le", NULL);
+// 	UP = tgetstr("up", NULL);
+// 	tc->cursor_motion = tgetstr("cm", NULL);
+// 	tc->clear_curr_line = tgetstr("cd", NULL);
+// 	tc->clear_end_line = tgetstr("ce", NULL);
+// 	tc->save_cursor = tgetstr("sc", NULL);
+// 	tc->restore_cursor = tgetstr("rc", NULL);
+// 	tc->resolution = tgetnum("li") * tgetnum("co");
+// 	if (!tc->cursor_motion || !tc->clear_curr_line || !tc->clear_end_line
+// 		|| !tc->save_cursor || !tc->restore_cursor || tc->resolution < 0)
+// 		exit(EXIT_FAILURE);
+// }
 
-void	parse_cmd_history(t_dlist *cmd_history, t_termcaps *termcaps)
-{
-	int c;
-	int	col;
-	int	row;
+// void	free_termcaps(t_termcaps *tc)
+// {
+// 	// free(tc->cursor_motion);
+// 	// free(tc->clear_curr_line);
+// 	// free(tc->clear_end_line);
+// 	// free(tc->save_cursor);
+// 	// free(tc->restore_cursor);
+// 	free(tc);
+// }
 
-	while (read(0, &c, sizeof(c)) > 0)
-	{
-		get_cursor_position(&col, &row, termcaps);
-		// printf("Col: \"%d\"\n", col);
-		// printf("Row: \"%d\"\n", row);
-		if (c == UP_ARROW)
-		{
-			// delete previously writen chars
-			// write prev command
-		}
-		else if (c == DOWN_ARROW)
-		{
-			// delete previously writen chars
-			// write next command
-		}
-		else
-		{
-			col++;
-			write(STDIN_FILENO, &c, 1);
-		}
-       	c = 0; // flush buffer
-	}
-	(void)cmd_history;
-	(void)termcaps;
-}
+// void	parse_cmd_history(t_dlist *cmd_history, t_termcaps *tc)
+// {
+// 	// tputs(tc->save_cursor, 1, ft_putint);
+// 	// tputs(tgoto(tc->cursor_motion, 5, 5), 1, ft_putint);
+// 	// sleep(5);
+// 	// tputs(tc->restore_cursor, 1, ft_putint);
+
+// 	(void)cmd_history;
+// 	(void)tc;
+// }

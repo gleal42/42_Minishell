@@ -1,25 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_history.h                                      :+:      :+:    :+:   */
+/*   termcaps.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/25 14:37:34 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/27 19:04:12 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/04/27 18:55:37 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/04/27 19:13:05 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CMD_HISTORY_H
-# define CMD_HISTORY_H
+#ifndef TERMCAPS_H
+# define TERMCAPS_H
 
 # include "main.h"
-# include "cmd_history_utils.h"
 
-// void	set_termcaps(t_dlist *cmd_history);
-// void	init_termcaps(t_termcaps *tc);
-// void	free_termcaps(t_termcaps *tc);
-// void	turn_off_canonical_processing(void);
-// void	parse_cmd_history(t_dlist *cmd_history, t_termcaps *tc);
+void	init_termcaps(t_msh *msh, t_termcaps *termcaps);
 
 #endif

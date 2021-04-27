@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/26 18:34:54 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/27 19:11:55 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@
 
 typedef struct s_ast
 {
-	const char	*raw_input;
-	t_list		*cmd_tables;
-	int			*return_value;
+	const char		*raw_input;
+	t_list			*cmd_tables;
+	int				*return_value;
 }				t_ast;
 
 /*
@@ -47,9 +47,9 @@ typedef struct s_ast
 
 typedef struct s_cmd_table
 {
-	t_list		*cmds;
-	char		delimiter[2];
-	int			return_value;
+	t_list			*cmds;
+	char			delimiter[2];
+	int				return_value;
 }				t_cmd_table;
 
 /*
@@ -68,8 +68,8 @@ typedef struct s_cmd_table
 
 typedef struct s_cmd
 {
-	char		**tokens;
-	t_list		*redirs;
+	char			**tokens;
+	t_list			*redirs;
 }				t_cmd;
 
 /*
@@ -90,18 +90,29 @@ typedef struct s_cmd
 
 typedef struct s_redir
 {
-	char		*direction;
-	char		type[2];
-	int			is_executable;
+	char			*direction;
+	char			type[2];
+	int				is_executable;
 }				t_redir;
 
 typedef struct s_termcaps
 {
-	char		*cursor_motion;
-	char		*clear_curr_line;
-	char		*clear_end_line;
-	char		*save_cursor;
-	int			resolution;
+	char			*buffer;
+	char			*cursor_motion;
+	char			*clear_curr_line;
+	char			*clear_end_line;
+	char			*save_cursor;
+	char			*restore_cursor;
+	int				cursor_pos;
+	int				resolution;
 }				t_termcaps;
+
+typedef struct s_msh
+{
+	t_dlist			*cmd_history;
+	struct termios	old_term;	
+	struct termios	new_term;	
+	t_termcaps		termcaps;
+}				t_msh;
 
 #endif

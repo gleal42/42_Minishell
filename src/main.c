@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 17:33:17 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/26 17:18:14 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/27 19:13:35 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,22 @@
 
 int	main(void)
 {
-	t_dlist	*cmd_history;
+	t_msh	msh;
 	t_dlist	*ast;
 
-	cmd_history = 0;
+	init_minishell(&msh);
+	init_termcaps(&msh, &msh.termcaps);
 	while (1)
 	{
 		write_prompt();
-		set_termcaps(cmd_history);
+		// set_termcaps(msh);
 		ast = ft_dlstnew((void *)get_ast());
 		if (!ast)
 			exit(EXIT_FAILURE);
-		ft_dlstadd_front(&cmd_history, ast);
+		ft_dlstadd_front(&msh.cmd_history, ast);
 		// print_ast((t_ast *)cmd_history->data);
-		if (((t_ast *)cmd_history->data)->cmd_tables)
-			execute_cmd((t_ast *)cmd_history->data);
+		if (((t_ast *)msh.cmd_history->data)->cmd_tables)
+			execute_cmd((t_ast *)msh.cmd_history->data);
 	}
 	return (0);
 }

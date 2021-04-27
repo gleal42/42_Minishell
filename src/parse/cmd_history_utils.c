@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/26 17:39:11 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/26 19:03:26 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/26 19:15:40 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,15 @@ void	get_cursor_position(int *col, int *row, t_termcaps *termcaps)
 {
 	int		a = 0;
 	int		i = 1;
-	char	buf[255];
+	char	*buf;
 	int		ret;
 	int		temp;
 
+	buf = malloc(termcaps->resolution * sizeof(char));
+	if (!buf)
+		exit(EXIT_FAILURE);
 	write(0, "\033[6n", 4);  //report cursor location
-	ret = read(0, buf, 254);
+	ret = read(0, buf, termcaps->resolution);
 	buf[ret] = '\0';
 	while (buf[i])
 	{
