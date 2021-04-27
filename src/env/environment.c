@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 14:57:24 by gleal             #+#    #+#             */
-/*   Updated: 2021/04/26 21:20:00 by gleal            ###   ########.fr       */
+/*   Updated: 2021/04/27 22:37:47 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,45 +41,44 @@ int		env_vars(char ***tokens, t_list **env)
 	i = 0;
 	while (tokens[0][i])
 	{
-		if (tokens[0][i][0] == '$')
-			replace_var_with_value(&tokens[0][i], &tokens[0][i][1], *env);
+	/*	if (tokens[0][i][0] == '~' && (tokens[0][i][1] == 0 || tokens[0][i][1] == '/'))
+			replace_tilde_with_home(&tokens[0][i], &tokens[0][i][j], *env)*/
+		replace_vars_with_values(&tokens[0][i], *env);
 		i++;
 	}
 	return (0);
 }
 
-int		replace_var_with_value(char **cur_token, char *var, t_list *env)
+int		replace_vars_with_values(char **token, t_list *env)
 {
 	int		i;
+	int		j;	
 	char	*env_str;
 
-	while (env)
-	{
-		i = 0;
-		env_str = (char *)env->data;
-		while (var[i] && env_str[i] && (var[i] == env_str[i]))
-			i++;
-		if (!var[i] && env_str[i] == '=')
+		while (env)
 		{
-			replace_strstr_offset(cur_token, env_str, i + 1);
-			return (1);
+			env_str = (char *)env->data;
+			i = 0;
+			while (token[0][i])
+			{
+				if (token[0][i] == '$')
+				{
+					j = 0;
+					i++;
+					while (token[0][i + j] && env_str[j] && (token[0][i + j] == env_str[j]))
+						j++;
+					if (env_str[j] == '=')
+					{
+						i += update_midtoken(token, env_str, i, j + 1);
+					}
+					else
+						i--;
+				}
+				i++;
+			}
+			env=env->next;
 		}
-		env=env->next;
-	}
-		return (0);
-}
-
-int		replace_strstr_offset(char **cur_token, char *env, int start)
-{
-	char	*value;
-	int		len;
-
-	len = ft_strlen(env) - start;
-	value = ft_substr(env, start, len);
-	free(*cur_token);
-	*cur_token = 0;
-	*cur_token = value;
-	return(0);
+	return (0);
 }
 
 char	*get_env_value(char *var, t_list *env)
