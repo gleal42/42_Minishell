@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/28 12:25:42 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/28 12:49:54 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ typedef struct s_cmd
 ** A token is a serie of characters that represent a program name or an argument
 ** Spaces can be part of a token if it's delimited by single or double quotes
 ** @fields:
-** [char *token] token. Can be an empty string if input is ""
+** [char *str] token. Can be an empty string if input is ""
 ** [char delimiter] delimiter
 ** Potential values:
 ** - ' '  - spaces separate this token from the next
@@ -93,7 +93,7 @@ typedef struct s_token
 /*
 ** A single redirection targeting a simple command
 ** @fields:
-** [char *direction] name of file
+** [t_token *direction] name of file and delimiter enclosing token
 ** [char type[2]] type of redirection.
 ** Potential values:
 ** - ">"  - redirect stdout (for files: also overwrite file's content)
