@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dds <dda-silv@student.42lisboa.com>        +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/25 13:57:50 by dds              ###   ########.fr       */
+/*   Updated: 2021/04/28 12:25:42 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,24 +58,42 @@ typedef struct s_cmd_table
 ** - ls -al dir
 ** - echo "Hello, World!"
 ** @fields:
-** [char **tokens] NULL-terminated array of strings with all the tokens
+** [t_list *tokens] linked list with all the tokens of the simple command
 ** Examples: 
-** - tokens[0] = "ls" / [1] = "-al" / [2] = "dir" / [3] = 0
-** - tokens[1] = "echo" / [1] = "Hello, World!" / [2] = 0
+** - 1st node: "ls" / 2nd node: "-al" / 3rd node: "dir"
+** - 1st node: "echo" / 2nd node: "Hello, World!"
 ** [t_list *redirs] linked list with all the redirections (t_redir *) targeting
 ** this simple command
 */
 
 typedef struct s_cmd
 {
-	char		**tokens;
+	t_list		*tokens;
 	t_list		*redirs;
 }				t_cmd;
 
 /*
+** A token is a serie of characters that represent a program name or an argument
+** Spaces can be part of a token if it's delimited by single or double quotes
+** @fields:
+** [char *token] token. Can be an empty string if input is ""
+** [char delimiter] delimiter
+** Potential values:
+** - ' '  - spaces separate this token from the next
+** - '"'  - token enclosed by double quotes
+** - '\'' - token enclosed by single quotes
+*/
+
+typedef struct s_token
+{
+	char		*str;
+	char		delimiter;
+}				t_token;
+
+/*
 ** A single redirection targeting a simple command
 ** @fields:
-** [char *direction] name of file or executable
+** [char *direction] name of file
 ** [char type[2]] type of redirection.
 ** Potential values:
 ** - ">"  - redirect stdout (for files: also overwrite file's content)
@@ -85,8 +103,21 @@ typedef struct s_cmd
 
 typedef struct s_redir
 {
-	char		*direction;
+	t_token		*direction;
 	char		type[2];
 }				t_redir;
+
+/*
+** Global struct that carries all data used throughout the program
+** @fields:
+** [t_dlist *] double linked list with each node representing an AST
+** [t_list *] the duplicate of environment variables. Each node is a string
+*/
+
+typedef struct s_msh
+{
+	t_dlist		*cmd_history;
+	t_list		*dup_envp;
+}				t_msh;
 
 #endif
