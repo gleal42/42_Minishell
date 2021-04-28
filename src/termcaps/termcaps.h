@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 18:55:37 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/27 19:13:05 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/28 18:29:32 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 
 # include "main.h"
 
-void	init_termcaps(t_msh *msh, t_termcaps *termcaps);
+void	init_termcaps(t_termcaps *termcaps);
+int		has_capabilities(t_termcaps *termcaps);
+int		ft_putint(int c);
+void	turn_off_canonical_mode(t_termcaps *termcaps);
+void	turn_on_canonical_mode(t_termcaps *termcaps);
 
 #endif

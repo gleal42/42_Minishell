@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/28 12:51:25 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/28 17:41:48 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,8 @@ typedef struct s_redir
 
 typedef struct s_termcaps
 {
+	struct termios	old_term;	
+	struct termios	new_term;	
 	char			*buffer;
 	char			*cursor_motion;
 	char			*clear_curr_line;
@@ -119,11 +121,16 @@ typedef struct s_termcaps
 	int				resolution;
 }				t_termcaps;
 
+/*
+** Global struct that carries all data used throughout the program
+** @fields:
+** [t_dlist *] double linked list with each node representing an AST
+** [t_list *] the duplicate of environment variables. Each node is a string
+*/
+
 typedef struct s_msh
 {
 	t_dlist			*cmd_history;
-	struct termios	old_term;	
-	struct termios	new_term;	
 	t_termcaps		termcaps;
 	t_list			*dup_envp;
 }				t_msh;
