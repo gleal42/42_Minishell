@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 19:58:53 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/25 10:26:01 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/28 10:00:51 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,5 @@ t_redir	*get_single_redir(const char *raw_input, int *curr_pos)
 		*redir->type = raw_input[(*curr_pos)++];
 	skip_spaces(raw_input, curr_pos);
 	redir->direction = get_token(raw_input, curr_pos);
-	redir->is_executable = is_executable(redir->direction);
 	return (redir);
 }

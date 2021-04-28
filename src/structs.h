@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/24 21:08:36 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/28 10:14:51 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,41 +58,59 @@ typedef struct s_cmd_table
 ** - ls -al dir
 ** - echo "Hello, World!"
 ** @fields:
-** [char **tokens] NULL-terminated array of strings with all the tokens
+** [t_list *tokens] linked list with all the tokens of the simple command
 ** Examples: 
-** - tokens[0] = "ls" / [1] = "-al" / [2] = "dir" / [3] = 0
-** - tokens[1] = "echo" / [1] = "Hello, World!" / [2] = 0
+** - 1st node: "ls" / 2nd node: "-al" / 3rd node: "dir"
+** - 1st node: "echo" / 2nd node: "Hello, World!"
 ** [t_list *redirs] linked list with all the redirections (t_redir *) targeting
 ** this simple command
 */
 
 typedef struct s_cmd
 {
-	char		**tokens;
+	t_list		*tokens;
 	t_list		*redirs;
 }				t_cmd;
 
 /*
+** A token is a serie of characters that represent a program name or an argument
+** Spaces can be part of a token if it's delimited by single or double quotes
+** @fields:
+** [char *token] token. Can be a empty string if input is ""
+** [char delimiter] delimiter
+** Potential values:
+** - '\0' - spaces separate this token from the next
+** - '"'  - token enclosed by double quotes
+** - '\'' - token enclosed by single quotes
+*/
+
+typedef struct s_token
+{
+	char		*token;
+	char		delimiter;
+}				t_token;
+
+/*
 ** A single redirection targeting a simple command
 ** @fields:
-** [char *direction] name of file or executable
+** [char *direction] name of file
 ** [char type[2]] type of redirection.
 ** Potential values:
 ** - ">"  - redirect stdout (for files: also overwrite file's content)
 ** - ">>" - redirect stdout (for files: also append to file's content)
 ** - "<"  - redirect stdin
-** [int is_file] true or false. If is file, simply redirect.
-**				 Else, execute & redirect
-** Examples:
-** - direction = "file1.txt" / type = ">" / is_executable = 1
-** - direction = "ls" / type = "<" / is_executable = 0
 */
 
 typedef struct s_redir
 {
 	char		*direction;
 	char		type[2];
-	int			is_executable;
 }				t_redir;
+
+typedef struct s_msh
+{
+	t_dlist		*cmd_history;
+	t_list		*dup_env;
+}				t_msh;
 
 #endif

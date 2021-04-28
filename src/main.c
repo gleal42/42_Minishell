@@ -6,27 +6,27 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 17:33:17 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/25 11:56:56 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/28 10:44:27 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
-int	main(void)
+int	main(int argc, char **argv, char **envp)
 {
-	t_dlist	*cmd_history;
 	t_dlist	*ast;
 
+	init_minishell(&g_msh, envp);
 	while (1)
 	{
 		write_prompt();
 		ast = ft_dlstnew((void *)get_ast());
 		if (!ast)
 			exit(EXIT_FAILURE);
-		ft_dlstadd_front(&cmd_history, ast);
-		// print_ast((t_ast *)cmd_history->data);
-		if (((t_ast *)cmd_history->data)->cmd_tables)
-			execute_cmd((t_ast *)cmd_history->data);
+		ft_dlstadd_front(&g_msh.cmd_history, ast);
+		// print_ast((t_ast *)g_msh.cmd_history->data);
+		// if (((t_ast *)g_msh.cmd_history->data)->cmd_tables)
+		// 	execute_ast((t_ast *)g_msh.cmd_history->data, &g_msh.dup_env);
 	}
 	return (0);
 }

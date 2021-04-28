@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 10:37:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/25 10:14:41 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/28 10:58:19 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 ** In this case, the AST is a list that has a cmd_table per node and each
 ** cmd_table has a list a simple command per node. Each simple command has a 
 ** NULL-terminated array of strings representing a token.
-** @param:	- [type] param_value
-**			- [type] param_value
 ** @return:	[t_ast *] struct with raw_input, list of cmd_tables and a pointer
 **					  to a return value
 ** Line-by-line comments:
@@ -134,25 +132,22 @@ t_cmd_table	*get_cmd_table(const char *raw_input, int *curr_pos)
 t_cmd	*get_cmd(const char *raw_input, int *curr_pos)
 {
 	t_cmd	*cmd;
-	t_list	*lst_tokens;
 	t_list	*token;
 
 	cmd = ft_calloc(1, sizeof(t_cmd));
 	if (!cmd)
 		exit(EXIT_FAILURE);
 	skip_spaces(raw_input, curr_pos);
-	lst_tokens = 0;
 	while (raw_input[*curr_pos] && !is_delimiter(raw_input[*curr_pos]))
 	{
 		token = ft_lstnew((void *)get_token(raw_input, curr_pos));
 		if (!token)
 			exit(EXIT_FAILURE);
-		ft_lstadd_back(&lst_tokens, token);
+		ft_lstadd_back(&cmd->tokens, token);
 		skip_spaces(raw_input, curr_pos);
 	}
 	if (raw_input[*curr_pos] == '>' || raw_input[*curr_pos] == '<')
 		cmd->redirs = get_redirs(raw_input, curr_pos);
-	cmd->tokens = convert_list_to_arr(&lst_tokens);
 	return (cmd);
 }
 
@@ -181,13 +176,17 @@ t_cmd	*get_cmd(const char *raw_input, int *curr_pos)
 **			next token
 */
 
-char	*get_token(const char *raw_input, int *curr_pos)
+t_token	*get_token(const char *raw_input, int *curr_pos)
 {
-	char	*token;
+	t_token	*token;
+	// char	*token;
 	int		has_dquotes_open;
 	int		has_squotes_open;
 	int		saved_pos;
 
+	token = ft_calloc(1, sizeof(t_token));
+	if (!token)
+		ft_exit(EXIT_FAILURE);
 	set_quotes(raw_input, curr_pos, &has_dquotes_open, &has_squotes_open);
 	saved_pos = *curr_pos;
 	while (raw_input[*curr_pos])
