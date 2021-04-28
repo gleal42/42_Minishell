@@ -1,28 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_ast.h                                        :+:      :+:    :+:   */
+/*   utils2.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/25 10:40:38 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/28 11:24:09 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/04/28 10:31:28 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/04/28 12:21:36 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PRINT_AST_H
-# define PRINT_AST_H
+#ifndef UTILS2_H
+# define UTILS2_H
 
 # include "main.h"
 
-/*
-** Functions below will be deleted when project is finished
-*/
-
-void	print_ast(t_ast *ast);
-void	print_cmd_table(t_cmd_table *cmd_table);
-void	print_cmd(t_cmd *cmd);
-void	print_token(t_token *token, int i);
-void	print_redir(t_redir *redir);
+void	init_minishell(t_msh *msh, char **envp);
+void	ft_exit(int exit_code);
+void	free_msh(void);
+void	duplicate_env(t_list **dup_envp, char **envp);
+char	*ft_getenv(char *key);
 
 #endif

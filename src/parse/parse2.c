@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dds <dda-silv@student.42lisboa.com>        +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 19:58:53 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/25 14:00:01 by dds              ###   ########.fr       */
+/*   Updated: 2021/04/28 12:25:42 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_list	*get_redirs(const char *raw_input, int *curr_pos)
 	{
 		redir = ft_lstnew((void *)get_single_redir(raw_input, curr_pos));
 		if (!redir)
-			exit(EXIT_FAILURE);
+			ft_exit(EXIT_FAILURE);
 		ft_lstadd_back(&lst_redirs, redir);
 		skip_spaces(raw_input, curr_pos);
 	}
@@ -57,7 +57,7 @@ t_redir	*get_single_redir(const char *raw_input, int *curr_pos)
 
 	redir = ft_calloc(1, sizeof(t_redir));
 	if (!redir)
-		exit(EXIT_FAILURE);
+		ft_exit(EXIT_FAILURE);
 	if (raw_input[*curr_pos] == '<')
 		*redir->type = raw_input[(*curr_pos)++];
 	else if (!ft_strncmp(&raw_input[*curr_pos], ">>", 2))

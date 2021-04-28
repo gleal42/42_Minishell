@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 16:48:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/25 15:33:44 by gleal            ###   ########.fr       */
+/*   Updated: 2021/04/28 16:37:04 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include <string.h>
 # include <curses.h>
 # include <termcap.h>
-
 # include <errno.h>
 # include <signal.h>
 # include <dirent.h>
@@ -30,6 +29,7 @@
 # include "structs.h"
 # include "constants.h"
 # include "utils.h"
+# include "utils2.h"
 # include "shell_subsystems.h"
 
 t_list	*dup_env(char **envp);
@@ -43,6 +43,8 @@ t_list	*dup_env(char **envp);
 /*
 ** TO DELETE WHEN PROJECT FINISHED
 */
+
+t_msh	g_msh;
 
 void	write_prompt(void);
 t_ast	*get_ast(void);
