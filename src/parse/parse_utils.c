@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 10:26:41 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/25 10:40:49 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/28 12:24:49 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,37 +22,6 @@ void	skip_spaces(const char *raw_input, int *curr_pos)
 {
 	while (ft_isspace(raw_input[*curr_pos]))
 		(*curr_pos)++;
-}
-
-/*
-** Converts a linked list to a NULL-terminated array of strings
-** @param:	- [t_list *] list with string as data
-**			- [type] param_value
-** @return:	[char **] NULL-terminated array of strings
-** Line-by-line comments:
-** @12&15	We don't want to free the strings within each node of the list
-**			because we'll keep their address in strs. The ft_lstdel_int does
-**			nothing to the data within each node
-*/
-
-char	**convert_list_to_arr(t_list **lst)
-{
-	t_list	*tmp;
-	char	**strs;
-	int		i;
-	int		len;
-
-	i = 0;
-	len = ft_lstsize(*lst);
-	strs = ft_calloc(len + 1, sizeof(char *));
-	tmp = *lst;
-	while (i < len)
-	{
-		strs[i++] = (char *)tmp->data;
-		tmp = tmp->next;
-	}
-	ft_lstclear(lst, ft_lstdel_int);
-	return (strs);
 }
 
 /*
@@ -86,47 +55,29 @@ int	is_delimiter(char c)
 }
 
 /*
-** Checks if the string refers to an executable or a file
-** @param:	- [char *] token
-** @return:	[int] true or false
-** Line-by-line comments:
-** @line-line	Work In Progress
-*/
-
-int	is_executable(char *str)
-{
-	int	check;
-
-	check = 1;
-	return (check);
-	(void)str;
-}
-
-/*
-** Sets the values of has_dquotes_open and has_squotes_open depending on the
-** value of raw_input[*curr_pos]
+** Gets the delimiter that is enclosing the token starting
+** at raw_input[*curr_pos]
 ** @param:	- [const char *] the unchanged line entered in stdin
 **			- [int *] the current parsing position within the raw_input  
-**			- [int *] reference to the uninitialised var has_dquotes_open
-**			- [int *] reference to the uninitialised var has_squotes_open
-** @return:	[type] return_value
+** @return:	[char] delimiter. Space, single quotes or double quotes
 ** Line-by-line comments:
-** @9		We need to increment once if we found quotes
+** @9		We need to increment once if we found quotes so that the token
+**			starts after the quote
 */
 
-void	set_quotes(const char *raw_input,
-					int *curr_pos,
-					int *has_dquotes_open,
-					int *has_squotes_open)
+char	get_delimiter(const char *raw_input, int *curr_pos)
 {
-	*has_dquotes_open = 0;
-	*has_squotes_open = 0;
+	char	delimiter;
+
 	if (raw_input[*curr_pos] == '"' || raw_input[*curr_pos] == '\'')
 	{
 		if (raw_input[*curr_pos] == '"')
-			*has_dquotes_open = 1;
+			delimiter = '"';
 		else if (raw_input[*curr_pos] == '\'')
-			*has_squotes_open = 1;
+			delimiter = '\'';
 		(*curr_pos)++;
 	}
+	else
+		delimiter = ' ';
+	return (delimiter);
 }

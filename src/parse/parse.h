@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 10:41:00 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/25 10:21:14 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/28 11:00:08 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 char		*get_raw_input(void);
 t_cmd_table	*get_cmd_table(const char *raw_input, int *curr_pos);
 t_cmd		*get_cmd(const char *raw_input, int *curr_pos);
-char		*get_token(const char *raw_input, int *curr_pos);
+t_token		*get_token(const char *raw_input, int *curr_pos);
 
 /*
 ** File parse2.c

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 11:06:43 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/25 09:19:36 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/28 11:33:06 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int	has_pipe_at_end(const char *raw_input)
 
 	cpy = ft_strdup(raw_input);
 	if (!cpy)
-		exit(EXIT_FAILURE);
+		ft_exit(EXIT_FAILURE);
 	cpy = ft_strtrim(cpy, " \t");
 	len = ft_strlen(cpy);
 	if (cpy[len - 1] == '|')

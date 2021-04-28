@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 10:40:58 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/25 15:56:33 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/28 12:45:03 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,29 +52,38 @@ void	print_cmd_table(t_cmd_table *cmd_table)
 void	print_cmd(t_cmd *cmd)
 {
 	int		i;
-	t_list	*tmp;
+	t_list	*token;
+	t_list	*redir;
 
 	printf("\n");
 	printf("print_cmd\n");
 	i = 0;
-	while (cmd->tokens[i])
+	token = cmd->tokens;
+	printf("nb_tokens: %d\n", ft_lstsize(cmd->tokens));
+	while (token)
 	{
-		printf("Tokens[%d]: \"%s\"\n", i, cmd->tokens[i]);
+		print_token(token->data, i);
+		token = token->next;
 		i++;
 	}
-	tmp = cmd->redirs;
+	redir = cmd->redirs;
 	printf("nb_redirs: %d\n", ft_lstsize(cmd->redirs));
-	while (tmp)
+	while (redir)
 	{
-		print_redir(tmp->data);
-		tmp = tmp->next;
+		print_redir(redir->data);
+		redir = redir->next;
 		printf("\n");
 	}
 }
 
+void	print_token(t_token *token, int i)
+{
+	printf("token n°%d: str: \"%s\"", i, token->str);
+	printf(" & delimiter: \"%c\"\n", token->delimiter);
+}
+
 void	print_redir(t_redir *redir)
 {
-	printf("direction: \"%s\"\n", redir->direction);
+	printf("direction: \"%s\"\n", ((t_token *)redir->direction)->str);
 	printf("type: \"%s\"\n", redir->type);
-	printf("is_executable: %d\n", redir->is_executable);
 }
