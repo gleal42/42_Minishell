@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 10:40:38 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/25 10:42:33 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/28 11:24:09 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 void	print_ast(t_ast *ast);
 void	print_cmd_table(t_cmd_table *cmd_table);
 void	print_cmd(t_cmd *cmd);
+void	print_token(t_token *token, int i);
 void	print_redir(t_redir *redir);
 
 #endif

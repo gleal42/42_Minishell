@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 10:27:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/25 10:50:55 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/28 11:46:39 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,7 @@
 # include "main.h"
 
 void	skip_spaces(const char *raw_input, int *curr_pos);
-char	**convert_list_to_arr(t_list **lst);
 int		is_delimiter(char c);
-int		is_executable(char *str);
-void	set_quotes(const char *raw_input,
-			int *curr_pos,
-			int *has_dquotes_open,
-			int *has_squotes_open);
+char	get_delimiter(const char *raw_input, int *curr_pos);
 
 #endif

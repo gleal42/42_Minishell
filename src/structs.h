@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/28 10:14:51 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/28 12:18:02 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,17 +76,17 @@ typedef struct s_cmd
 ** A token is a serie of characters that represent a program name or an argument
 ** Spaces can be part of a token if it's delimited by single or double quotes
 ** @fields:
-** [char *token] token. Can be a empty string if input is ""
+** [char *token] token. Can be an empty string if input is ""
 ** [char delimiter] delimiter
 ** Potential values:
-** - '\0' - spaces separate this token from the next
+** - ' '  - spaces separate this token from the next
 ** - '"'  - token enclosed by double quotes
 ** - '\'' - token enclosed by single quotes
 */
 
 typedef struct s_token
 {
-	char		*token;
+	char		*str;
 	char		delimiter;
 }				t_token;
 
@@ -103,14 +103,21 @@ typedef struct s_token
 
 typedef struct s_redir
 {
-	char		*direction;
+	t_token		*direction;
 	char		type[2];
 }				t_redir;
+
+/*
+** Global struct that carries all data used throughout the program
+** @fields:
+** [t_dlist *] double linked list with each node representing an AST
+** [t_list *] the duplicate of environment variables. Each node is a string
+*/
 
 typedef struct s_msh
 {
 	t_dlist		*cmd_history;
-	t_list		*dup_env;
+	t_list		*dup_envp;
 }				t_msh;
 
 #endif
