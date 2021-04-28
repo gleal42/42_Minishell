@@ -12,18 +12,22 @@
 
 # include "builtins.h"
 
-int		ft_echo(char **args)
+int		ft_echo(t_list	*tokens)
 {
 	int		i;
 	int		lb;
 	int		flag_time;
+	char	*arg;
+	char	delim;
 
 	flag_time = 1;
 	lb = 1;
 	i = 0;
-	while (args[i])
+	while (tokens)
 	{
-		if (flag_time && args[i][0] == '-' && has_repeated_char_in_str('n', args[i], 1))
+		arg = ((t_token *)tokens->data)->str;
+		delim = ((t_token *)tokens->data)->delimiter;
+		if (flag_time && arg[0] == '-' && has_repeated_char_in_str('n', arg, 1))
 		{
 			lb = 0;
 		}
@@ -32,9 +36,9 @@ int		ft_echo(char **args)
 			if (!flag_time)
 				ft_putchar_fd(' ', 1);
 			flag_time = 0;
-			ft_putstr_fd(args[i], 1);
+			ft_putstr_fd(arg, 1);
 		}
-		i++;
+		tokens = tokens->next;
 	}
 	if (lb)
 		ft_putchar_fd('\n', 1);

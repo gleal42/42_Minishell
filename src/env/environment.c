@@ -6,99 +6,98 @@
 /*   By: gleal <gleal@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 14:57:24 by gleal             #+#    #+#             */
-/*   Updated: 2021/04/27 22:37:47 by gleal            ###   ########.fr       */
+/*   Updated: 2021/04/28 19:14:02 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "environment.h"
 
-t_list	*dup_env(char **envp)
+int		env_vars(t_list	*tokens)
 {
-	t_list	*first;
-	t_list	*next;
-
-	int		i;
-
-	if (!envp || !envp[0])
-		return (NULL);
-	first = ft_lstnew(ft_strdup(envp[0]));
-	if (!first)
-		return (NULL);
-	i = 1;
-	while (envp[i] != NULL)
+	char	**str;
+	char	delim;
+	while (tokens)
 	{
-		next = ft_lstnew(ft_strdup(envp[i]));
-		ft_lstadd_back(&first, next);
-		i++;
-	}
-	return (first);
-}
-
-int		env_vars(char ***tokens, t_list **env)
-{
-	int		i;
-
-	i = 0;
-	while (tokens[0][i])
-	{
+		str = &((t_token *)tokens->data)->str;
+		delim = ((t_token *)tokens->data)->delimiter
+		;
 	/*	if (tokens[0][i][0] == '~' && (tokens[0][i][1] == 0 || tokens[0][i][1] == '/'))
 			replace_tilde_with_home(&tokens[0][i], &tokens[0][i][j], *env)*/
-		replace_vars_with_values(&tokens[0][i], *env);
+		if (delim != '\'')
+			replace_vars_with_values(str);
+		tokens = tokens->next;
+	}
+	return (0);
+}
+
+int		replace_vars_with_values(char **str)
+{
+	int		i;
+	char	*var;
+	char	*value;
+	i = 0;
+	while (str[0][i])
+	{
+		if (str[0][i] == '$')
+		{
+			var = get_var_name(&str[0][i + 1]);
+			value = ft_getenv(var);
+			if (value)
+				update_token(str, &i, value, ft_strlen(var));
+			free(var);
+			free(value);
+			var = 0;
+			value = 0;
+		}
 		i++;
 	}
 	return (0);
 }
 
-int		replace_vars_with_values(char **token, t_list *env)
+char	*get_var_name(char *str)
 {
 	int		i;
-	int		j;	
-	char	*env_str;
-
-		while (env)
-		{
-			env_str = (char *)env->data;
-			i = 0;
-			while (token[0][i])
-			{
-				if (token[0][i] == '$')
-				{
-					j = 0;
-					i++;
-					while (token[0][i + j] && env_str[j] && (token[0][i + j] == env_str[j]))
-						j++;
-					if (env_str[j] == '=')
-					{
-						i += update_midtoken(token, env_str, i, j + 1);
-					}
-					else
-						i--;
-				}
-				i++;
-			}
-			env=env->next;
-		}
-	return (0);
+	char	*var;
+	i = 0;
+	while (str[i] && !is_delimiter(str[i]) && str[i] != '$')
+		i++;
+	var = ft_substr(str, 0, i);
+	return (var);
 }
 
-char	*get_env_value(char *var, t_list *env)
+int		update_token(char **token_before, int *start, char *value, int var_len)
 {
-	int		i;
-	char	*env_str;
-	char	*env_value;
+	char	*temp;
 
-	while (env)
-	{
-		i= 0;
-		env_str = (char *)env->data;
-		while (var[i] && env_str[i] && (var[i] == env_str[i]))
-			i++;
-		if (!var[i] && env_str[i] == '=')
-		{
-			env_value = ft_strdup(&(env_str[i + 1]));
-			return (env_value);
-		}
-		env = env->next;
-	}
-	return (0);
+	temp = update_token_before(*token_before, start, value);
+	temp = update_token_after(*token_before, start, temp, var_len);
+	free( *token_before);
+	*token_before = 0;
+	*token_before = temp;
+	(*start) += ft_strlen(value) - 1;
+	return(0);
+}
+
+char	*update_token_before(char *token_before, int *start, char *value)
+{
+	char	*before;
+	char	*temp;
+
+	before = ft_substr(token_before, 0, *start);
+	temp = ft_strjoin(before, value);
+	free(before);
+	before = 0;
+	return (temp);
+}
+
+char	*update_token_after(char *token_before, int *start, char *temp, int var_len)
+{
+	char	*final;
+	char	*after;
+
+	after = ft_substr(token_before, (*start) + var_len + 1, ft_strlen(token_before) - ((*start) + var_len));
+	final = ft_strjoin(temp, after);
+	free(after);
+	after = 0;
+	return (final);
 }

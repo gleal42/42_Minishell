@@ -14,8 +14,13 @@
 # define ENVIRONMENT_H
 
 # include "main.h"
-int		replace_vars_with_values(char **token, t_list *env);
-int		update_midtoken(char **outdated, char *src, int start, int old_word_len);
-char	*ft_strjoin_three(char *first_substr, char *second_substr, char *third_substr);
+# include "parse_utils.h"
+
+int		replace_vars_with_values(char **str);
+char	*get_var_name(char *str);
+int		update_token(char **token_before, int *start, char *value, int var_len);
+char	*update_token_before(char *token_before, int *start, char *value);
+char	*update_token_after(char *token_before, int *start, char *temp, int var_len);
+
 
 #endif

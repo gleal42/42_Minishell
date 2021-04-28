@@ -12,13 +12,13 @@
 
 # include "builtins.h"
 
-int		ft_cd(char **args, t_list **env)
+int		ft_cd(char **args)
 {
 	char	buf[1024];
 	char	*home;
 //	char	*adj_path;
 
-	home = get_env_value("HOME", *env);
+	home = ft_getenv("HOME");
 /*	if (args[0] == 0)
 	{
 		if(chdir(home) == 0)

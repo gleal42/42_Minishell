@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:42:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/26 14:12:40 by gleal            ###   ########.fr       */
+/*   Updated: 2021/04/28 18:01:07 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,17 @@ int		execute_cmd_table(t_cmd_table *cmd_table, t_list **env)
 
 int		execute_cmd(t_cmd *cmd, t_list **env, int pipe)
 {
-	char **tokens;
+	t_list	*tokens;
+	char	*first;
 
-	(void)env;
 	tokens = cmd->tokens;
-	env_vars(&tokens, env);
-	if (ft_strcmp(tokens[0], "exit") == 0 && pipe == 0)
+	if (tokens == 0)
+		return (0);
+	env_vars(tokens);
+	first = ((t_token *)tokens->data)->str;
+	if (ft_strcmp(first, "exit") == 0 && pipe == 0)
 		ft_exit(0);
-	else if (is_builtin(tokens[0]))
+	else if (is_builtin(first))
 		execute_builtin(tokens, env);
 	return (0);
-}
-
-void	ft_exit(int status)
-{
-	exit(status);
 }

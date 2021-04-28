@@ -69,6 +69,7 @@ char	get_delimiter(const char *raw_input, int *curr_pos)
 {
 	char	delimiter;
 
+	delimiter = '\0';
 	if (raw_input[*curr_pos] == '"' || raw_input[*curr_pos] == '\'')
 	{
 		if (raw_input[*curr_pos] == '"')

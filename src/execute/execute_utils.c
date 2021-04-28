@@ -24,13 +24,16 @@ int		is_builtin(char *first_token)
 		return (0);
 }
 
-int		execute_builtin(char **tokens, t_list **env)
+int		execute_builtin(t_list	*tokens, t_list **env)
 {
-	if (ft_strcmp(tokens[0], "echo") == 0)
-		return (ft_echo(&tokens[1]));
-	if ((ft_strcmp(tokens[0], "env") == 0) && tokens[1] == 0)
+	char	*first;
+
+	first = ((t_token *)tokens->data)->str;
+	if (ft_strcmp(first, "echo") == 0)
+		return (ft_echo(tokens->next));
+	if ((ft_strcmp(first, "env") == 0) && tokens->next == 0)
 		return (ft_env(*env));
-	if (ft_strcmp(tokens[0], "cd") == 0)
-		return (ft_cd(&tokens[1], env));
+	if (ft_strcmp(first, "cd") == 0)
+		return (ft_cd(tokens->next, env));
 	return (0);
 }

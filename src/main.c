@@ -6,11 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 17:33:17 by dda-silv          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2021/04/26 14:28:49 by gleal            ###   ########.fr       */
-=======
-/*   Updated: 2021/04/28 12:26:54 by dda-silv         ###   ########.fr       */
->>>>>>> master
+/*   Updated: 2021/04/28 16:45:59 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +15,6 @@
 int	main(int argc, char **argv, char **envp)
 {
 	t_dlist	*ast;
-	t_list	*env;
 
 	(void)argc;
 	(void)argv;
@@ -32,8 +27,8 @@ int	main(int argc, char **argv, char **envp)
 			ft_exit(EXIT_FAILURE);
 		ft_dlstadd_front(&g_msh.cmd_history, ast);
 		// print_ast((t_ast *)g_msh.cmd_history->data);
-		// if (((t_ast *)g_msh.cmd_history->data)->cmd_tables)
-		// 	execute_ast((t_ast *)g_msh.cmd_history->data, &g_msh.dup_envp);
+		if (((t_ast *)g_msh.cmd_history->data)->cmd_tables)
+			execute_ast((t_ast *)g_msh.cmd_history->data, &g_msh.dup_envp);
 	}
 	return (0);
 }
