@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/28 12:44:46 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/28 12:47:45 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,9 +103,8 @@ typedef struct s_token
 
 typedef struct s_redir
 {
-	char			*direction;
+	t_token			*direction;
 	char			type[2];
-	int				is_executable;
 }				t_redir;
 
 typedef struct s_termcaps
