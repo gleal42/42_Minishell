@@ -6,13 +6,13 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 18:55:52 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/28 12:48:04 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/28 14:41:07 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "termcaps.h"
 
-void	init_termcaps(t_msh *msh, t_termcaps *termcaps)
+void	init_termcaps(t_termcaps *termcaps)
 {
 	if (IS_UNIX)
 	{
@@ -21,6 +21,4 @@ void	init_termcaps(t_msh *msh, t_termcaps *termcaps)
 			ft_exit(EXIT_FAILURE);
 	}
 
-
-	(void)msh;
 }

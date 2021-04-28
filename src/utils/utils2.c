@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 10:05:29 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/28 12:22:13 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/28 14:43:57 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	init_minishell(t_msh *msh, char **envp)
 	duplicate_env(&msh->dup_envp, envp);
 	if (!isatty(STDIN_FILENO))
 		ft_exit(EXIT_FAILURE);
+	// if (tcgetattr(STDIN_FILENO, &))
+	// init_termcaps()
 }
 
 void	ft_exit(int exit_code)
