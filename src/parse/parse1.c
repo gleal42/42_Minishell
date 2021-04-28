@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 10:37:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/28 10:58:19 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/28 11:04:00 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,14 +180,14 @@ t_token	*get_token(const char *raw_input, int *curr_pos)
 {
 	t_token	*token;
 	// char	*token;
-	int		has_dquotes_open;
-	int		has_squotes_open;
+	// int		has_dquotes_open;
+	// int		has_squotes_open;
 	int		saved_pos;
 
 	token = ft_calloc(1, sizeof(t_token));
 	if (!token)
 		ft_exit(EXIT_FAILURE);
-	set_quotes(raw_input, curr_pos, &has_dquotes_open, &has_squotes_open);
+	set_quotes(raw_input, curr_pos, );
 	saved_pos = *curr_pos;
 	while (raw_input[*curr_pos])
 	{
