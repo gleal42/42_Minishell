@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 10:05:29 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/28 17:41:52 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/29 08:51:59 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	init_minishell(t_msh *msh, char **envp)
 void	ft_exit(int exit_code)
 {
 	free_msh();
+	turn_on_canonical_mode(&g_msh.termcaps);
 	exit(exit_code);
 }
 
