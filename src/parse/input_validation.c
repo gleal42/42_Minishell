@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 11:06:43 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/29 16:00:43 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/30 00:25:00 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	is_input_valid(const char *input)
 							"token `|'");
 		check = 0;
 	}
-	else if (*input == '\0' && ft_strisspace((char *)input))
+	else if (*input == '\0' || ft_strisspace((char *)input))
 		check = 0;
 	else
 		check = 1;

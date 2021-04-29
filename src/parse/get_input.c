@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 15:23:20 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/29 19:54:53 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/30 00:20:17 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,23 +25,24 @@ char	*get_input(t_dlist *input_history, t_termcaps *termcaps)
 	int		i;
 	int		nb_char_read;
 
-	input = 0;
 	i = 0;
 	ft_bzero(buf, BUFSIZ);
 	while (!ft_strchr(buf, '\n'))
 	{
-		nb_char_read = read(STDIN_FILENO, &buf[i], ARROW_KEY_SIZE);
-		if (nb_char_read == 3 && is_up_down_arrow(&buf[i], termcaps))
+		nb_char_read = read(STDIN_FILENO, &buf[i], BUFSIZ - i);
+		if (is_up_down_arrow(&buf[i], termcaps))
 			parse_input_history(&input_history, termcaps, buf, &i);
+		else if (!ft_strcmp(&buf[i], termcaps->backspace))
+			delete_single_char(termcaps, buf, &i);
+		else if (nb_char_read > 1)
+			ft_bzero(&buf[i], BUFSIZ - i);
 		else
-			write(STDOUT_FILENO, &buf[i], 1);
-		i += nb_char_read;
+			i += write(STDOUT_FILENO, &buf[i], 1);
 	}
 	buf[i - 1] = '\0';
 	input = ft_strdup(buf);
 	if (!input)
 		ft_exit(EXIT_FAILURE);
-	// printf("Input: \"%s\"\n", input);
 	return (input);
 }
 
@@ -63,17 +64,24 @@ void	parse_input_history(t_dlist **input_history,
 							char *buf,
 							int *i)
 {
+	char	*input;
+
 	if (!has_history(*input_history, termcaps, buf, i))
 		return ;
-	else if (!ft_strcmp(termcaps->up_arrow, &buf[*i]) && (*input_history)->next)
+	input = (*input_history)->data;
+	if (!ft_strcmp(termcaps->up_arrow, &buf[*i])
+			&& (*input_history)->next)
 		*input_history = (*input_history)->next;
 	else if (!ft_strcmp(termcaps->down_arrow, &buf[*i])
 			&& (*input_history)->prev)
+	{
 		*input_history = (*input_history)->prev;
+		input = (*input_history)->data;
+	}
 	tputs(termcaps->del_line, 1, ft_putint);
 	write_prompt();
 	ft_bzero(buf, BUFSIZ);
-	ft_strcpy(buf, (const char *)(*input_history)->data);
+	ft_strcpy(buf, input);
 	*i = write(STDOUT_FILENO, buf, ft_strlen(buf));
 }
 
@@ -86,18 +94,34 @@ int	has_history(t_dlist *input_history,
 
 	if (!input_history)
 		check = 0;
+	else if (input_history && !ft_strcmp(termcaps->down_arrow, &buf[*i])
+			&& !input_history->prev)
+		check = 0;
 	else if (input_history)
 		check = 1;
-	else if (!ft_strcmp(termcaps->up_arrow, &buf[*i]) && !input_history->next)
+	else if (!ft_strcmp(termcaps->up_arrow, &buf[*i])
+			&& !input_history->next)
 		check = 0;
-	else if (!ft_strcmp(termcaps->down_arrow, &buf[*i]) && !input_history->prev)
+	else if (!ft_strcmp(termcaps->down_arrow, &buf[*i])
+			&& !input_history->prev)
 		check = 0;
 	else
 		check = 1;
 	if (!check)
-	{
 		ft_bzero(&buf[*i], BUFSIZ - *i);
-		*i -= ARROW_KEY_SIZE;
-	}
 	return (check);
+}
+
+void	delete_single_char(t_termcaps *termcaps, char *buf, int *i)
+{
+	int	len;
+
+	ft_bzero(&buf[*i], BUFSIZ - *i);
+	len = ft_strlen(buf);
+	if (len == 0)
+		return ;
+	tputs(termcaps->del_line, 1, ft_putint);
+	write_prompt();
+	buf[len - 1] = '\0';
+	*i = write(STDOUT_FILENO, buf, ft_strlen(buf));
 }

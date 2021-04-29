@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 18:55:52 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/29 18:02:28 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/29 23:58:25 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,22 +50,12 @@ int	has_capabilities(t_termcaps *termcaps)
 	termcaps->keys_on = tgetstr("ks", &termcaps->buffer);
 	if (termcaps->keys_on)
 		tputs(termcaps->keys_on, 1, ft_putint);
-	termcaps->left_arrow = tgetstr("kl", &termcaps->buffer);
-	termcaps->right_arrow = tgetstr("kr", &termcaps->buffer);
 	termcaps->up_arrow = tgetstr("ku", &termcaps->buffer);
 	termcaps->down_arrow = tgetstr("kd", &termcaps->buffer);
-	termcaps->save_cursor = tgetstr("sc", &termcaps->buffer);
-	termcaps->restore_cursor = tgetstr("rc", &termcaps->buffer);
-	termcaps->clear_line = tgetstr("cd", &termcaps->buffer);
-	termcaps->clear_end_line = tgetstr("ce", &termcaps->buffer);
+	termcaps->backspace = tgetstr("kb", &termcaps->buffer);
 	termcaps->del_line = tgetstr("dl", &termcaps->buffer);
-	termcaps->invisible_cursor = tgetstr("vi", &termcaps->buffer);
-	termcaps->visible_cursor = tgetstr("ve", &termcaps->buffer);
-	if (!termcaps->keys_on || !termcaps->left_arrow || !termcaps->right_arrow
-		|| !termcaps->up_arrow || !termcaps->down_arrow
-		|| !termcaps->save_cursor || !termcaps->restore_cursor
-		|| !termcaps->clear_end_line || !termcaps->invisible_cursor
-		|| !termcaps->visible_cursor || !termcaps->clear_line)
+	if (!termcaps->keys_on || !termcaps->up_arrow || !termcaps->down_arrow
+		|| !termcaps->backspace || !termcaps->del_line)
 		check = 0;
 	else
 		check = 1;

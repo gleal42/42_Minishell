@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/29 18:02:38 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/29 23:58:08 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,17 +111,10 @@ typedef struct s_termcaps
 	struct termios	new_term;	
 	char			*buffer;
 	char			*keys_on;
-	char			*left_arrow;
-	char			*right_arrow;
 	char			*up_arrow;
 	char			*down_arrow;
-	char			*save_cursor;
-	char			*restore_cursor;
-	char			*clear_line;
-	char			*clear_end_line;
+	char			*backspace;
 	char			*del_line;
-	char			*invisible_cursor;
-	char			*visible_cursor;
 }				t_termcaps;
 
 /*
