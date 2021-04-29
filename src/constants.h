@@ -6,13 +6,14 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:48:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/27 19:02:38 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/29 17:18:34 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CONSTANTS_H
 # define CONSTANTS_H
 
+# define ARROW_KEY_SIZE 3
 # define LEFT_ARROW 4479771
 # define RIGHT_ARROW 4414235
 # define UP_ARROW 4283163
@@ -25,5 +26,15 @@
 # else
 #  define IS_UNIX 0
 # endif
+
+# define GREEN "\033[0;32m"
+# define RED "\033[0;31m"
+# define YELLOW "\033[0;33m"
+# define CYAN "\033[0;36m"
+# define GREEN_BOLD "\033[1;32m"
+# define RED_BOLD "\033[1;31m"
+# define YELLOW_BOLD "\033[1;33m"
+# define CYAN_BOLD "\033[1;36m"
+# define RESET "\033[0m"
 
 #endif

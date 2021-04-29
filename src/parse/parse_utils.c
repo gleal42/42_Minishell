@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 10:26:41 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/28 12:24:49 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/29 16:00:43 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 /*
 ** Skips all spaces starting at curr_pos while incrementing *curr_pos
 ** @param:	- [const char *] the unchanged line entered in stdin
-**			- [int *] the current parsing position within the raw_input  
+**			- [int *] the current parsing position within the input  
 */
 
-void	skip_spaces(const char *raw_input, int *curr_pos)
+void	skip_spaces(const char *input, int *curr_pos)
 {
-	while (ft_isspace(raw_input[*curr_pos]))
+	while (ft_isspace(input[*curr_pos]))
 		(*curr_pos)++;
 }
 
@@ -56,24 +56,24 @@ int	is_delimiter(char c)
 
 /*
 ** Gets the delimiter that is enclosing the token starting
-** at raw_input[*curr_pos]
+** at input[*curr_pos]
 ** @param:	- [const char *] the unchanged line entered in stdin
-**			- [int *] the current parsing position within the raw_input  
+**			- [int *] the current parsing position within the input  
 ** @return:	[char] delimiter. Space, single quotes or double quotes
 ** Line-by-line comments:
 ** @9		We need to increment once if we found quotes so that the token
 **			starts after the quote
 */
 
-char	get_delimiter(const char *raw_input, int *curr_pos)
+char	get_delimiter(const char *input, int *curr_pos)
 {
 	char	delimiter;
 
-	if (raw_input[*curr_pos] == '"' || raw_input[*curr_pos] == '\'')
+	if (input[*curr_pos] == '"' || input[*curr_pos] == '\'')
 	{
-		if (raw_input[*curr_pos] == '"')
+		if (input[*curr_pos] == '"')
 			delimiter = '"';
-		else if (raw_input[*curr_pos] == '\'')
+		else if (input[*curr_pos] == '\'')
 			delimiter = '\'';
 		(*curr_pos)++;
 	}

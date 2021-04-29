@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 11:06:43 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/28 11:33:06 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/29 16:00:43 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,22 @@
 ** @return:	[int] true or false
 */
 
-int	is_input_valid(const char *raw_input)
+int	is_input_valid(const char *input)
 {
 	int	check;
 
-	if (has_quotes_open(raw_input))
+	if (has_quotes_open(input))
 	{
 		write_gen_err_message("syntax error (open quotes)");
 		check = 0;
 	}
-	else if (has_pipe_at_end(raw_input))
+	else if (has_pipe_at_end(input))
 	{
 		write_gen_err_message("syntax error near unexpected "
 							"token `|'");
 		check = 0;
 	}
-	else if (*raw_input == '\0' && ft_strisspace((char *)raw_input))
+	else if (*input == '\0' && ft_strisspace((char *)input))
 		check = 0;
 	else
 		check = 1;
@@ -62,7 +62,7 @@ int	is_input_valid(const char *raw_input)
 ** @12-13	Exact same logic as for the double quotes
 */
 
-int	has_quotes_open(const char *raw_input)
+int	has_quotes_open(const char *input)
 {
 	int	check;
 	int	has_double_quotes_open;
@@ -71,13 +71,13 @@ int	has_quotes_open(const char *raw_input)
 	check = 1;
 	has_double_quotes_open = 0;
 	has_single_quotes_open = 0;
-	while (*raw_input)
+	while (*input)
 	{
-		if (*raw_input == '"' && has_single_quotes_open == 0)
+		if (*input == '"' && has_single_quotes_open == 0)
 			has_double_quotes_open = !has_double_quotes_open;
-		else if (*raw_input == '\'' && has_double_quotes_open == 0)
+		else if (*input == '\'' && has_double_quotes_open == 0)
 			has_single_quotes_open = !has_single_quotes_open;
-		raw_input++;
+		input++;
 	}
 	if (has_double_quotes_open || has_single_quotes_open)
 		check = 1;
@@ -95,13 +95,13 @@ int	has_quotes_open(const char *raw_input)
 **			not changing the initial input
 */
 
-int	has_pipe_at_end(const char *raw_input)
+int	has_pipe_at_end(const char *input)
 {
 	int		check;
 	char	*cpy;
 	int		len;
 
-	cpy = ft_strdup(raw_input);
+	cpy = ft_strdup(input);
 	if (!cpy)
 		ft_exit(EXIT_FAILURE);
 	cpy = ft_strtrim(cpy, " \t");

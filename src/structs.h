@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/29 09:38:00 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/29 18:02:38 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,9 @@
 
 /*
 ** An Abstract Syntax Tree (aka AST) that gathers one or more command tables
-** In case the raw_input is invalid, the raw input stays as first entered and
+** In case the input is invalid, the raw input stays as first entered and
 ** all the other fields stay NULL / 0 and execute_cmd is not called
 ** @fields:
-** [const char *raw_input] string entered by user in stdin
 ** [t_list *cmd_tables] linked list with command tables (t_cmd_table *) as nodes
 ** [int *return_value] pointer to the return_value of the last cmd_table.
 **					   The pointer is set in get_cmd_table()
@@ -26,7 +25,6 @@
 
 typedef struct s_ast
 {
-	const char		*raw_input;
 	t_list			*cmd_tables;
 	int				*return_value;
 }				t_ast;
@@ -119,7 +117,11 @@ typedef struct s_termcaps
 	char			*down_arrow;
 	char			*save_cursor;
 	char			*restore_cursor;
+	char			*clear_line;
 	char			*clear_end_line;
+	char			*del_line;
+	char			*invisible_cursor;
+	char			*visible_cursor;
 }				t_termcaps;
 
 /*
@@ -131,7 +133,7 @@ typedef struct s_termcaps
 
 typedef struct s_msh
 {
-	t_dlist			*cmd_history;
+	t_dlist			*input_history;
 	t_termcaps		termcaps;
 	t_list			*dup_envp;
 }				t_msh;
