@@ -10,11 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "builtins.h"
+#include "builtins.h"
 
-int		ft_echo(t_list	*tokens)
+int	ft_echo(t_list *tokens)
 {
-	int		i;
 	int		lb;
 	int		flag_time;
 	char	*arg;
@@ -22,20 +21,17 @@ int		ft_echo(t_list	*tokens)
 
 	flag_time = 1;
 	lb = 1;
-	i = 0;
 	while (tokens)
 	{
 		arg = ((t_token *)tokens->data)->str;
 		delim = ((t_token *)tokens->data)->delimiter;
 		if (flag_time && arg[0] == '-' && has_repeated_char_in_str('n', arg, 1))
-		{
 			lb = 0;
-		}
 		else
 		{
 			if (!flag_time)
 				ft_putchar_fd(' ', 1);
-			flag_time = 0;
+			 flag_time= 0;
 			ft_putstr_fd(arg, 1);
 		}
 		tokens = tokens->next;
@@ -45,9 +41,10 @@ int		ft_echo(t_list	*tokens)
 	return (0);
 }
 
-int		has_repeated_char_in_str(char repeat_chr, char *str, unsigned int start)
+int	has_repeated_char_in_str(char repeat_chr, char *str, unsigned int start)
 {
 	unsigned int	i;
+
 	i = start;
 	while (str[i])
 	{

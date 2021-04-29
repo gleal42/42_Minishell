@@ -12,38 +12,48 @@
 
 # include "builtins.h"
 
-int		ft_cd(char **args)
+int		ft_cd(t_list *tokens, t_list *env)
 {
-	char	buf[1024];
-	char	*home;
-//	char	*adj_path;
-
-	home = ft_getenv("HOME");
-/*	if (args[0] == 0)
-	{
-		if(chdir(home) == 0)
- 		update_directories(&home, env);
-	}
-	else
-	{
-		if (args[0][0] == '-' && args[0][1] == 0)
-		*/	
-	chdir(args[0]);
-	getcwd(buf, 1024);
-	printf("%s\n", buf);
+	char	*arg;
+	char	pwd[1024];
+	
+	arg = ((t_token *)tokens->data)->str;
+	if (getcwd(pwd, 1024) == NULL)
+		return (0);
+	if (arg == 0)
+		change_dir_home(pwd, env);
+	else if (arg[0] == '-' && arg[1] == '\0')
+		change_to_old_dir(pwd, env);
+	else if (chdir(arg) == 0)
+		update_directories(arg, pwd, env);
 	return(0);
 }
 
-/*void	*update_directories(char *new_workdir, t_list **env)
+int		change_dir_home(char	*pwd, t_list *env)
 {
-	char	*old_pwd;
+	char	*home;
 
-	if (is_env_var("OLDPWD", *env))
-	{
-		old_pwd = malloc(sizeof(char) * 7);
-		old_pwd = ft_strcpy(old_pwd, "OLDPWD");
-		replace_var_with_value(&old_pwd, "OLDPWD", *env);
-	}
-
+	home = ft_getenv("HOME");
+	if (chdir(home) == 0)
+		update_directories(home, pwd, env);
+	free(home);
+	home = 0;
 	return (0);
-}*/
+}
+
+int		change_to_old_dir(char	*pwd, t_list *env)
+{
+	char	*old_dir;
+
+	old_dir = ft_getenv("OLDPWD");
+	if (!old_dir)
+	{
+		printf("OLDPWD not set\n");
+		return (1);
+	}
+	if (chdir(old_dir) == 0)
+		update_directories(old_dir, pwd, env);
+	free(old_dir);
+	old_dir = 0;
+	return (0);
+}

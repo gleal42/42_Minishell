@@ -21,6 +21,8 @@ char	*get_var_name(char *str);
 int		update_token(char **token_before, int *start, char *value, int var_len);
 char	*update_token_before(char *token_before, int *start, char *value);
 char	*update_token_after(char *token_before, int *start, char *temp, int var_len);
+int		replace_tilde_with_home(char **str);
+int     tilde_join(char **str,char **home_path);
 
 
 #endif
