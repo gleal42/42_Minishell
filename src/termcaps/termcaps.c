@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   termcaps.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dds <dda-silv@student.42lisboa.com>        +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 18:55:52 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/30 11:02:21 by dds              ###   ########.fr       */
+/*   Updated: 2021/04/30 15:05:59 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,6 @@ void	turn_off_canonical_mode(t_termcaps *termcaps)
 ** @1		The old terminal settings already had canonical mode on so we just
 **			need to go back to old settings
 */
-
 
 void	turn_on_canonical_mode(t_termcaps *termcaps)
 {

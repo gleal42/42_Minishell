@@ -6,16 +6,50 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 15:23:20 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/30 00:20:17 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/30 15:11:55 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_input.h"
 
 /*
-** Gets the characters entered in the command line by user. Multiline commands
-** aren't supported so we only call get_next_line once
+** Gets the characters entered in the command line by user. We need to handle
+** specific cases:
+** - Up / down keypresses to check history
+** - Backspace keypresses to delete a character
+** Multiline commands aren't supported.
+** @param:	- [t_dlist *] double linked list with previous input as nodes. 
+**						  As we only pass the pointer its order nor the amount
+**						  of nodes is changed by get_input()
+**			- [t_termcaps *] struct with terminal capabilities capabilities
 ** @return:	[char *] line entered without any alterations nor checks
+** Line-by-line comments:
+** @7		We initialize our buf where we are temporarely storing the input
+**			from user. The size of BUFSIZ is 8192 (defined in stdio.h)
+**			If the input is larger than 8192... embrace the SEGFAULT life
+** @10		Important piece of code so let's split it: 
+**			- "nb_char_read": having set canonical mode off means read() returns
+**			after each keypress regardless of the buffer_size argument. But that
+**			doesn't mean we are always reading one byte at a time. For the
+**			letter 'A', only 1 char will be read but the up arrow taking 3 bytes
+**			in ANSI code, nb_char_read will have a value of 3
+**			- "&buf[i]": we set the new character read after all previous
+**			buffer. The i index is updated in parse_input_history(), in
+**			delete_single_char() and by write().
+**			- "BUFSIZ - i": size left in our buffer
+** @13-14	We compare the values just read to the ANSI value of the backspace
+**			that we received from the termcaps lib.
+**			Here we need to keep in mind that the buffer has been previously set
+**			to NULL so the new value set in the buffer are NULL-terminated
+** @15-16	If the number of characters read is above 1 byte and it's not
+**			up / down arrow or backspace, it means it's a special character that
+**			should not be written on the stdout like Ctrl or Home. Yet it's in
+**			our buffer so we need to set to NULL starting where that special
+**			characters was stored
+** @17-18	We know that only one character has been read so we can safely write
+**			it to STDOUT while incrementing i so that next character is read
+**			after the one just written
+** @20		Overwritting the line feed (last character inputed before loop exit)
 */
 
 char	*get_input(t_dlist *input_history, t_termcaps *termcaps)
@@ -46,6 +80,13 @@ char	*get_input(t_dlist *input_history, t_termcaps *termcaps)
 	return (input);
 }
 
+/*
+** Checks if the characters in buffer are up or down arrow
+** @param:	- [char *] buffer reprenting one or more characters
+**			- [t_termcaps *] struct with terminal capabilities capabilities
+** @return:	[int] true or false
+*/
+
 int	is_up_down_arrow(char *buf, t_termcaps *termcaps)
 {
 	int	check;
@@ -59,6 +100,23 @@ int	is_up_down_arrow(char *buf, t_termcaps *termcaps)
 	return (check);
 }
 
+/*
+** Parse the input history, set the buffer to the value of the history and
+** update the index based on the length of that value
+** @param:	- [t_dlist **] double linked list with an input previously entered
+**                         as node. We pass the pointer to pointer because
+**                         we need the change to be permanent for get_input.
+**						   This allows the function to effectively parse it.
+**						   Otherwise, we would only have access to the previous
+**						   input.
+**			- [t_termcaps *] struct with terminal capabilities capabilities
+**			- [char *] buffer where the history input will be set
+**			- [int *] index where are in the buffer
+** Line-by-line comments:
+** @3-7		There is not necessarely history to show so we delete the arrow
+**			input from buffer and we return
+*/
+
 void	parse_input_history(t_dlist **input_history,
 							t_termcaps *termcaps,
 							char *buf,
@@ -67,13 +125,19 @@ void	parse_input_history(t_dlist **input_history,
 	char	*input;
 
 	if (!has_history(*input_history, termcaps, buf, i))
+	{
+		ft_bzero(&buf[*i], BUFSIZ - *i);
 		return ;
-	input = (*input_history)->data;
-	if (!ft_strcmp(termcaps->up_arrow, &buf[*i])
-			&& (*input_history)->next)
+	}
+	if (!ft_strcmp(termcaps->up_arrow, &buf[*i]) && !(*input_history)->next)
+		input = (*input_history)->data;
+	else if (!ft_strcmp(termcaps->up_arrow, &buf[*i]) && (*input_history)->next)
+	{
+		input = (*input_history)->data;
 		*input_history = (*input_history)->next;
+	}
 	else if (!ft_strcmp(termcaps->down_arrow, &buf[*i])
-			&& (*input_history)->prev)
+		&& (*input_history)->prev)
 	{
 		*input_history = (*input_history)->prev;
 		input = (*input_history)->data;
@@ -94,21 +158,14 @@ int	has_history(t_dlist *input_history,
 
 	if (!input_history)
 		check = 0;
+	else if (input_history && !ft_strcmp(termcaps->up_arrow, &buf[*i])
+		&& !input_history->next)
+		check = 0;
 	else if (input_history && !ft_strcmp(termcaps->down_arrow, &buf[*i])
-			&& !input_history->prev)
-		check = 0;
-	else if (input_history)
-		check = 1;
-	else if (!ft_strcmp(termcaps->up_arrow, &buf[*i])
-			&& !input_history->next)
-		check = 0;
-	else if (!ft_strcmp(termcaps->down_arrow, &buf[*i])
-			&& !input_history->prev)
+		&& !input_history->prev)
 		check = 0;
 	else
 		check = 1;
-	if (!check)
-		ft_bzero(&buf[*i], BUFSIZ - *i);
 	return (check);
 }
 

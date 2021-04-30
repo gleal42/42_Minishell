@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 15:28:18 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/30 00:06:54 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/30 15:04:33 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@
 
 int		is_up_down_arrow(char *buf, t_termcaps *termcaps);
 void	parse_input_history(t_dlist **input_history,
-							t_termcaps *termcaps,
-							char *buf,
-							int *i);
+			t_termcaps *termcaps,
+			char *buf,
+			int *i);
 int		has_history(t_dlist *input_history,
-					t_termcaps *termcaps,
-					char *buf,
-					int *i);
+			t_termcaps *termcaps,
+			char *buf,
+			int *i);
 void	delete_single_char(t_termcaps *termcaps, char *buf, int *i);
 
 #endif
