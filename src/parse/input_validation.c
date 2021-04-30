@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 11:06:43 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/30 00:25:00 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/30 11:11:47 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ int	is_input_valid(const char *input)
 {
 	int	check;
 
-	if (has_quotes_open(input))
+	if (*input == '\0' || ft_strisspace((char *)input))
+		check = 0;
+	else if (has_quotes_open(input))
 	{
 		write_gen_err_message("syntax error (open quotes)");
 		check = 0;
@@ -33,8 +35,6 @@ int	is_input_valid(const char *input)
 							"token `|'");
 		check = 0;
 	}
-	else if (*input == '\0' || ft_strisspace((char *)input))
-		check = 0;
 	else
 		check = 1;
 	return (check);
