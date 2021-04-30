@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execute_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 17:53:43 by gleal             #+#    #+#             */
-/*   Updated: 2021/04/26 21:06:56 by gleal            ###   ########.fr       */
+/*   Updated: 2021/04/30 17:38:37 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "execute.h"
+#include "execute.h"
 
-int		is_builtin(char *first_token)
+int	is_builtin(char *first_token)
 {
 	if (ft_strcmp(first_token, "echo") == 0)
 		return (1);
@@ -24,7 +24,7 @@ int		is_builtin(char *first_token)
 		return (0);
 }
 
-int		execute_builtin(t_list	*tokens, t_list **env)
+int	execute_builtin(t_list	*tokens, t_list **env)
 {
 	char	*first;
 

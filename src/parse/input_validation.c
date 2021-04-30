@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_validation.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 11:06:43 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/28 11:33:06 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/30 17:57:14 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	is_input_valid(const char *raw_input)
 	else if (has_pipe_at_end(raw_input))
 	{
 		write_gen_err_message("syntax error near unexpected "
-							"token `|'");
+			"token `|'");
 		check = 0;
 	}
 	else if (*raw_input == '\0' && ft_strisspace((char *)raw_input))

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:42:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/28 18:01:07 by gleal            ###   ########.fr       */
+/*   Updated: 2021/04/30 17:37:43 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
-int		execute_ast(t_ast *ast, t_list **env)
+int	execute_ast(t_ast *ast, t_list **env)
 {
 	t_list	*cmd_table;
 
@@ -24,8 +24,11 @@ int		execute_ast(t_ast *ast, t_list **env)
 	}
 	return (0);
 }
+/*
+redirection
+*/
 
-int		execute_cmd_table(t_cmd_table *cmd_table, t_list **env)
+int	execute_cmd_table(t_cmd_table *cmd_table, t_list **env)
 {
 	t_list	*cmds;
 	int		pipe;
@@ -33,7 +36,6 @@ int		execute_cmd_table(t_cmd_table *cmd_table, t_list **env)
 	cmds = cmd_table->cmds;
 	while (cmds)
 	{
-		//redirection
 		if (cmds->next == NULL)
 			pipe = 0;
 		else
@@ -44,7 +46,7 @@ int		execute_cmd_table(t_cmd_table *cmd_table, t_list **env)
 	return (0);
 }
 
-int		execute_cmd(t_cmd *cmd, t_list **env, int pipe)
+int	execute_cmd(t_cmd *cmd, t_list **env, int pipe)
 {
 	t_list	*tokens;
 	char	*first;

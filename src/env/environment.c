@@ -3,24 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   environment.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 14:57:24 by gleal             #+#    #+#             */
-/*   Updated: 2021/04/28 19:14:02 by gleal            ###   ########.fr       */
+/*   Updated: 2021/04/30 17:40:38 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "environment.h"
+#include "environment.h"
 
-int		env_vars(t_list	*tokens)
+int	env_vars(t_list	*tokens)
 {
 	char	**str;
 	char	delim;
+
 	while (tokens)
 	{
 		str = &((t_token *)tokens->data)->str;
 		delim = ((t_token *)tokens->data)->delimiter;
-		if (delim == ' ' && str[0][0] == '~' && (str[0][1] == '\0' || str[0][1] == '/'))
+		if (delim == ' ' && str[0][0] == '~' && (str[0][1] == '\0' ||
+		str[0][1] == '/'))
 			replace_tilde_with_home(str);
 		if (delim != '\'')
 			replace_vars_with_values(str);
@@ -29,11 +31,12 @@ int		env_vars(t_list	*tokens)
 	return (0);
 }
 
-int		replace_vars_with_values(char **str)
+int	replace_vars_with_values(char **str)
 {
 	int		i;
 	char	*var;
 	char	*value;
+
 	i = 0;
 	while (str[0][i])
 	{
@@ -53,7 +56,7 @@ int		replace_vars_with_values(char **str)
 	return (0);
 }
 
-int		replace_tilde_with_home(char **str)
+int	replace_tilde_with_home(char **str)
 {
 	char	*home_path;
 

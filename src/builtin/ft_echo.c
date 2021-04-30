@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 20:16:20 by gleal             #+#    #+#             */
-/*   Updated: 2021/04/26 22:33:38 by gleal            ###   ########.fr       */
+/*   Updated: 2021/04/30 17:55:53 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	ft_echo(t_list *tokens)
 		{
 			if (!flag_time)
 				ft_putchar_fd(' ', 1);
-			 flag_time= 0;
+			flag_time = 0;
 			ft_putstr_fd(arg, 1);
 		}
 		tokens = tokens->next;

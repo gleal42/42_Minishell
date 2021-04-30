@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/26 14:19:39 by gleal             #+#    #+#             */
-/*   Updated: 2021/04/26 14:58:32 by gleal            ###   ########.fr       */
+/*   Updated: 2021/04/30 17:56:26 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "builtins.h"
+#include "builtins.h"
 
-int		ft_env(t_list *env)
+int	ft_env(t_list *env)
 {
 	int		i;
 

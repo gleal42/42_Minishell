@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:44:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/28 18:02:09 by gleal            ###   ########.fr       */
+/*   Updated: 2021/04/30 15:44:43 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,6 @@ int		replace_var_with_value(char **tokens, char *var, t_list *env);
 int		execute_builtin(t_list	*tokens, t_list **env);
 int		ft_echo(t_list *token_args);
 int		ft_env(t_list *env);
-int		ft_cd(t_list *token_args, t_list **env);
+int		ft_cd(t_list *tokens, t_list **env);
 
 #endif
