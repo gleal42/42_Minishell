@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 10:05:29 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/29 08:51:59 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/30 10:01:50 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,11 @@ void	init_minishell(t_msh *msh, char **envp)
 
 void	ft_exit(int exit_code)
 {
-	free_msh();
+	if (g_msh.termcaps.keys_off)
+		tputs(g_msh.termcaps.keys_off, 1, ft_putint);
 	turn_on_canonical_mode(&g_msh.termcaps);
+	free_msh(&g_msh);
 	exit(exit_code);
-}
-
-void	free_msh(void)
-{
 }
 
 void	duplicate_env(t_list **dup_envp, char **envp)

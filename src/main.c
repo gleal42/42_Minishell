@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 17:33:17 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/30 00:29:01 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/30 09:58:45 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_ast	*ast;
 	t_dlist	*input;
 
 	(void)argc;
@@ -31,11 +30,11 @@ int	main(int argc, char **argv, char **envp)
 		ft_dlstadd_front(&g_msh.input_history, input);
 		if (!is_input_valid((const char *)input->data))
 			continue ;
-		ast = get_ast((const char *)input->data);
+		g_msh.ast = get_ast((const char *)input->data);
 		turn_on_canonical_mode(&g_msh.termcaps);
-		// print_ast(ast);
-		// execute_ast(ast, &g_msh.dup_envp);
-		// free_ast(ast);
+		print_ast(g_msh.ast);
+		// execute_ast(&g_msh.ast, &g_msh.dup_envp);
+		free_ast(g_msh.ast);
 	}
 	return (0);
 }

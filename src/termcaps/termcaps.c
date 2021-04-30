@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 18:55:52 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/29 23:58:25 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/30 09:39:51 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	has_capabilities(t_termcaps *termcaps)
 	termcaps->keys_on = tgetstr("ks", &termcaps->buffer);
 	if (termcaps->keys_on)
 		tputs(termcaps->keys_on, 1, ft_putint);
+	termcaps->keys_off = tgetstr("ke", &termcaps->buffer);
 	termcaps->up_arrow = tgetstr("ku", &termcaps->buffer);
 	termcaps->down_arrow = tgetstr("kd", &termcaps->buffer);
 	termcaps->backspace = tgetstr("kb", &termcaps->buffer);
@@ -60,11 +61,6 @@ int	has_capabilities(t_termcaps *termcaps)
 	else
 		check = 1;
 	return (check);
-}
-
-int	ft_putint(int c)
-{
-	return (write(1, &c, 1));
 }
 
 /*
@@ -116,4 +112,9 @@ void	turn_on_canonical_mode(t_termcaps *termcaps)
 {
 	if (tcsetattr(STDIN_FILENO, TCSANOW, &termcaps->old_term) == -1)
 		ft_exit(EXIT_FAILURE);
+}
+
+int	ft_putint(int c)
+{
+	return (write(1, &c, 1));
 }

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 16:48:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/29 18:13:33 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/30 09:48:03 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include "../libft/src/libft.h"
 # include "structs.h"
 # include "constants.h"
+# include "free_memory.h"
 # include "input_validation.h"
 # include "utils.h"
 # include "utils2.h"
