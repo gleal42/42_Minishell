@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   termcaps.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: dds <dda-silv@student.42lisboa.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 18:55:52 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/30 09:39:51 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/30 11:02:21 by dds              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,10 @@ int	has_capabilities(t_termcaps *termcaps)
 	termcaps->keys_off = tgetstr("ke", &termcaps->buffer);
 	termcaps->up_arrow = tgetstr("ku", &termcaps->buffer);
 	termcaps->down_arrow = tgetstr("kd", &termcaps->buffer);
-	termcaps->backspace = tgetstr("kb", &termcaps->buffer);
+	if (IS_UNIX)
+		termcaps->backspace = tgetstr("kb", &termcaps->buffer);
+	else
+		termcaps->backspace = ft_strdup("\x7f");
 	termcaps->del_line = tgetstr("dl", &termcaps->buffer);
 	if (!termcaps->keys_on || !termcaps->up_arrow || !termcaps->down_arrow
 		|| !termcaps->backspace || !termcaps->del_line)

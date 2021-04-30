@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: dds <dda-silv@student.42lisboa.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 10:05:29 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/30 10:01:50 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/30 11:07:46 by dds              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ void	ft_exit(int exit_code)
 {
 	if (g_msh.termcaps.keys_off)
 		tputs(g_msh.termcaps.keys_off, 1, ft_putint);
+	if (!IS_UNIX)
+		free(g_msh.termcaps.backspace);
 	turn_on_canonical_mode(&g_msh.termcaps);
 	free_msh(&g_msh);
 	exit(exit_code);

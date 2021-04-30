@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: dds <dda-silv@student.42lisboa.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 10:26:41 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/29 16:00:43 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/30 10:45:20 by dds              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ char	get_delimiter(const char *input, int *curr_pos)
 {
 	char	delimiter;
 
+	delimiter = 0;
 	if (input[*curr_pos] == '"' || input[*curr_pos] == '\'')
 	{
 		if (input[*curr_pos] == '"')
