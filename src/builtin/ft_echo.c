@@ -6,11 +6,20 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 20:16:20 by gleal             #+#    #+#             */
-/*   Updated: 2021/04/30 17:55:53 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/01 22:53:56 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
+
+/*
+** ft_echo (prints args to standard output separated by spaces)
+** @param:	- [t_list *] arguments/tokens
+** @return:	[int] exit_status (still needs to be implemented)
+** Line-by-line comments:
+** @12	there can be multiple flag arguments, but as soon as we get a non
+flag argument then flag time is over.
+*/
 
 int	ft_echo(t_list *tokens)
 {
@@ -40,6 +49,14 @@ int	ft_echo(t_list *tokens)
 		ft_putchar_fd('\n', 1);
 	return (0);
 }
+
+/*
+** Function to look for repeated characters
+** @param:	- [char] char to be checked
+**			- [char *] string to be parsed
+**			- [unsigned int] iterator start
+** @return:	[int] true or false
+*/
 
 int	has_repeated_char_in_str(char repeat_chr, char *str, unsigned int start)
 {

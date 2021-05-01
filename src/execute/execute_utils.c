@@ -6,11 +6,17 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 17:53:43 by gleal             #+#    #+#             */
-/*   Updated: 2021/04/30 17:38:37 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/01 22:24:15 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
+
+/*
+** Checks if token is one of the mandatory builtin function	
+** @param:	- [char *] token to be checked
+** @return:	[int] indicates if the token is a builtin or not
+*/
 
 int	is_builtin(char *first_token)
 {
@@ -23,6 +29,15 @@ int	is_builtin(char *first_token)
 	else
 		return (0);
 }
+
+/*
+** Redirects to builtin functions
+** @param:	- [t_list *] list of tokens in a command
+**			- [t_list **] pointer to environment variable linked list
+** @return:	[int] command return values
+** Line-by-line comments:
+** @6			we're only asked to deal with env with no arguments
+*/
 
 int	execute_builtin(t_list	*tokens, t_list **env)
 {

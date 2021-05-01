@@ -6,13 +6,19 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/26 14:19:39 by gleal             #+#    #+#             */
-/*   Updated: 2021/04/30 17:56:26 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/01 22:54:57 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-int	ft_env(t_list *env)
+/*
+** prints environment variable linked list one by one
+** @param:	- [t_list *] environment variable linked list
+** @return:	[int] exit status (still needs to be implemented)
+*/
+
+int		ft_env(t_list *env)
 {
 	int		i;
 
