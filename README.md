@@ -77,3 +77,7 @@ https://stackoverflow.com/questions/2085302/printing-all-environment-variables-i
 chdir
 https://stackoverflow.com/questions/4998530/can-chdir-accept-relative-paths
 https://stackoverflow.com/questions/3642050/chdir-not-affecting-environment-variable-pwd
+
+Pipes
+https://swcarpentry.github.io/shell-novice/04-pipefilter/index.html
+https://askubuntu.com/questions/404141/why-cant-i-pipe-into-cd
