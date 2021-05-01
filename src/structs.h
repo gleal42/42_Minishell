@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/30 09:56:57 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/01 17:16:06 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,25 @@ typedef struct s_redir
 	char			type[2];
 }				t_redir;
 
+/*
+** Settings of the terminal and a few capabilties from the termcaps lib
+** @fields:
+** [struct termios old_term] default terminal settings (i.e. canonical mode).
+** This struct is set in the termios lib
+** [struct termios new_term] modified terminal settings (i.e. non-canonical
+** mode)
+** [char *buffer] the termcaps capabilities require a buffer to be passed to
+** various functions like tgetent or tgetstr
+** [char *keys_on] set keypad functionalities
+** [char *keys_off] turn off keypad functionalities. Required at end of program
+** [char *up_arrow] value that the terminal will return when pressing up arrow
+** [char *down_arrow] value that the terminal will return when pressing down
+** arrow
+** [char *backspace] value that the terminal will return when pressing backspace
+** [char *del_line] capability that allows to delete the content of the line
+** where the cursor currently is positioned
+*/
+
 typedef struct s_termcaps
 {
 	struct termios	old_term;	
@@ -121,7 +140,10 @@ typedef struct s_termcaps
 /*
 ** Global struct that carries all data used throughout the program
 ** @fields:
-** [t_dlist *] double linked list with each node representing an AST
+** [t_dlist *] double linked list with each node representing a previously
+** entered input
+** [t_ast *] struct with the abstract syntax tree
+** [t_termcaps] struct with the settings of the termical and a few capabilities
 ** [t_list *] the duplicate of environment variables. Each node is a string
 */
 

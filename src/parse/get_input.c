@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 15:23:20 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/30 15:11:55 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/01 16:11:56 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,12 @@ int	is_up_down_arrow(char *buf, t_termcaps *termcaps)
 ** Line-by-line comments:
 ** @3-7		There is not necessarely history to show so we delete the arrow
 **			input from buffer and we return
+** @8-9		Case: up arrow + only node in the list
+** @10-14	Case: up arrow + more than one node in list
+** @15-19	Case: down arrow + more than one node in list
+** @20		Delete the current line from STDOUT
+** @24		While we are writting the new input, we change the value of *i
+**			so that the next char input while be set after the current input
 */
 
 void	parse_input_history(t_dlist **input_history,
@@ -124,20 +130,19 @@ void	parse_input_history(t_dlist **input_history,
 {
 	char	*input;
 
-	if (!has_history(*input_history, termcaps, buf, i))
+	if (!has_history(*input_history, termcaps, &buf[*i]))
 	{
 		ft_bzero(&buf[*i], BUFSIZ - *i);
 		return ;
 	}
 	if (!ft_strcmp(termcaps->up_arrow, &buf[*i]) && !(*input_history)->next)
 		input = (*input_history)->data;
-	else if (!ft_strcmp(termcaps->up_arrow, &buf[*i]) && (*input_history)->next)
+	else if (!ft_strcmp(termcaps->up_arrow, &buf[*i]))
 	{
 		input = (*input_history)->data;
 		*input_history = (*input_history)->next;
 	}
-	else if (!ft_strcmp(termcaps->down_arrow, &buf[*i])
-		&& (*input_history)->prev)
+	else if (!ft_strcmp(termcaps->down_arrow, &buf[*i]))
 	{
 		*input_history = (*input_history)->prev;
 		input = (*input_history)->data;
@@ -149,36 +154,45 @@ void	parse_input_history(t_dlist **input_history,
 	*i = write(STDOUT_FILENO, buf, ft_strlen(buf));
 }
 
-int	has_history(t_dlist *input_history,
-				t_termcaps *termcaps,
-				char *buf,
-				int *i)
+/*
+** Checks if, according to the keypressed, there is a history to show
+** @param:	- [t_dlist *] double linked list with an input previously entered
+**        				  as node
+**			- [t_termcaps *] struct with terminal capabilities capabilities
+**			- [char *] buffer where the user input is set
+** @return:	[int] true or false
+** Line-by-line comments:
+** @5-6		If we press down arrow, we need to make sure that we are not at the
+**			beginning of the list
+*/
+
+int	has_history(t_dlist *input_history, t_termcaps *termcaps, char *buf)
 {
 	int	check;
 
 	if (!input_history)
 		check = 0;
-	else if (input_history && !ft_strcmp(termcaps->up_arrow, &buf[*i])
-		&& !input_history->next)
-		check = 0;
-	else if (input_history && !ft_strcmp(termcaps->down_arrow, &buf[*i])
-		&& !input_history->prev)
+	else if (!ft_strcmp(termcaps->down_arrow, buf) && !input_history->prev)
 		check = 0;
 	else
 		check = 1;
 	return (check);
 }
 
+/*
+** Deletes the last characters inputed
+** @params	- [t_termcaps *] struct with terminal capabilities capabilities
+**			- [char *] buffer where the history input will be set
+**			- [int *] index where are in the buffer
+** Line-by-line comments:
+** @1		We are deleting both the last char input and the backspace ANSI code
+** @2		Delete the current line from STDOUT
+*/
+
 void	delete_single_char(t_termcaps *termcaps, char *buf, int *i)
 {
-	int	len;
-
-	ft_bzero(&buf[*i], BUFSIZ - *i);
-	len = ft_strlen(buf);
-	if (len == 0)
-		return ;
+	ft_bzero(&buf[*i - 1], BUFSIZ - *i + 1);
 	tputs(termcaps->del_line, 1, ft_putint);
 	write_prompt();
-	buf[len - 1] = '\0';
 	*i = write(STDOUT_FILENO, buf, ft_strlen(buf));
 }

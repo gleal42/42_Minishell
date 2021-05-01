@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 18:55:52 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/30 15:05:59 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/01 16:52:42 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,22 @@
 
 /*
 ** Initiate termcaps settings to use terminal capabilites
+** @param:	- [t_termcaps *] struct with terminal capabilities capabilities
 ** Line-by-line comments:
-** @4-5		Protect against a "TERM" env varible being unset
-** @5		Indicate to the termcap lib with type of terminal we are using.
+** @3-4		Get the terminal settings
+** @5-10	In Unix, the termcaps library needs to have allocated space.
+**			2048 bytes is by convention. While the GNU version of the lib,
+**			the tgetent allocates space by itself space to buffer and frees it
+** @11-13	Protect against a "TERM" env varible being unset
+** @14-15	Indicate to the termcap lib with type of terminal we are using.
 **			It will save that info internally so that use its capabilities later
+** @16-17	Checks if the terminal has all the capabilities required to run the
+**			the program and sets them to the struct termcaps
 */
 
 void	init_termcaps(t_termcaps *termcaps)
 {
 	char	*term_type;
-	int		ret;
 
 	if (tcgetattr(STDIN_FILENO, &termcaps->old_term) == -1)
 		ft_exit(EXIT_FAILURE);
@@ -36,12 +42,31 @@ void	init_termcaps(t_termcaps *termcaps)
 	term_type = ft_getenv("TERM");
 	if (!term_type)
 		ft_exit(EXIT_FAILURE);
-	ret = tgetent(termcaps->buffer, term_type);
-	if (ret <= 0)
+	if (tgetent(termcaps->buffer, term_type) <= 0)
 		ft_exit(EXIT_FAILURE);
 	else if (!has_capabilities(termcaps))
 		ft_exit(EXIT_FAILURE);
 }
+
+/*
+** Checks if the terminal has all the capabilities required to run the the
+** program and sets them to the struct termcaps
+** To store a capability we use tgetstr / tgetnum / tgetflag and to use a
+** capabality we use tputs
+** @param:	- [t_termcaps *] struct with terminal capabilities capabilities
+** @return:	[int] true or false
+** Line-by-line comments:
+** @3-5		"ks" enables the terminal to return specific ANSI codes when special
+**			keys are pressed like up_arrow
+** @6		If "ks" is used, "ke" needs to be used at the end of the program
+** @7-12	Function keys aren't like common capabilities. To use them we don't
+**			have to call tputs. Instead, we need to compare the values read
+**			by the buffer when pressing to up arrow to the return value of "ku"
+** @9-12	For some reason GNU version of termcaps (used in MacOS) returns '\b'
+**			so we need to manually set the value
+** @13		Capability that allows to delete the content of the line where the
+** 			cursor currently is positioned 
+*/
 
 int	has_capabilities(t_termcaps *termcaps)
 {
@@ -58,7 +83,8 @@ int	has_capabilities(t_termcaps *termcaps)
 	else
 		termcaps->backspace = ft_strdup("\x7f");
 	termcaps->del_line = tgetstr("dl", &termcaps->buffer);
-	if (!termcaps->keys_on || !termcaps->up_arrow || !termcaps->down_arrow
+	if (!termcaps->keys_on || !termcaps->keys_off
+		|| !termcaps->up_arrow || !termcaps->down_arrow
 		|| !termcaps->backspace || !termcaps->del_line)
 		check = 0;
 	else
@@ -115,6 +141,12 @@ void	turn_on_canonical_mode(t_termcaps *termcaps)
 	if (tcsetattr(STDIN_FILENO, TCSANOW, &termcaps->old_term) == -1)
 		ft_exit(EXIT_FAILURE);
 }
+
+/*
+** Function that gets called by tputs
+** @param:	- [int] character to write
+** @return:	[int] number of characters written
+*/
 
 int	ft_putint(int c)
 {

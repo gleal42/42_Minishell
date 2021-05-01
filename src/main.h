@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 16:48:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/30 09:48:03 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/01 17:30:17 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,20 @@
 # include <termios.h>
 
 # include "../libft/src/libft.h"
+
 # include "structs.h"
 # include "constants.h"
 # include "free_memory.h"
-# include "input_validation.h"
 # include "utils.h"
 # include "utils2.h"
+
 # include "shell_subsystems.h"
+
 # include "termcaps.h"
+
+# include "get_input.h"
+# include "parse_utils.h"
+# include "input_validation.h"
 
 /*
 ** TO DELETE WHEN PROJECT FINISHED
