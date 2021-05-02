@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 15:23:20 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/02 10:27:05 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/02 11:10:03 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,15 @@
 **			should not be written on the stdout like Ctrl or Home. Yet it's in
 **			our buffer so we need to set to NULL starting where that special
 **			characters was stored
-** @17-18	We know that only one character has been read so we can safely write
+** @17-18	When user presses ctrl-c, End of Text (ASCII code 3) is sent to
+**			buffer. The expected behaviour is to write "^C" to stdout and reset
+**			the command line
+** @19-20	When user presses ctrl-d, End of Transmission (ASCII code 4) is sent
+**			to the buffer. The expected behaviour is to write "exit" and to exit
+**			the shell
+** @21-22	We know that only one character has been read so we can safely write
 **			it to STDOUT while incrementing i so that next character is read
 **			after the one just written
-** @20		Overwritting the line feed (last character inputed before loop exit)
 */
 
 char	*get_input(t_dlist *input_history, t_termcaps *termcaps)

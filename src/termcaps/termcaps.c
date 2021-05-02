@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 18:55:52 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/02 10:42:53 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/02 11:04:10 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,10 +112,10 @@ int	has_capabilities(t_termcaps *termcaps)
 ** @3		Disable local echo so that pressing up/down arrow doesn't output
 **			^[[A and ^[[B
 ** @4		Turn off SIGINT (Ctrl-C) and SIGTSTP (Ctrl-Z) signals
-** @4-5		Changing control characters settings:
-** @4		Read returns every single byte
-** @5		No timeout so process every input without delay
-** @6		Set the terminal on non-canonical mode (aka raw mode)
+** @5-6		Changing control characters settings:
+** @5		Read returns every single byte
+** @6		No timeout so process every input without delay
+** @7		Set the terminal on non-canonical mode (aka raw mode)
 */
 
 void	turn_off_canonical_mode(t_termcaps *termcaps)
