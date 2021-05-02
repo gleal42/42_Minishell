@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 18:55:52 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/02 11:04:10 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/02 19:58:43 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int	has_capabilities(t_termcaps *termcaps)
 ** @param:	- [t_termcaps *] struct with all variables to set termcaps
 ** Line-by-line comments:
 ** @1		We get the current terminal config to modify it and then set it
-** @2-3		The values of c_lflag represent the local modes settings. To turn on
+** @2-5		The values of c_lflag represent the local modes settings. To turn on
 **			or off a setting, we use masks and bitwise manipulation:
 **			- The complement operator (~) inverts all the bits
 **			- The AND operator (&) compares 2 bits. Sets bit to 1 only if both
@@ -112,10 +112,12 @@ int	has_capabilities(t_termcaps *termcaps)
 ** @3		Disable local echo so that pressing up/down arrow doesn't output
 **			^[[A and ^[[B
 ** @4		Turn off SIGINT (Ctrl-C) and SIGTSTP (Ctrl-Z) signals
-** @5-6		Changing control characters settings:
-** @5		Read returns every single byte
-** @6		No timeout so process every input without delay
-** @7		Set the terminal on non-canonical mode (aka raw mode)
+** @5		Disable Ctrl-V
+** @6		Modify input flag: disable Ctrl-S and Ctrl-Q
+** @7-8		Changing control characters settings:
+** @7		Read returns every single byte
+** @8		No timeout so process every input without delay
+** @9		Set the terminal on non-canonical mode (aka raw mode)
 */
 
 void	turn_off_canonical_mode(t_termcaps *termcaps)
@@ -124,6 +126,8 @@ void	turn_off_canonical_mode(t_termcaps *termcaps)
 	termcaps->new_term.c_lflag &= ~ICANON;
 	termcaps->new_term.c_lflag &= ~ECHO;
 	termcaps->new_term.c_lflag &= ~ISIG;
+	termcaps->new_term.c_lflag &= ~IEXTEN;
+	termcaps->new_term.c_iflag &= ~IXON;
 	termcaps->new_term.c_cc[VMIN] = 1;
 	termcaps->new_term.c_cc[VTIME] = 0;
 	if (tcsetattr(STDIN_FILENO, TCSANOW, &termcaps->new_term) == -1)

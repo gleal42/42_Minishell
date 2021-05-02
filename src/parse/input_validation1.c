@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input_validation.c                                 :+:      :+:    :+:   */
+/*   input_validation1.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 11:06:43 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/02 15:53:06 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/02 20:34:23 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,26 +21,33 @@
 int	is_input_valid(const char *input)
 {
 	int		check;
-	char	*error_message;
+	char	error_message[100];
 
-	error_message = 0;
+	check = 1;
 	if (*input == '\0' || ft_strisspace((char *)input))
 		check = 0;
-	else if (has_quotes_open(input, &error_message))
+	else if (has_quotes_open(input, error_message)
+		|| has_char_at_beginning(input, '|', error_message)
+		|| has_char_at_beginning(input, ';', error_message)
+		|| has_char_at_end(input, '|', error_message)
+		|| has_char_at_end(input, '<', error_message)
+		|| has_char_at_end(input, '>', error_message)
+		|| has_char_at_end(input, '&', error_message)
+		|| has_non_supported(input, "<<", error_message)
+		|| has_non_supported(input, "*", error_message)
+		|| has_non_supported(input, "&&", error_message)
+		|| has_non_supported(input, "||", error_message)
+		|| has_str(input, ";;", error_message)
+		|| has_str(input, ";|", error_message)
+		|| has_str(input, ";&", error_message)
+		|| has_str(input, ";;", error_message)
+		|| has_str(input, "||", error_message)
+		|| has_str(input, ">>>", error_message)
+		|| has_spaces_between_char(input, '>', error_message))
 	{
-		write_gen_err_message("syntax error (open quotes)");
 		check = 0;
-	}
-	else if (has_pipe_at_end(input, &error_message))
-	{
-		write_gen_err_message("syntax error near unexpected "
-							"token `|'");
-		check = 0;
-	}
-	else
-		check = 1;
-	if (!check)
 		write_gen_err_message(error_message);
+	}
 	return (check);
 }
 
@@ -66,7 +73,7 @@ int	is_input_valid(const char *input)
 ** @12-13	Exact same logic as for the double quotes
 */
 
-int	has_quotes_open(const char *input, char **error_message)
+int	has_quotes_open(const char *input, char *error_message)
 {
 	int	check;
 	int	has_double_quotes_open;
@@ -84,14 +91,17 @@ int	has_quotes_open(const char *input, char **error_message)
 		input++;
 	}
 	if (has_double_quotes_open || has_single_quotes_open)
+	{
 		check = 1;
+		ft_strcpy(error_message, "syntax error: open quotes");
+	}
 	else
 		check = 0;
 	return (check);
 }
 
 /*
-** Checks if there is a pipe at the end of input
+** Checks if there is a specific character at beginning of input
 ** @param:	- [const char *] the unchanged line entered in stdin
 ** @return:	[int] true or false
 ** Line-by-line comments:
@@ -99,21 +109,70 @@ int	has_quotes_open(const char *input, char **error_message)
 **			not changing the initial input
 */
 
-int	has_pipe_at_end(const char *input, char **error_message)
+int	has_char_at_beginning(const char *input, char c, char *error_message)
+{
+	int		check;
+	char	*cpy;
+
+	cpy = ft_strtrim(input, " \t\n\v\f\r");
+	if (!cpy)
+		ft_exit(EXIT_FAILURE);
+	if (cpy[0] == c)
+	{
+		check = 1;
+		ft_strcpy(error_message, "syntax error near unexpected token `");
+		ft_strncat(error_message, &c, 1);
+		ft_strncat(error_message, "'", 2);
+	}
+	else
+		check = 0;
+	free(cpy);
+	return (check);
+}
+
+/*
+** Checks if there is a specific character at end of input
+** @param:	- [const char *] the unchanged line entered in stdin
+** @return:	[int] true or false
+** Line-by-line comments:
+** @5-8		We need to trim white space from the input while
+**			not changing the initial input
+*/
+
+int	has_char_at_end(const char *input, char c, char *error_message)
 {
 	int		check;
 	char	*cpy;
 	int		len;
 
-	cpy = ft_strdup(input);
+	cpy = ft_strtrim(input, " \t\n\v\f\r");
 	if (!cpy)
 		ft_exit(EXIT_FAILURE);
-	cpy = ft_strtrim(cpy, " \t");
 	len = ft_strlen(cpy);
-	if (cpy[len - 1] == '|')
+	if (cpy[len - 1] == c)
+	{
 		check = 1;
+		ft_strcpy(error_message, "syntax error near unexpected token `");
+		ft_strncat(error_message, &c, 1);
+		ft_strncat(error_message, "'", 2);
+	}
 	else
 		check = 0;
 	free(cpy);
+	return (check);
+}
+
+int	has_non_supported(const char *input, char *test, char *error_message)
+{
+	int	check;
+
+	if (ft_strstr_quotes((char *)input, test) != 0)
+	{
+		check = 1;
+		ft_strcpy(error_message, test);
+		ft_strcat(error_message, " not supported");
+	}
+	else
+		check = 0;
 	return (check);
 }
