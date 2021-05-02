@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 11:06:43 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/30 11:11:47 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/02 15:53:06 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,18 @@
 
 int	is_input_valid(const char *input)
 {
-	int	check;
+	int		check;
+	char	*error_message;
 
+	error_message = 0;
 	if (*input == '\0' || ft_strisspace((char *)input))
 		check = 0;
-	else if (has_quotes_open(input))
+	else if (has_quotes_open(input, &error_message))
 	{
 		write_gen_err_message("syntax error (open quotes)");
 		check = 0;
 	}
-	else if (has_pipe_at_end(input))
+	else if (has_pipe_at_end(input, &error_message))
 	{
 		write_gen_err_message("syntax error near unexpected "
 							"token `|'");
@@ -37,6 +39,8 @@ int	is_input_valid(const char *input)
 	}
 	else
 		check = 1;
+	if (!check)
+		write_gen_err_message(error_message);
 	return (check);
 }
 
@@ -62,7 +66,7 @@ int	is_input_valid(const char *input)
 ** @12-13	Exact same logic as for the double quotes
 */
 
-int	has_quotes_open(const char *input)
+int	has_quotes_open(const char *input, char **error_message)
 {
 	int	check;
 	int	has_double_quotes_open;
@@ -95,7 +99,7 @@ int	has_quotes_open(const char *input)
 **			not changing the initial input
 */
 
-int	has_pipe_at_end(const char *input)
+int	has_pipe_at_end(const char *input, char **error_message)
 {
 	int		check;
 	char	*cpy;
