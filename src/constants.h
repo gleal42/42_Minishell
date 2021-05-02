@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:48:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/01 16:43:55 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/02 09:43:52 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,8 @@
 # define YELLOW_BOLD "\033[1;33m"
 # define CYAN_BOLD "\033[1;36m"
 # define RESET "\033[0m"
+
+# define CTRL_D 4
+# define CTRL_C 3
 
 #endif

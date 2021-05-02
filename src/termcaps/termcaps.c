@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 18:55:52 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/01 16:52:42 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/02 10:42:53 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	init_termcaps(t_termcaps *termcaps)
 		termcaps->buffer = ft_calloc(2048, 1);
 		if (!termcaps->buffer)
 			ft_exit(EXIT_FAILURE);
+		free(termcaps->buffer);
 	}
 	term_type = ft_getenv("TERM");
 	if (!term_type)
@@ -110,6 +111,7 @@ int	has_capabilities(t_termcaps *termcaps)
 ** @2		Turn off canonical processing
 ** @3		Disable local echo so that pressing up/down arrow doesn't output
 **			^[[A and ^[[B
+** @4		Turn off SIGINT (Ctrl-C) and SIGTSTP (Ctrl-Z) signals
 ** @4-5		Changing control characters settings:
 ** @4		Read returns every single byte
 ** @5		No timeout so process every input without delay
@@ -121,6 +123,7 @@ void	turn_off_canonical_mode(t_termcaps *termcaps)
 	termcaps->new_term = termcaps->old_term;
 	termcaps->new_term.c_lflag &= ~ICANON;
 	termcaps->new_term.c_lflag &= ~ECHO;
+	termcaps->new_term.c_lflag &= ~ISIG;
 	termcaps->new_term.c_cc[VMIN] = 1;
 	termcaps->new_term.c_cc[VTIME] = 0;
 	if (tcsetattr(STDIN_FILENO, TCSANOW, &termcaps->new_term) == -1)
