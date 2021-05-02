@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 15:17:53 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/01 21:58:55 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/02 23:57:12 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*get_var_name(char *str)
 	int		i;
 	char	*var;
 
-	i = 0;
+	i = 1;
 	while (str[i] && !is_delimiter(str[i]) && str[i] != '$')
 		i++;
 	var = ft_substr(str, 0, i);
@@ -64,64 +64,92 @@ char	*get_var_name(char *str)
 }
 
 /*
-** Auxiliary function to replace var with value (separate the token in 3 parts
-1 - before the dollar sign
-2 - value
-3 - after dollar sign and environment variable
-** @param:	- [char *] pointer to token string
-**			- [int *] pointer to token iterator to ensure 
-			multiple substitutions
-			- [char *]environment variable value
-			- [int]string length of environment variable string
+** Auxiliary function to find the iterator in which a particular substring
+exist in a string (alternative to strnstr)
+** @param:	- [char *] string to be searched
+**			- [char *] substring to be found
+** @return:	[int] substring position as iterator (negative value if non_existent)
+*/
+
+int	ft_strnstr_iterator(char *haystack, char *needle, size_t len)
+{
+	size_t	little_len;
+	int		iterator;
+
+	iterator = 0;
+	little_len = ft_strlen(needle);
+	if (little_len == 0)
+		return (-1);
+	if (len == 0)
+		return (-1);
+	while (haystack[iterator] && (int)(little_len <= len - iterator))
+	{
+		if (!ft_strncmp(&haystack[iterator], (char *)needle, little_len))
+			return (iterator);
+		iterator++;
+	}
+	return (-1);
+}
+
+/*
+** Replaces substring
+** @param:	- [char *] string before substitution
+**			- [char *] substring that will be replaced
+**			- [char *] substring that will replace
+**			- [char *] iterator that indicated place in original string where
+substitution should take place
+** @return:	[char *] string after substitution
+*/
+
+char	*replace_midstring(char *original, char *old_substr,
+char *new_substr, int replace_i)
+{
+	char	*final;
+	int		len;
+	int		i;
+
+	i = 0;
+	len = ft_strlen(original) - ft_strlen(old_substr) + ft_strlen(new_substr);
+	final = malloc(sizeof(char) * len + 1);
+	if (final == 0)
+		ft_exit(EXIT_FAILURE);
+	while (*original)
+	{
+		if (i == replace_i)
+		{
+			while (*new_substr)
+				final[i++] = *(new_substr++);
+			original += ft_strlen(old_substr);
+		}
+		else
+			final[i++] = *(original++);
+	}
+	final[i] = '\0';
+	return (final);
+}
+
+/*
+** Auxiliary function in which we join the home path with the rest of the string
+**	example ~/Desktop is now Users/gleal/Desktop
+** @param:	- [char **] pointer of function to be updated
+**				(pointer of pointer to be freed)
+**			- [char **] pointer of function to be updated
+**				(pointer of pointer to be freed)
 ** @return:	[type] return_value
 ** Line-by-line comments:
 ** @line-line	comment
 */
 
-void	update_token(char **token_before, int *start, char *value, int var_len)
+void	tilde_join(char **str, char **home_path)
 {
 	char	*temp;
 
-	temp = update_token_before(*token_before, start, value);
-	temp = update_token_after(*token_before, start, &temp, var_len);
-	free(*token_before);
-	*token_before = 0;
-	*token_before = temp;
-	(*start) += ft_strlen(value) - 1;
-}
-
-char	*update_token_before(char *token_before, int *start, char *value)
-{
-	char	*before;
-	char	*temp;
-
-	before = ft_substr(token_before, 0, *start);
-	if (!before)
-		ft_exit(EXIT_FAILURE);
-	temp = ft_strjoin(before, value);
+	temp = ft_strjoin(*home_path, &str[0][1]);
 	if (!temp)
 		ft_exit(EXIT_FAILURE);
-	free(before);
-	before = 0;
-	return (temp);
-}
-
-char	*update_token_after(char *token_before, int *start,
-						char **temp, int var_len)
-{
-	char	*final;
-	char	*after;
-
-	after = ft_substr(token_before, (*start) + var_len + 1,
-			ft_strlen(token_before) - ((*start) + var_len));
-	if (!after)
-		ft_exit(EXIT_FAILURE);
-	final = ft_strjoin(*temp, after);
-	if (!final)
-		ft_exit(EXIT_FAILURE);
-	free(after);
-	free(*temp);
-	after = 0;
-	*temp = 0;
-	return (final);
+	free(*home_path);
+	*home_path = 0;
+	free(*str);
+	*str = 0;
+	*str = temp;
 }

@@ -14,25 +14,29 @@
 # define BUILTINS_H
 
 # include "main.h"
+# include "environment.h"
 
 /*
 ** File ft_echo.c
 */
 
+int		ft_echo(t_list *tokens);
 int		has_repeated_char_in_str(char repeat_chr, char *str,
 			unsigned int start);
-/*
-** File environment_utils.c
-*/
-
-int		is_env_var(char *potential_var, t_list *env);
 
 /*
 ** File ft_cd.c
 */
 
+int		ft_cd(t_list *tokens, t_list **env);
 int		change_dir_home(char	*cur_pwd, t_list **env);
 int		change_to_old_dir(char	*cur_pwd, t_list **env);
+
+/*
+** File ft_env.c
+*/
+
+int		ft_env(t_list *env);
 
 /*
 ** File builtins_utils.c.c

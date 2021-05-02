@@ -12,7 +12,6 @@
 
 #include "environment.h"
 
-
 /*
 ** Replaces the environment variables with the respective values.
 ** @param:	- [t_list *]Linked List with struct pointer;
@@ -21,7 +20,7 @@
 ** @11-12	When using single quotes there is no env var substitution;
 */
 
-void	env_vars(t_list	*tokens)
+void	env_vars(t_list	*tokens, int last_status)
 {
 	char	**str;
 	char	delim;
@@ -34,7 +33,10 @@ void	env_vars(t_list	*tokens)
 		str[0][1] == '/'))
 			replace_tilde_with_home(str);
 		if (delim != '\'')
+		{
 			replace_vars_with_values(str);
+			replace_special_params(str, last_status);
+		}
 		tokens = tokens->next;
 	}
 }
@@ -53,20 +55,25 @@ void	replace_vars_with_values(char **str)
 	int		i;
 	char	*var;
 	char	*value;
+	char	*final;
 
 	i = 0;
 	while (str[0][i])
 	{
 		if (str[0][i] == '$')
 		{
-			var = get_var_name(&str[0][i + 1]);
-			value = ft_getenv(var);
+			var = get_var_name(&str[0][i]);
+			value = ft_getenv(var + 1);
 			if (value)
-				update_token(str, &i, value, ft_strlen(var));
+			{
+				final = replace_midstring(*str, var, value, i);
+				free(value);
+				free(*str);
+				value = 0;
+				*str = final;
+			}
 			free(var);
-			free(value);
 			var = 0;
-			value = 0;
 		}
 		i++;
 	}
@@ -91,9 +98,38 @@ void	replace_tilde_with_home(char **str)
 	if (!str[0][1])
 	{
 		free(*str);
-		*str = 0;
 		*str = home_path;
 	}
 	else
 		tilde_join(str, &home_path);
+}
+
+/*
+** Used at the moment simply to replace $? for the exit status of the previous
+function
+** @param:	- [char **] pointer to token string in linked list
+**			- [int] exit status from last function executed
+** Line-by-line comments:
+** @5	function that finds the place where we will replace the substring
+(iterator as opposed to string pointer);
+*/
+
+void	replace_special_params(char **str, int last_status)
+{
+	int		replace_spot;
+	char	*status_string;
+	char	*final;
+
+	replace_spot = ft_strnstr_iterator(*str, "$?", ft_strlen(*str));
+	if (replace_spot != -1)
+	{
+		status_string = ft_itoa(last_status);
+		if (status_string == 0)
+			return (ft_exit(EXIT_FAILURE));
+		final = replace_midstring(*str, "$?", status_string, replace_spot);
+		free(status_string);
+		status_string = 0;
+		free(*str);
+		*str = final;
+	}
 }

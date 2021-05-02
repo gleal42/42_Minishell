@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:42:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/01 19:42:28 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/03 00:26:49 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,16 @@
 
 int	execute_ast(t_ast *ast, t_list **env)
 {
-	t_list	*cmd_table;
+	t_list		*cmd_table;
+	static int	status;
 
 	cmd_table = ast->cmd_tables;
 	while (cmd_table)
 	{
-		execute_cmd_table((t_cmd_table *)cmd_table->data, env);
+		status = execute_cmd_table((t_cmd_table *)cmd_table->data, env, status);
 		cmd_table = cmd_table->next;
 	}
-	return (0);
+	return (status);
 }
 
 /*
@@ -58,11 +59,13 @@ int	execute_ast(t_ast *ast, t_list **env)
 **			multiple arguments)
 */
 
-int	execute_cmd_table(t_cmd_table *cmd_table, t_list **env)
+int	execute_cmd_table(t_cmd_table *cmd_table, t_list **env, int	last_status)
 {
 	t_list	*cmds;
 	int		pipe;
+	int		status;
 
+	status = last_status;
 	cmds = cmd_table->cmds;
 	while (cmds)
 	{
@@ -70,10 +73,10 @@ int	execute_cmd_table(t_cmd_table *cmd_table, t_list **env)
 			pipe = 0;
 		else
 			pipe = 1;
-		execute_cmd((t_cmd *)cmds->data, env, pipe);
+		status = execute_cmd((t_cmd *)cmds->data, env, pipe, status);
 		cmds = cmds->next;
 	}
-	return (0);
+	return (status);
 }
 
 /*
@@ -89,7 +92,7 @@ int	execute_cmd_table(t_cmd_table *cmd_table, t_list **env)
 ** @12		executes recreated functions (echo, cd, pwd, export, unset, env, exit);
 */
 
-int	execute_cmd(t_cmd *cmd, t_list **env, int pipe)
+int	execute_cmd(t_cmd *cmd, t_list **env, int pipe, int last_status)
 {
 	t_list	*tokens;
 	char	*first;
@@ -97,11 +100,12 @@ int	execute_cmd(t_cmd *cmd, t_list **env, int pipe)
 	tokens = cmd->tokens;
 	if (tokens == 0)
 		return (0);
-	env_vars(tokens);
+	env_vars(tokens, last_status);
 	first = ((t_token *)tokens->data)->str;
 	if (ft_strcmp(first, "exit") == 0 && pipe == 0)
 		ft_exit(0);
-	else if (is_builtin(first))
-		execute_builtin(tokens, env);
-	return (0);
+	if (is_builtin(first))
+		return (execute_builtin(tokens, env));
+	else
+		return (1);
 }

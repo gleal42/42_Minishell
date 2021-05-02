@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 20:16:20 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/01 22:53:56 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/03 00:15:53 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*
 ** ft_echo (prints args to standard output separated by spaces)
 ** @param:	- [t_list *] arguments/tokens
-** @return:	[int] exit_status (still needs to be implemented)
+** @return:	[int] exit_status (always success for now)
 ** Line-by-line comments:
 ** @12	there can be multiple flag arguments, but as soon as we get a non
 flag argument then flag time is over.

@@ -6,19 +6,19 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/26 14:19:39 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/01 22:54:57 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/03 00:15:27 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
 /*
-** prints environment variable linked list one by one
-** @param:	- [t_list *] environment variable linked list
-** @return:	[int] exit status (still needs to be implemented)
+** prints environment variable string linked lists one by one
+** @param:	- [t_list *] environment variable string linked list
+** @return:	[int] exit status 
 */
 
-int		ft_env(t_list *env)
+int	ft_env(t_list *env)
 {
 	int		i;
 

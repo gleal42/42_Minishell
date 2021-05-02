@@ -25,18 +25,12 @@ current working directory;
 
 int	update_directories(char *old_dir, t_list **env)
 {
-	char	new_dir_temp[1024];
-	char	*new_dir;
+	char	new_dir[1024];
 
-	if (getcwd(new_dir_temp, 1024) == NULL)
-		return (-1);
-	new_dir = ft_strdup(new_dir_temp);
-	if (!new_dir)
-		ft_exit(EXIT_FAILURE);
+	if (getcwd(new_dir, 1024) == NULL)
+		return (1);
 	update_environment_var("PWD", new_dir, *env);
 	update_environment_var("OLDPWD", old_dir, *env);
-	free(new_dir);
-	new_dir = 0;
 	return (0);
 }
 
@@ -65,7 +59,7 @@ int	update_environment_var(char *var, char *new_value, t_list *env)
 		if (!var[i] && cur_env[i] == '=')
 		{
 			env->data = replace_env_value(&cur_env, var, new_value);
-			return (1);
+			return (0);
 		}
 		env = env->next;
 	}

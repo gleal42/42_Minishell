@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/26 14:59:48 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/01 22:49:49 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/03 00:22:52 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ then based on the arguments it wll change to
 different places
 ** @param:	- [t_list *] tokens in current command (different arguments)
 **			- [t_list **] environment variable linked list
-** @return:	[int] exit status(still need to confirm)
+** @return:	[int] exit status(1 if unsuccessful)
 ** Line-by-line comments:
 ** @5			get current directory for OLDPWD	
 ** @10-14		change to home in case of no args
@@ -30,26 +30,24 @@ different places
 int	ft_cd(t_list *tokens, t_list **env)
 {
 	char	*arg;
-	char	pwd_temp[1024];
-	char	*pwd;
+	char	pwd[1024];
+	int		status;
 
-	if (getcwd(pwd_temp, 1024) == NULL)
-		return (0);
-	pwd = ft_strdup(pwd_temp);
-	if (!pwd)
-		ft_exit(EXIT_FAILURE);
+	if (getcwd(pwd, 1024) == NULL)
+		return (1);
 	if (tokens == 0)
+		status = change_dir_home(pwd, env);
+	else
 	{
-		change_dir_home(pwd, env);
-		return (0);
+		arg = ((t_token *)tokens->data)->str;
+		if (arg[0] == '-' && arg[1] == '\0')
+			status = change_to_old_dir(pwd, env);
+		else if (chdir(arg) == 0)
+			status = update_directories(pwd, env);
+		else
+			status = 1;
 	}
-	arg = ((t_token *)tokens->data)->str;
-	if (arg[0] == '-' && arg[1] == '\0')
-		change_to_old_dir(pwd, env);
-	else if (chdir(arg) == 0)
-		update_directories(pwd, env);
-	free(pwd);
-	return (0);
+	return (status);
 }
 
 /*
@@ -64,14 +62,17 @@ int	ft_cd(t_list *tokens, t_list **env)
 
 int	change_dir_home(char *cur_pwd, t_list **env)
 {
+	int		status;
 	char	*home;
 
 	home = ft_getenv("HOME");
 	if (chdir(home) == 0)
-		update_directories(cur_pwd, env);
+		status = update_directories(cur_pwd, env);
+	else
+		status = 1;
 	free(home);
 	home = 0;
-	return (0);
+	return (status);
 }
 
 /*
@@ -87,16 +88,22 @@ int	change_dir_home(char *cur_pwd, t_list **env)
 int	change_to_old_dir(char	*cur_pwd, t_list **env)
 {
 	char	*old_dir;
+	int		status;
 
 	old_dir = ft_getenv("OLDPWD");
 	if (!old_dir)
 	{
 		printf("OLDPWD not set\n");
-		return (1);
+		status = 1;
 	}
-	if (chdir(old_dir) == 0)
-		update_directories(cur_pwd, env);
-	free(old_dir);
-	old_dir = 0;
-	return (0);
+	else
+	{
+		if (chdir(old_dir) == 0)
+			status = update_directories(cur_pwd, env);
+		else
+			status = 1;
+		free(old_dir);
+		old_dir = 0;
+	}
+	return (status);
 }
