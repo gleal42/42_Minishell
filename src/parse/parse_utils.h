@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 10:27:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/29 16:00:43 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/03 10:40:35 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,5 +18,7 @@
 void	skip_spaces(const char *input, int *curr_pos);
 int		is_delimiter(char c);
 char	get_delimiter(const char *input, int *curr_pos);
+void	skip_quotes(char *str, int *i);
+char	*ft_strstr_quotes(char *str, char *to_find);
 
 #endif

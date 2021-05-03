@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 11:06:35 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/02 20:33:05 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/03 10:40:37 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,18 @@
 */
 
 int		is_input_valid(const char *input);
+int		is_input_valid_unpected_token(const char *input, char *err_message);
+int		is_input_valid_not_supported(const char *input, char *err_message);
 int		has_quotes_open(const char *input, char *error_message);
 int		has_char_at_beginning(const char *input, char c, char *error_message);
-int		has_char_at_end(const char *input, char c, char *error_message);
-int		has_non_supported(const char *input, char *test, char *error_message);
 
 /*
 ** File input_validation2.c
 */
 
+int		has_char_at_end(const char *input, char c, char *error_message);
+int		has_non_supported(const char *input, char *test, char *error_message);
 int		has_str(const char *input, char *test, char *error_message);
 int		has_spaces_between_char(const char *input, char c, char *error_message);
-char	*ft_strstr_quotes(char *str, char *to_find);
 
 #endif

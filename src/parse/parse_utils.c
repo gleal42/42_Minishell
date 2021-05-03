@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dds <dda-silv@student.42lisboa.com>        +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 10:26:41 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/30 10:45:20 by dds              ###   ########.fr       */
+/*   Updated: 2021/05/03 10:42:41 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,41 @@ char	get_delimiter(const char *input, int *curr_pos)
 	else
 		delimiter = ' ';
 	return (delimiter);
+}
+
+void	skip_quotes(char *str, int *i)
+{
+	int		has_double_quotes_open;
+	int		has_single_quotes_open;
+
+	has_double_quotes_open = 0;
+	has_single_quotes_open = 0;
+	while (str[*i])
+	{
+		if (str[*i] == '"' && has_single_quotes_open == 0)
+			has_double_quotes_open = !has_double_quotes_open;
+		else if (str[*i] == '\'' && has_double_quotes_open == 0)
+			has_single_quotes_open = !has_single_quotes_open;
+		else if (!has_double_quotes_open && !has_single_quotes_open)
+			break ;
+		(*i)++;
+	}
+}
+
+char	*ft_strstr_quotes(char *str, char *to_find)
+{
+	int	i;
+
+	i = 0;
+	if (!(*to_find))
+		return (str);
+	while (str[i])
+	{
+		if (str[i] == '"' || str[i] == '\'')
+			skip_quotes(str, &i);
+		if (!ft_strncmp(&str[i], to_find, ft_strlen(to_find)))
+			return (&str[i]);
+		i++;
+	}
+	return (0);
 }
