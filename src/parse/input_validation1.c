@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 11:06:43 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/03 10:39:53 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/03 10:49:54 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 ** Checks if input entered in cmd line is valid while displaying error messsage
 ** @param:	- [const char *] the unchanged line entered in stdin
 ** @return:	[int] true or false
+** @10		
 */
 
 int	is_input_valid(const char *input)
@@ -29,7 +30,7 @@ int	is_input_valid(const char *input)
 		|| !is_input_valid_not_supported(input, err_message))
 	{
 		check = 0;
-		errno = 2;
+		errno = ENOENT;
 		write_gen_err_message(err_message);
 	}
 	else
