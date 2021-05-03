@@ -39,6 +39,19 @@ int		change_to_old_dir(char	*cur_pwd, t_list **env);
 int		ft_env(t_list *env);
 
 /*
+** File ft_pwd.c
+*/
+
+int		ft_pwd(void);
+
+/*
+** File ft_export.c
+*/
+
+int		ft_export(t_list *tokens, t_list **env);
+int		print_all_exported_vars(t_list *env);
+
+/*
 ** File builtins_utils.c.c
 */
 
