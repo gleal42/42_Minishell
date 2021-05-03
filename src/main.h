@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 16:48:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/03 15:49:35 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/03 17:40:27 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,18 @@
 
 # include "structs.h"
 # include "constants.h"
-# include "free_memory.h"
 # include "utils.h"
-# include "utils2.h"
 
-# include "shell_subsystems.h"
+# include "free_memory.h"
+# include "ft_exit.h"
 
 # include "termcaps.h"
 
 # include "get_input.h"
 # include "parse_utils.h"
 # include "input_validation.h"
+
+# include "environment.h"
 
 /*
 ** TO DELETE WHEN PROJECT FINISHED
@@ -53,8 +54,7 @@
 
 t_msh	g_msh;
 
-void	write_prompt(void);
-char	*get_input(t_dlist *input_history, t_termcaps *termcaps);
+void	init_minishell(t_msh *msh, char **envp);
 t_ast	*get_ast(const char *input);
 int		execute_ast(t_ast **ast, t_list **env);
 

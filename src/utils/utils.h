@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 10:38:39 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/28 12:46:31 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/03 17:28:37 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,5 +17,6 @@
 
 void	write_prompt(void);
 void	write_gen_err_message(char *err_message);
+char	**convert_list_to_arr(t_list **lst);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 20:16:20 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/03 00:15:53 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/03 16:13:56 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,17 @@ flag argument then flag time is over.
 
 int	ft_echo(t_list *tokens)
 {
-	int		lb;
+	int		line_break;
 	int		flag_time;
 	char	*arg;
-	char	delim;
 
 	flag_time = 1;
-	lb = 1;
+	line_break = 1;
 	while (tokens)
 	{
 		arg = ((t_token *)tokens->data)->str;
-		delim = ((t_token *)tokens->data)->delimiter;
 		if (flag_time && arg[0] == '-' && has_repeated_char_in_str('n', arg, 1))
-			lb = 0;
+			line_break = 0;
 		else
 		{
 			if (!flag_time)
@@ -45,7 +43,7 @@ int	ft_echo(t_list *tokens)
 		}
 		tokens = tokens->next;
 	}
-	if (lb)
+	if (line_break)
 		ft_putchar_fd('\n', 1);
 	return (0);
 }

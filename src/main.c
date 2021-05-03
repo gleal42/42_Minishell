@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 17:33:17 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/03 15:52:34 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/03 17:41:46 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,26 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		turn_on_canonical_mode(&g_msh.termcaps);
 		g_msh.ast = get_ast((const char *)input->data);
-		//print_ast(g_msh.ast);
+		// print_ast(g_msh.ast);
 		execute_ast(&g_msh.ast, &g_msh.dup_envp);
 		free_ast(g_msh.ast);
 	}
 	return (0);
+}
+
+/*
+** Set a few things the program needs to run
+** @param:	- [t_msh *] main struct of the program
+**			- [char **] environment pointers that we need to duplicate
+** Line-by-line comments:
+** @1-2		Makes sure that the terminal is linked to the STDIN
+*/
+
+void	init_minishell(t_msh *msh, char **envp)
+{
+	if (!isatty(STDIN_FILENO))
+		ft_exit(EXIT_FAILURE);
+	ft_bzero(msh, sizeof(msh));
+	duplicate_env(&msh->dup_envp, envp);
+	init_termcaps(&msh->termcaps);
 }

@@ -29,8 +29,8 @@ void	env_vars(t_list	*tokens, int last_status)
 	{
 		str = &((t_token *)tokens->data)->str;
 		delim = ((t_token *)tokens->data)->delimiter;
-		if (delim == ' ' && str[0][0] == '~' && (str[0][1] == '\0' ||
-		str[0][1] == '/'))
+		if (delim == ' ' && str[0][0] == '~'
+			&& (str[0][1] == '\0' || str[0][1] == '/'))
 			replace_tilde_with_home(str);
 		if (delim != '\'')
 		{
