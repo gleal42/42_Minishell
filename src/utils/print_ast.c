@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 10:40:58 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/28 12:25:42 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/29 16:04:11 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	print_ast(t_ast *ast)
 	t_list	*cmd_table;
 
 	printf("print_ast:\n");
-	printf("raw_input: \"%s\"\n", ast->raw_input);
 	printf("nb_cmd_tables: %d\n", ft_lstsize(ast->cmd_tables));
 	cmd_table = ast->cmd_tables;
 	while (cmd_table)

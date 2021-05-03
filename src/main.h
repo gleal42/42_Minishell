@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 16:48:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/28 16:37:04 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/03 15:49:35 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,20 @@
 # include <termios.h>
 
 # include "../libft/src/libft.h"
+
 # include "structs.h"
 # include "constants.h"
+# include "free_memory.h"
 # include "utils.h"
 # include "utils2.h"
+
 # include "shell_subsystems.h"
 
-t_list	*dup_env(char **envp);
+# include "termcaps.h"
+
+# include "get_input.h"
+# include "parse_utils.h"
+# include "input_validation.h"
 
 /*
 ** TO DELETE WHEN PROJECT FINISHED
@@ -47,7 +54,8 @@ t_list	*dup_env(char **envp);
 t_msh	g_msh;
 
 void	write_prompt(void);
-t_ast	*get_ast(void);
-int		execute_ast(t_ast *ast, t_list **env);
+char	*get_input(t_dlist *input_history, t_termcaps *termcaps);
+t_ast	*get_ast(const char *input);
+int		execute_ast(t_ast **ast, t_list **env);
 
 #endif

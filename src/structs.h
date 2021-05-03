@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/28 12:49:54 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/01 17:16:06 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,9 @@
 
 /*
 ** An Abstract Syntax Tree (aka AST) that gathers one or more command tables
-** In case the raw_input is invalid, the raw input stays as first entered and
+** In case the input is invalid, the raw input stays as first entered and
 ** all the other fields stay NULL / 0 and execute_cmd is not called
 ** @fields:
-** [const char *raw_input] string entered by user in stdin
 ** [t_list *cmd_tables] linked list with command tables (t_cmd_table *) as nodes
 ** [int *return_value] pointer to the return_value of the last cmd_table.
 **					   The pointer is set in get_cmd_table()
@@ -26,9 +25,8 @@
 
 typedef struct s_ast
 {
-	const char	*raw_input;
-	t_list		*cmd_tables;
-	int			*return_value;
+	t_list			*cmd_tables;
+	int				*return_value;
 }				t_ast;
 
 /*
@@ -47,9 +45,9 @@ typedef struct s_ast
 
 typedef struct s_cmd_table
 {
-	t_list		*cmds;
-	char		delimiter[2];
-	int			return_value;
+	t_list			*cmds;
+	char			delimiter[2];
+	int				return_value;
 }				t_cmd_table;
 
 /*
@@ -103,21 +101,58 @@ typedef struct s_token
 
 typedef struct s_redir
 {
-	t_token		*direction;
-	char		type[2];
+	t_token			*direction;
+	char			type[2];
 }				t_redir;
+
+/*
+** Settings of the terminal and a few capabilties from the termcaps lib
+** @fields:
+** [struct termios old_term] default terminal settings (i.e. canonical mode).
+** This struct is set in the termios lib
+** [struct termios new_term] modified terminal settings (i.e. non-canonical
+** mode)
+** [char *buffer] the termcaps capabilities require a buffer to be passed to
+** various functions like tgetent or tgetstr
+** [char *keys_on] set keypad functionalities
+** [char *keys_off] turn off keypad functionalities. Required at end of program
+** [char *up_arrow] value that the terminal will return when pressing up arrow
+** [char *down_arrow] value that the terminal will return when pressing down
+** arrow
+** [char *backspace] value that the terminal will return when pressing backspace
+** [char *del_line] capability that allows to delete the content of the line
+** where the cursor currently is positioned
+*/
+
+typedef struct s_termcaps
+{
+	struct termios	old_term;	
+	struct termios	new_term;	
+	char			*buffer;
+	char			*keys_on;
+	char			*keys_off;
+	char			*up_arrow;
+	char			*down_arrow;
+	char			*backspace;
+	char			*del_line;
+}				t_termcaps;
 
 /*
 ** Global struct that carries all data used throughout the program
 ** @fields:
-** [t_dlist *] double linked list with each node representing an AST
+** [t_dlist *] double linked list with each node representing a previously
+** entered input
+** [t_ast *] struct with the abstract syntax tree
+** [t_termcaps] struct with the settings of the termical and a few capabilities
 ** [t_list *] the duplicate of environment variables. Each node is a string
 */
 
 typedef struct s_msh
 {
-	t_dlist		*cmd_history;
-	t_list		*dup_envp;
+	t_dlist			*input_history;
+	t_ast			*ast;
+	t_termcaps		termcaps;
+	t_list			*dup_envp;
 }				t_msh;
 
 #endif

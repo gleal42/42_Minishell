@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils2.h                                           :+:      :+:    :+:   */
+/*   free_memory1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/28 10:31:28 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/30 09:48:08 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/04/30 09:45:44 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/05/02 10:36:15 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS2_H
-# define UTILS2_H
+#include "free_memory.h"
 
-# include "main.h"
+/*
+** Frees the memory of base struct
+** @param:	- [t_msh] base struct of the program
+*/
 
-void	init_minishell(t_msh *msh, char **envp);
-void	ft_exit(int exit_code);
-void	duplicate_env(t_list **dup_envp, char **envp);
-char	*ft_getenv(char *key);
-
-#endif
+void	free_msh(t_msh *msh)
+{
+	ft_dlstclear(&msh->input_history, free);
+	ft_lstclear(&msh->dup_envp, free);
+}

@@ -1,23 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils2.h                                           :+:      :+:    :+:   */
+/*   free_memory.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/28 10:31:28 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/30 09:48:08 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/04/30 09:47:16 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/05/01 17:05:37 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS2_H
-# define UTILS2_H
+#ifndef FREE_MEMORY_H
+# define FREE_MEMORY_H
 
 # include "main.h"
 
-void	init_minishell(t_msh *msh, char **envp);
-void	ft_exit(int exit_code);
-void	duplicate_env(t_list **dup_envp, char **envp);
-char	*ft_getenv(char *key);
+/*
+** File free_memory1.c
+*/
+
+void	free_msh(t_msh *msh);
+
+/*
+** File free_memory2.c
+*/
+
+void	free_ast(t_ast *ast);
+void	free_cmd_table(void *cmd_table);
+void	free_cmd(void *cmd);
+void	free_redir(void *redir);
+void	free_token(void *token);
 
 #endif

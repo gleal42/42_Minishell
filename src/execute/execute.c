@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:42:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/03 00:26:49 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/03 15:49:05 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@
 **			and return value).
 */
 
-int	execute_ast(t_ast *ast, t_list **env)
+int	execute_ast(t_ast **ast, t_list **env)
 {
 	t_list		*cmd_table;
 	static int	status;
 
-	cmd_table = ast->cmd_tables;
+	cmd_table = (*ast)->cmd_tables;
 	while (cmd_table)
 	{
 		status = execute_cmd_table((t_cmd_table *)cmd_table->data, env, status);

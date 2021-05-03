@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 10:37:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/28 11:53:23 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/04/29 16:03:36 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 ** In this case, the AST is a list that has a cmd_table per node and each
 ** cmd_table has a list a simple command per node. Each simple command has a 
 ** list of tokens
-** @return:	[t_ast *] struct with raw_input, list of cmd_tables and a pointer
+** @return:	[t_ast *] struct with input, list of cmd_tables and a pointer
 **					  to a return value
 ** Line-by-line comments:
-** @8		For further use (history), we need to keep the raw_input unchanged
+** @8		For further use (history), we need to keep the input unchanged
 **			and stored in the struct
 ** @14		We pass down the reference of the curr_pos to keep track of the
 ** 			parsing executed by every subsequent function
@@ -30,7 +30,7 @@
 **			cmd_table. It makes assigning the value to $? easier
 */
 
-t_ast	*get_ast(void)
+t_ast	*get_ast(const char *input)
 {
 	t_ast	*ast;
 	t_list	*cmd_table;
@@ -39,13 +39,10 @@ t_ast	*get_ast(void)
 	ast = ft_calloc(1, sizeof(t_ast));
 	if (!ast)
 		ft_exit(EXIT_FAILURE);
-	ast->raw_input = get_raw_input();
-	if (!is_input_valid(ast->raw_input))
-		return (ast);
 	curr_pos = 0;
-	while (ast->raw_input[curr_pos])
+	while (input[curr_pos])
 	{
-		cmd_table = ft_lstnew((void *)get_cmd_table(ast->raw_input, &curr_pos));
+		cmd_table = ft_lstnew((void *)get_cmd_table(input, &curr_pos));
 		if (!cmd_table)
 			ft_exit(EXIT_FAILURE);
 		ft_lstadd_back(&ast->cmd_tables, cmd_table);
@@ -55,24 +52,9 @@ t_ast	*get_ast(void)
 }
 
 /*
-** Gets the characters entered in the command line by user. Multiline commands
-** aren't supported so we only call get_next_line once
-** @return:	[char *] line entered without any alterations nor checks
-*/
-
-char	*get_raw_input(void)
-{
-	char	*raw_input;
-
-	if (get_next_line(STDIN_FILENO, &raw_input) == -1)
-		ft_exit(EXIT_FAILURE);
-	return (raw_input);
-}
-
-/*
 ** Gets a command table, which is a series of simple commands to execute
 ** @param:	- [const char *] the unchanged line entered in stdin
-**			- [int *] the current parsing position within the raw_input  
+**			- [int *] the current parsing position within the input  
 ** @return:	[t_cmd_table *] struct with list of simple cmds, the delimiter that
 ** 						  seperates this cmd_table from the next and the
 **						  return value of this process
@@ -85,7 +67,7 @@ char	*get_raw_input(void)
 ** @15-20	If the delimiter is ';', the current cmd_table is finished
 */
 
-t_cmd_table	*get_cmd_table(const char *raw_input, int *curr_pos)
+t_cmd_table	*get_cmd_table(const char *input, int *curr_pos)
 {
 	t_cmd_table	*cmd_table;
 	t_list		*cmd;
@@ -93,15 +75,15 @@ t_cmd_table	*get_cmd_table(const char *raw_input, int *curr_pos)
 	cmd_table = ft_calloc(1, sizeof(t_cmd_table));
 	if (!cmd_table)
 		ft_exit(EXIT_FAILURE);
-	while (raw_input[*curr_pos])
+	while (input[*curr_pos])
 	{
-		cmd = ft_lstnew((void *)get_cmd(raw_input, curr_pos));
+		cmd = ft_lstnew((void *)get_cmd(input, curr_pos));
 		if (!cmd)
 			ft_exit(EXIT_FAILURE);
 		ft_lstadd_back(&cmd_table->cmds, cmd);
-		if (raw_input[*curr_pos] == '|')
+		if (input[*curr_pos] == '|')
 			(*curr_pos)++;
-		else if (raw_input[*curr_pos] == ';')
+		else if (input[*curr_pos] == ';')
 		{
 			*cmd_table->delimiter = ';';
 			(*curr_pos)++;
@@ -114,7 +96,7 @@ t_cmd_table	*get_cmd_table(const char *raw_input, int *curr_pos)
 /*
 ** Gets a simple command, which is a series of tokens
 ** @param:	- [const char *] the unchanged line entered in stdin
-**			- [int *] the current parsing position within the raw_input  
+**			- [int *] the current parsing position within the input  
 ** @return:	[t_cmd *] struct with an arr of tokens (i.e. strings) and a list
 **                    of redirection in order of entering
 ** Line-by-line comments:
@@ -125,7 +107,7 @@ t_cmd_table	*get_cmd_table(const char *raw_input, int *curr_pos)
 **			simple command if we find '<' or '>'
 */
 
-t_cmd	*get_cmd(const char *raw_input, int *curr_pos)
+t_cmd	*get_cmd(const char *input, int *curr_pos)
 {
 	t_cmd	*cmd;
 	t_list	*token;
@@ -133,17 +115,17 @@ t_cmd	*get_cmd(const char *raw_input, int *curr_pos)
 	cmd = ft_calloc(1, sizeof(t_cmd));
 	if (!cmd)
 		ft_exit(EXIT_FAILURE);
-	skip_spaces(raw_input, curr_pos);
-	while (raw_input[*curr_pos] && !is_delimiter(raw_input[*curr_pos]))
+	skip_spaces(input, curr_pos);
+	while (input[*curr_pos] && !is_delimiter(input[*curr_pos]))
 	{
-		token = ft_lstnew((void *)get_token(raw_input, curr_pos));
+		token = ft_lstnew((void *)get_token(input, curr_pos));
 		if (!token)
 			ft_exit(EXIT_FAILURE);
 		ft_lstadd_back(&cmd->tokens, token);
-		skip_spaces(raw_input, curr_pos);
+		skip_spaces(input, curr_pos);
 	}
-	if (raw_input[*curr_pos] == '>' || raw_input[*curr_pos] == '<')
-		cmd->redirs = get_redirs(raw_input, curr_pos);
+	if (input[*curr_pos] == '>' || input[*curr_pos] == '<')
+		cmd->redirs = get_redirs(input, curr_pos);
 	return (cmd);
 }
 
@@ -151,7 +133,7 @@ t_cmd	*get_cmd(const char *raw_input, int *curr_pos)
 ** Gets a token, which represent one argument in the cmd_line. It can
 ** either be a word or a string of words if quotes are used.
 ** @param:	- [const char *] the unchanged line entered in stdin
-**			- [int *] the current parsing position within the raw_input  
+**			- [int *] the current parsing position within the input  
 ** @return:	[t_token *] a struct with a str and a char delimiter
 ** Line-by-line comments:
 ** @7		The delimiter can be a space, single or double quotes.
@@ -171,7 +153,7 @@ t_cmd	*get_cmd(const char *raw_input, int *curr_pos)
 **			next token
 */
 
-t_token	*get_token(const char *raw_input, int *curr_pos)
+t_token	*get_token(const char *input, int *curr_pos)
 {
 	t_token	*token;
 	int		saved_pos;
@@ -179,20 +161,20 @@ t_token	*get_token(const char *raw_input, int *curr_pos)
 	token = ft_calloc(1, sizeof(t_token));
 	if (!token)
 		ft_exit(EXIT_FAILURE);
-	token->delimiter = get_delimiter(raw_input, curr_pos);
+	token->delimiter = get_delimiter(input, curr_pos);
 	saved_pos = *curr_pos;
-	while (raw_input[*curr_pos])
+	while (input[*curr_pos])
 	{
-		if ((raw_input[*curr_pos] == '"' && token->delimiter == '"')
-			|| (raw_input[*curr_pos] == '\'' && token->delimiter == '\''))
+		if ((input[*curr_pos] == '"' && token->delimiter == '"')
+			|| (input[*curr_pos] == '\'' && token->delimiter == '\''))
 			break ;
 		else if (token->delimiter != ' ' && ++(*curr_pos))
 			continue ;
-		else if (is_delimiter(raw_input[*curr_pos]))
+		else if (is_delimiter(input[*curr_pos]))
 			break ;
 		(*curr_pos)++;
 	}
-	token->str = ft_substr(raw_input, saved_pos, *curr_pos - saved_pos);
+	token->str = ft_substr(input, saved_pos, *curr_pos - saved_pos);
 	if (!token)
 		ft_exit(EXIT_FAILURE);
 	if (token->delimiter != ' ')
