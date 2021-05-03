@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/02 17:37:13 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/03 10:43:16 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/03 12:22:16 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 /*
 ** Checks if there is a specific character at end of input
 ** @param:	- [const char *] the unchanged line entered in stdin
+**			- [char] the tested character
+**			- [char *] empty string with 100 chars of space where to write the
+**                     error message
 ** @return:	[int] true or false
 ** Line-by-line comments:
 ** @5-8		We need to trim white space from the input while
@@ -44,6 +47,21 @@ int	has_char_at_end(const char *input, char c, char *err_message)
 	return (check);
 }
 
+/*
+** Checks if the input is trying to use a specific bash feature that isn't
+** implemented
+** @param:	- [const char *] the unchanged line entered in stdin
+**			- [char *] tested string that has non-supported feature like "&&"
+**			- [char *] empty string with 100 chars of space where to write the
+**                     error message
+** @return:	[int] true or false
+** Line-by-line comments:
+** @3		ft_strstr_quotes behaves like strstr but it doesn't looks for
+** 			the tested string between quotes (single or double). So if
+**			ft_strstr_quotes returns the address of where it found test, it
+**			means that the input has a non-supported bash feature
+*/
+
 int	has_non_supported(const char *input, char *test, char *err_message)
 {
 	int	check;
@@ -59,7 +77,24 @@ int	has_non_supported(const char *input, char *test, char *err_message)
 	return (check);
 }
 
-int	has_str(const char *input, char *test, char *err_message)
+/*
+** Checks if the input has a syntax error regardless of spaces between
+** implemented
+** @param:	- [const char *] the unchanged line entered in stdin
+**			- [char *] tested string that has non-supported feature like "&&"
+**			- [char *] empty string with 100 chars of space where to write the
+**                     error message
+** @return:	[int] true or false
+** Line-by-line comments:
+** @3		ft_strstr_all returns a string with all the referenced characters
+**			trimmed
+** @7		ft_strstr_quotes behaves like strstr but it doesn't looks for
+** 			the tested string between quotes (single or double). So if
+**			ft_strstr_quotes returns the address of where it found test, it
+**			means that the input has a syntax error
+*/
+
+int	has_forbidden_sequence(const char *input, char *test, char *err_message)
 {
 	int		check;
 	char	*trimmed;
@@ -79,6 +114,23 @@ int	has_str(const char *input, char *test, char *err_message)
 	free(trimmed);
 	return (check);
 }
+
+/*
+** Checks if a character is found twice with only spaces between them.
+** Example:
+** - "test | test" is valid but "test |   | test" isn't
+** - "test > log.txt" and "test >> log.txt" are valid but "test >  > log" isn't
+** @param:	- [const char *] the unchanged line entered in stdin
+**			- [char *] tested string that has non-supported feature like "&&"
+**			- [char *] empty string with 100 chars of space where to write the
+**                     error message
+** @return:	[int] true or false
+** Line-by-line comments:
+** @8-9		If we find a single or double quote, skip_quotes parses through
+** 			the input until the quote found is closed
+** 10-14	If we find a '|' and a space, we check that the next non-space
+**			character is equal to '|'. If it is, then the input is invalid
+*/
 
 int	has_spaces_between_char(const char *input, char c, char *err_message)
 {

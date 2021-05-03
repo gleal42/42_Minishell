@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 11:06:43 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/03 10:49:54 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/03 12:26:05 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,13 @@
 ** Checks if input entered in cmd line is valid while displaying error messsage
 ** @param:	- [const char *] the unchanged line entered in stdin
 ** @return:	[int] true or false
-** @10		
+** @5-9		Case: empty or only white space. It doesn't require an error message
+**			and expects an errno of 0
+** @14		Some testers say that the errno needs to be 2 but not very
+**			consistent across different OS. So we choose to set it to
+**			ENOEXEC (Exec format error), which value will adapt across OS
+** @17-18	If input is valid, we don't need to change errno because
+**			execute_ast() will take care of that
 */
 
 int	is_input_valid(const char *input)
@@ -24,13 +30,17 @@ int	is_input_valid(const char *input)
 	int		check;
 	char	err_message[100];
 
+	ft_bzero(err_message, 0);
 	if (*input == '\0' || ft_strisspace((char *)input))
+	{
 		check = 0;
-	else if (!is_input_valid_unpected_token(input, err_message)
+		errno = 0;
+	}
+	else if (!is_input_valid_unexpected_token(input, err_message)
 		|| !is_input_valid_not_supported(input, err_message))
 	{
 		check = 0;
-		errno = ENOENT;
+		errno = ENOEXEC;
 		write_gen_err_message(err_message);
 	}
 	else
@@ -38,7 +48,20 @@ int	is_input_valid(const char *input)
 	return (check);
 }
 
-int	is_input_valid_unpected_token(const char *input, char *err_message)
+/*
+** Checks if the input has an unexpected token
+** @param:	- [const char *] the unchanged line entered in stdin
+**			- [char *] empty string with 100 chars of space where to write the
+**                     error message
+** @return:	[int] true or false
+** Line-by-line comments:
+** @4-9		has_char_at_beginning() and has_char_at_end() trim whitespaces at
+**			both ends of the input before checking
+** @10-14	The has_forbidden_sequence() function remove alls white spaces (except between
+**			quotes) before checking
+*/
+
+int	is_input_valid_unexpected_token(const char *input, char *err_message)
 {
 	int		check;
 
@@ -49,11 +72,11 @@ int	is_input_valid_unpected_token(const char *input, char *err_message)
 		|| has_char_at_end(input, '<', err_message)
 		|| has_char_at_end(input, '>', err_message)
 		|| has_char_at_end(input, '&', err_message)
-		|| has_str(input, ";;", err_message)
-		|| has_str(input, ";|", err_message)
-		|| has_str(input, ";&", err_message)
-		|| has_str(input, ";;", err_message)
-		|| has_str(input, ">>>", err_message)
+		|| has_forbidden_sequence(input, ";;", err_message)
+		|| has_forbidden_sequence(input, ";|", err_message)
+		|| has_forbidden_sequence(input, ";&", err_message)
+		|| has_forbidden_sequence(input, ";;", err_message)
+		|| has_forbidden_sequence(input, ">>>", err_message)
 		|| has_spaces_between_char(input, '|', err_message)
 		|| has_spaces_between_char(input, '>', err_message))
 		check = 0;
@@ -61,6 +84,14 @@ int	is_input_valid_unpected_token(const char *input, char *err_message)
 		check = 1;
 	return (check);
 }
+
+/*
+** Checks if the user is trying to use a feature not implemented
+** @param:	- [const char *] the unchanged line entered in stdin
+**			- [char *] empty string with 100 chars of space where to write the
+**                     error message
+** @return:	[int] true or false
+*/
 
 int	is_input_valid_not_supported(const char *input, char *err_message)
 {
@@ -89,6 +120,8 @@ int	is_input_valid_not_supported(const char *input, char *err_message)
 ** - " ' "
 ** - " ' ' "
 ** @param:	- [const char *] the unchanged line entered in stdin
+**			- [char *] empty string with 100 chars of space where to write the
+**                     error message
 ** @return:	[int] true or false
 ** Line-by-line comments:
 ** @10-11	If we find a double quotes and single quotes are not open,
@@ -130,6 +163,9 @@ int	has_quotes_open(const char *input, char *err_message)
 /*
 ** Checks if there is a specific character at beginning of input
 ** @param:	- [const char *] the unchanged line entered in stdin
+**			- [char] the tested character
+**			- [char *] empty string with 100 chars of space where to write the
+**                     error message
 ** @return:	[int] true or false
 ** Line-by-line comments:
 ** @5-8		We need to trim white space from the input while
