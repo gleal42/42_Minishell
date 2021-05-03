@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:42:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/03 19:18:59 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/03 22:10:55 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,33 +111,5 @@ int	execute_cmd(t_cmd *cmd, t_list **env, int pipe, int last_status)
 	if (is_builtin(first))
 		return (execute_builtin(tokens, env));
 	else
-		return (execute(arr_tokens, cmd->redirs, arr_env));
-}
-
-int	execute(char **tokens, t_list *redirs, char **envp)
-{
-	pid_t	pid;
-	int		status;
-
-	pid = fork();	
-	if (pid == 0)
-	{
-		printf("\033[0;34m📌 Here in %s line %d\n\033[0m", __FILE__, __LINE__);
-		execve(tokens[0], tokens, envp);
-	}
-	if (pid > 0)
-	{
-		printf("\033[0;34m📌 Here in %s line %d\n\033[0m", __FILE__, __LINE__);
-		pid = wait(&status);
-		if (WIFEXITED(status))
-			printf("The process ended with exit(%d).\n", WEXITSTATUS(status));
-		 if (WIFSIGNALED(status))
-			printf("The process ended with kill -%d.\n", WTERMSIG(status));
-	}
-	if (pid < 0)
-		perror("In fork():");
-	// free_arr((void **)tokens);
-	// free_arr((void **)envp);
-	return (0);
-	(void)redirs;
+		return (execute_program(arr_tokens, cmd->redirs, arr_env));
 }
