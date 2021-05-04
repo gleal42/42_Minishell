@@ -6,11 +6,26 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 22:10:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/03 23:41:39 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/04 11:52:34 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
+
+/*
+** Executes a program. The program can either be local (e.g. ./a.out) or
+** placed in a bin folder (e.g. ls or node)
+** @param:	- [char **] param_value
+**			- [type] param_value
+** @return:	[type] return_value
+** Line-by-line comments:
+** @9		Fork returns twice:
+**			- a first time inside the child process with the value 0
+**			- a second time inside the parent process with a value above 0 once
+**			the child process finishes
+** @14		The wait function allows to stop the parent process while the child
+**			process is running
+*/
 
 int	execute_program(char **tokens, t_list *redirs, char **envp)
 {
@@ -19,12 +34,12 @@ int	execute_program(char **tokens, t_list *redirs, char **envp)
 	char	*abs_path;
 
 	if (has_path(tokens[0]))
-		abs_path = tokens[0];
+		abs_path = ft_strdup(tokens[0]);
 	else
 		abs_path = get_abs_path(tokens[0]);
 	pid = fork();	
 	if (pid == 0)
-		execve(abs_path, tokens, envp);
+		exit(execve(abs_path, tokens, envp));
 	if (pid > 0)
 	{
 		pid = wait(&status);
@@ -34,10 +49,10 @@ int	execute_program(char **tokens, t_list *redirs, char **envp)
 		// 	printf("The process ended with kill -%d.\n", WTERMSIG(status));
 	}
 	if (pid < 0)
-		perror("In fork():");
+		ft_exit(EXIT_FAILURE);
 	free(tokens);
 	free(envp);
-	// free(abs_path);
+	free(abs_path);
 	return (1);
 	(void)redirs;
 }
@@ -76,7 +91,7 @@ char *get_abs_path(char *program_name)
 		i++;
 	}
 	if (!path_envs[i])
-		path_name = program_name;
+		path_name = ft_strdup(program_name);
 	free_arr((void **)path_envs);
 	return (path_name);
 }

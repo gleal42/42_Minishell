@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 16:48:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/03 17:40:27 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/04 10:39:49 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@
 t_msh	g_msh;
 
 void	init_minishell(t_msh *msh, char **envp);
+void	catch_signals(int signum);
 t_ast	*get_ast(const char *input);
 int		execute_ast(t_ast **ast, t_list **env);
 
