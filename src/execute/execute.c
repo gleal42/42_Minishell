@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:42:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/03 22:10:55 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/04 12:20:38 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,16 @@
 **			and return value).
 */
 
-int	execute_ast(t_ast **ast, t_list **env)
+void	execute_ast(t_ast **ast, t_list **env)
 {
 	t_list		*cmd_table;
-	static int	status;
 
 	cmd_table = (*ast)->cmd_tables;
 	while (cmd_table)
 	{
-		status = execute_cmd_table((t_cmd_table *)cmd_table->data, env, status);
+		execute_cmd_table((t_cmd_table *)cmd_table->data, env);
 		cmd_table = cmd_table->next;
 	}
-	return (status);
 }
 
 /*
@@ -59,13 +57,11 @@ int	execute_ast(t_ast **ast, t_list **env)
 **			multiple arguments)
 */
 
-int	execute_cmd_table(t_cmd_table *cmd_table, t_list **env, int	last_status)
+void	execute_cmd_table(t_cmd_table *cmd_table, t_list **env)
 {
 	t_list	*cmds;
 	int		pipe;
-	int		status;
 
-	status = last_status;
 	cmds = cmd_table->cmds;
 	while (cmds)
 	{
@@ -73,10 +69,9 @@ int	execute_cmd_table(t_cmd_table *cmd_table, t_list **env, int	last_status)
 			pipe = 0;
 		else
 			pipe = 1;
-		status = execute_cmd((t_cmd *)cmds->data, env, pipe, status);
+		execute_cmd((t_cmd *)cmds->data, env, pipe);
 		cmds = cmds->next;
 	}
-	return (status);
 }
 
 /*
@@ -92,7 +87,7 @@ int	execute_cmd_table(t_cmd_table *cmd_table, t_list **env, int	last_status)
 ** @12		Executes recreated functions (echo, cd, pwd, export, unset, env, exit)
 */
 
-int	execute_cmd(t_cmd *cmd, t_list **env, int pipe, int last_status)
+void	execute_cmd(t_cmd *cmd, t_list **env, int pipe)
 {
 	t_list	*tokens;
 	char	*first;
@@ -101,15 +96,17 @@ int	execute_cmd(t_cmd *cmd, t_list **env, int pipe, int last_status)
 
 	tokens = cmd->tokens;
 	if (tokens == 0)
-		return (0);
-	env_vars(tokens, last_status);
+		return ;
+	env_vars(tokens);
 	arr_tokens = convert_list_to_arr_tokens(tokens);
 	arr_env = convert_list_to_arr(*env);
 	first = ((t_token *)tokens->data)->str;
 	if (ft_strcmp(first, "exit") == 0 && pipe == 0)
 		ft_exit(0);
 	if (is_builtin(first))
-		return (execute_builtin(tokens, env));
+		g_msh.exit_status = execute_builtin(tokens, env);
 	else
-		return (execute_program(arr_tokens, cmd->redirs, arr_env));
+		execute_program(arr_tokens, cmd->redirs, arr_env);
+	free(arr_tokens);
+	free(arr_env);
 }

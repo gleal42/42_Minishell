@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 22:10:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/04 11:52:34 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/04 13:14:16 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 **			process is running
 */
 
-int	execute_program(char **tokens, t_list *redirs, char **envp)
+void	execute_program(char **tokens, t_list *redirs, char **envp)
 {
 	pid_t	pid;
 	int		status;
@@ -39,21 +39,30 @@ int	execute_program(char **tokens, t_list *redirs, char **envp)
 		abs_path = get_abs_path(tokens[0]);
 	pid = fork();	
 	if (pid == 0)
-		exit(execve(abs_path, tokens, envp));
+	{
+		execve(abs_path, tokens, envp);
+		if (errno == ENOENT)
+			write_func_err_message(tokens[0], "command not found");
+		else
+			ft_putstr(strerror(errno));
+		exit(127);
+	}
 	if (pid > 0)
 	{
 		pid = wait(&status);
-		// if (WIFEXITED(status))
-		// 	printf("The process ended with exit(%d).\n", WEXITSTATUS(status));
-		// if (WIFSIGNALED(status))
-		// 	printf("The process ended with kill -%d.\n", WTERMSIG(status));
+		if (WIFEXITED(status))
+			g_msh.exit_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+		{
+			g_msh.exit_status = WTERMSIG(status);
+			ft_putstr(strerror(g_msh.exit_status));
+
+
+		}
 	}
 	if (pid < 0)
 		ft_exit(EXIT_FAILURE);
-	free(tokens);
-	free(envp);
 	free(abs_path);
-	return (1);
 	(void)redirs;
 }
 
