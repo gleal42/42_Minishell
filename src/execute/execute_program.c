@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 22:10:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/04 13:14:16 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/04 14:35:15dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,12 @@ void	execute_program(char **tokens, t_list *redirs, char **envp)
 	{
 		execve(abs_path, tokens, envp);
 		if (errno == ENOENT)
+		{
 			write_func_err_message(tokens[0], "command not found");
+			exit(EXIT_CMD_NOT_FOUND);
+		}
 		else
-			ft_putstr(strerror(errno));
-		exit(127);
+			exit(EXIT_FAILURE);
 	}
 	if (pid > 0)
 	{
@@ -53,12 +55,7 @@ void	execute_program(char **tokens, t_list *redirs, char **envp)
 		if (WIFEXITED(status))
 			g_msh.exit_status = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
-		{
 			g_msh.exit_status = WTERMSIG(status);
-			ft_putstr(strerror(g_msh.exit_status));
-
-
-		}
 	}
 	if (pid < 0)
 		ft_exit(EXIT_FAILURE);
