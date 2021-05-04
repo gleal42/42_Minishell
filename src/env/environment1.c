@@ -69,11 +69,11 @@ void	replace_vars_with_values(char **str)
 				final = replace_midstring(*str, var, value, i);
 				free(value);
 				free(*str);
-				value = 0;
 				*str = final;
 			}
+			else
+				strcpy(&(*str)[i], (const char *)&(*str)[ft_strlen(var) + 1]);
 			free(var);
-			var = 0;
 		}
 		i++;
 	}
