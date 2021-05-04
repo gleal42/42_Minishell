@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 15:17:53 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/03 23:25:00 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/04 22:10:00 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	is_env_var(char *potential_var, t_list *env)
 			&& (potential_var[i] == env_str[i]))
 			i++;
 		if ((potential_var[i] == 0 || ft_isspace(potential_var[i]))
-			&& env_str[i] == '=')
+			&& (env_str[i] == '=' || env_str[i] == '\0'))
 			return (1);
 		env = env->next;
 	}
@@ -54,7 +54,9 @@ char	*get_var_name(char *str)
 	int		i;
 	char	*var;
 
-	i = 1;
+	i = 0;
+	if (str[i] == '$')
+		i++;
 	while (str[i] && !is_delimiter(str[i]) && str[i] != '$'
 			&& str[i] != '=')
 		i++;

@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 17:53:43 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/03 19:05:43 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/04 22:51:50 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int	is_builtin(char *first_token)
 	if (ft_strcmp(first_token, "pwd") == 0)
 		return (1);
 	if (ft_strcmp(first_token, "export") == 0)
+		return (1);
+	if (ft_strcmp(first_token, "unset") == 0)
 		return (1);
 	else
 		return (0);
@@ -58,5 +60,7 @@ int	execute_builtin(t_list	*tokens, t_list **env)
 		return (ft_pwd());
 	if (ft_strcmp(first, "export") == 0)
 		return (ft_export(tokens->next, env));
+	if (ft_strcmp(first, "unset") == 0)
+		return (ft_unset(tokens->next, env));
 	return (0);
 }

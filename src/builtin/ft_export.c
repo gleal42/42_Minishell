@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 19:10:37 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/03 23:27:45 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/04 19:26:42y gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 int		ft_export(t_list *tokens, t_list **env)
 {
-	int		status;
+	char	*var;
+	char	*value;
 	char	*token_str;
-	t_list *new_var;
+	int		status;
 
 	status = 0;
 	if (tokens == 0)
@@ -25,13 +26,21 @@ int		ft_export(t_list *tokens, t_list **env)
 	{
 		while(tokens)
 		{
-		//check if variable already exists (update or create new)
 			token_str = ft_strdup(((t_token *)tokens->data)->str);
-			new_var = ft_lstnew(token_str);
-			if (new_var == 0)
+			if (token_str == 0)
 				ft_exit(EXIT_FAILURE);
-			ft_lstadd_front(env, new_var);
+			var = get_var_name(token_str);
+			value = get_value_name(token_str);
+			if (is_env_var(var, *env))
+			{
+				update_environment_var(var, value, *env);
+				free(token_str);
+			}
+			else
+				create_environment_var(&token_str, env);
 			tokens = tokens->next;
+			free(var);
+			free(value);
 		}
 	}
 	return (status);
@@ -58,4 +67,14 @@ int		print_all_exported_vars(t_list *env)
 		env = env->next;
 	}
 	return (0);
+}
+
+void	create_environment_var(char **token_str, t_list **env)
+{
+	t_list *new_var;
+
+	new_var = ft_lstnew(*token_str);
+	if (new_var == 0)
+		ft_exit(EXIT_FAILURE);
+	ft_lstadd_front(env, new_var);
 }

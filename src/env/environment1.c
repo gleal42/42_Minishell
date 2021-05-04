@@ -25,6 +25,7 @@ void	env_vars(t_list	*tokens, int last_status)
 	char	**str;
 	char	delim;
 
+
 	while (tokens)
 	{
 		str = &((t_token *)tokens->data)->str;
@@ -60,7 +61,7 @@ void	replace_vars_with_values(char **str)
 	i = 0;
 	while (str[0][i])
 	{
-		if (str[0][i] == '$')
+		if (str[0][i] == '$' && (i == 0 || str[0][i - 1] != '\\'))
 		{
 			var = get_var_name(&str[0][i]);
 			value = ft_getenv(var + 1);

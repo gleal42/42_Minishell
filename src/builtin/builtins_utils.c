@@ -56,7 +56,7 @@ int	update_environment_var(char *var, char *new_value, t_list *env)
 		cur_env = (char *)(env->data);
 		while (var[i] && cur_env[i] && (var[i] == cur_env[i]))
 			i++;
-		if (!var[i] && cur_env[i] == '=')
+		if (!var[i] && (cur_env[i] == '='|| cur_env[i] == '\0' ))
 		{
 			env->data = replace_env_value(&cur_env, var, new_value);
 			return (0);

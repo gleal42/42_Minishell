@@ -6,11 +6,23 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 17:21:45 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/03 19:04:02 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/04 19:43:53 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "environment.h"
+
+
+/*
+** Gets the value stored in the environment variable
+linked list given a variable name
+** @param:	- [char *] name of environment variable to check
+**			- [d] param_value
+** @return:	[char *] string duplicate of environment variable value
+** Line-by-line comments:
+** @14	comment
+*/
+
 
 char	*ft_getenv(char *key)
 {
@@ -26,7 +38,8 @@ char	*ft_getenv(char *key)
 		curr_envp = (char *)envp->data;
 		while (key[i] && curr_envp[i] && (key[i] == curr_envp[i]))
 			i++;
-		if (!key[i] && curr_envp[i] == '=')
+		if (!key[i] && (curr_envp[i] == '='
+							|| curr_envp[i] == '\0'))
 		{
 			value = ft_strdup(&(curr_envp[i + 1]));
 			if (!value)

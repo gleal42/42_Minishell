@@ -50,6 +50,15 @@ int		ft_pwd(void);
 
 int		ft_export(t_list *tokens, t_list **env);
 int		print_all_exported_vars(t_list *env);
+void	create_environment_var(char **token_str, t_list **env);
+
+/*
+** File ft_unset.c
+*/
+
+int		ft_unset(t_list *tokens, t_list **env);
+int	has_valid_identifier(char *token_str);
+int	is_token_valid_unset(char *token_str,char *err_message);
 
 /*
 ** File builtins_utils.c.c
