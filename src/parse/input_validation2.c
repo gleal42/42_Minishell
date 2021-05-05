@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/02 17:37:13 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/05 09:53:43 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/05 11:51:01 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,8 @@ int	has_spaces_between_char(const char *input, char c, char *err_message)
 				break ;
 			}
 		}
-		i++;
+		if (input[i])
+			i++;
 	}
 	return (check);
 }

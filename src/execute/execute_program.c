@@ -44,10 +44,10 @@ void	execute_program(char **tokens, t_list *redirs, char **envp)
 		if (errno == ENOENT)
 		{
 			write_func_err_message(tokens[0], "command not found");
-			ft_exit(EXIT_CMD_NOT_FOUND);
+			exit(EXIT_CMD_NOT_FOUND);
 		}
 		else
-			ft_exit(EXIT_FAILURE);
+			exit(EXIT_FAILURE);
 	}
 	if (pid > 0)
 	{

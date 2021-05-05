@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 15:23:20 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/02 11:10:03 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/05 11:55:47 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ char	*get_input(t_dlist *input_history, t_termcaps *termcaps)
 		else if (nb_char_read > 1)
 			ft_bzero(&buf[i], BUFSIZ - i);
 		else if (buf[i] == CTRL_C)
-			reset_cmd_line(buf, &i);
+			reset_cmd_line(buf, &i, &input_history);
 		else if (buf[i] == CTRL_D)
 			exit_program(buf, i);
 		else
