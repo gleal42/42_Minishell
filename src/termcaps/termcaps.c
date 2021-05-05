@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 18:55:52 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/05 11:06:00 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/05 14:57:28 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	init_termcaps(t_termcaps *termcaps)
 		ft_exit(EXIT_FAILURE);
 	if (tgetent(termcaps->buffer, term_type) <= 0)
 		ft_exit(EXIT_FAILURE);
-	if (!has_capabilities(termcaps))
+	else if (!has_capabilities(termcaps))
 		ft_exit(EXIT_FAILURE);
 	free(term_type);
 }

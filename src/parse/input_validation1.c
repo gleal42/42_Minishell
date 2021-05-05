@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 11:06:43 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/04 16:49:36 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/05 15:10:56 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ int	is_input_valid_unexpected_token(const char *input, char *err_message)
 		|| has_char_at_beginning(input, '|', err_message)
 		|| has_char_at_beginning(input, ';', err_message)
 		|| has_char_at_end(input, '|', err_message)
-		|| has_char_at_end(input, '\\', err_message)
 		|| has_char_at_end(input, '<', err_message)
 		|| has_char_at_end(input, '>', err_message)
 		|| has_char_at_end(input, '&', err_message)
@@ -100,6 +99,7 @@ int	is_input_valid_not_supported(const char *input, char *err_message)
 
 	if (has_non_supported(input, "<<", err_message)
 		|| has_non_supported(input, "*", err_message)
+		|| has_non_supported(input, "\\", err_message)
 		|| has_non_supported(input, "&&", err_message)
 		|| has_non_supported(input, "&", err_message)
 		|| has_non_supported(input, "||", err_message))

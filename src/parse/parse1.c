@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 10:37:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/05 10:20:52 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/05 15:27:18 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,16 +141,19 @@ t_cmd	*get_cmd(const char *input, int *curr_pos)
 **			the token starts after the quotes
 ** @8		We need to save the beginning of the token so that we can extract
 **			the string once we have found the end of the token
-** @11-17	We have to distinct cases here:
-** @11-15	- The token is a string of words because a quote has been found
+** @11-12	The token is a string of words because a quote has been found
 **			by get_delimiter(). So we parse while we haven't found it's matching
 **			quote (either single or double)
-** @16-17	- The token is a word and will be finished when we find a delimiter
+** @13-14	The token is a word and will be finished when we find a delimiter
 **			(' ', ';', '|', ,'&', '<' or '>')
-** @23-24	We need to do one last increment of curr_pos if we were dealing with
+** @20-21	We need to do one last increment of curr_pos if we were dealing with
 **			quotes, otherwise next time get_token() will be called it will
 **			process the closing quotes of this token as the opening ones of the
 **			next token
+** 22-23	If the delimiter is a space, a valid input would be:
+**			hello"wor'ld"'te"st'
+**			This input needs to represent 1 single token and be interpreted as:
+**			hellowor'ldte"st
 */
 
 t_token	*get_token(const char *input, int *curr_pos)
@@ -169,15 +172,11 @@ t_token	*get_token(const char *input, int *curr_pos)
 			break ;
 		else if (is_delimiter(input[*curr_pos]))
 			break ;
-		// else if (input[*curr_pos] == '\\' && (is_delimiter(input[*curr_pos + 1])
-		// 	|| input[*curr_pos + 1] == '\'' || input[*curr_pos + 1] == '"'))
-		// 	(*curr_pos)++;
 		(*curr_pos)++;
 	}
 	token->str = ft_substr(input, saved_pos, *curr_pos - saved_pos);
 	if (!token->str)
 		ft_exit(EXIT_FAILURE);
-	// delete_backslashes(token);
 	if (token->delimiter != ' ')
 		(*curr_pos)++;
 	else if (token->delimiter == ' ')

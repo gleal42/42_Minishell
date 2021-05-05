@@ -71,8 +71,6 @@ void	replace_vars_with_values(char **str)
 				free(*str);
 				*str = final;
 			}
-			else
-				strcpy(&(*str)[i], (const char *)&(*str)[ft_strlen(var) + 1]);
 			free(var);
 		}
 		i++;

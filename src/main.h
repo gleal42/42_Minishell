@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 16:48:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/04 12:19:50 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/05 16:49:32 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,13 @@
 
 # include "termcaps.h"
 
+# include "parse.h"
 # include "get_input.h"
 # include "parse_utils.h"
 # include "input_validation.h"
 
 # include "execute.h"
+# include "execute_program_utils.h"
 # include "environment.h"
 # include "builtins.h"
 
@@ -58,6 +60,5 @@ t_msh	g_msh;
 
 void	init_minishell(t_msh *msh, char **envp);
 void	catch_signals(int signum);
-t_ast	*get_ast(const char *input);
 
 #endif
