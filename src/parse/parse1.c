@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 10:37:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/04 18:49:21 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/05 10:20:52 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,28 +165,22 @@ t_token	*get_token(const char *input, int *curr_pos)
 	saved_pos = *curr_pos;
 	while (input[*curr_pos])
 	{
-		if ((input[*curr_pos] == '"' && token->delimiter == '"')
-			|| (input[*curr_pos] == '\'' && token->delimiter == '\''))
+		if (token->delimiter != ' ' && input[*curr_pos] == token->delimiter)
 			break ;
-		else if (input[*curr_pos] == '\\' && (is_delimiter(input[*curr_pos + 1])
-			|| input[*curr_pos + 1] == '\'' || input[*curr_pos + 1] == '"'))
-		{
-			if (input[*curr_pos + 2] == 0)
-				*curr_pos += 1;
-			else
-				*curr_pos += 2;
-		}
-		else if (token->delimiter != ' ' && ++(*curr_pos))
-			continue ;
 		else if (is_delimiter(input[*curr_pos]))
 			break ;
+		// else if (input[*curr_pos] == '\\' && (is_delimiter(input[*curr_pos + 1])
+		// 	|| input[*curr_pos + 1] == '\'' || input[*curr_pos + 1] == '"'))
+		// 	(*curr_pos)++;
 		(*curr_pos)++;
 	}
 	token->str = ft_substr(input, saved_pos, *curr_pos - saved_pos);
-	if (!token)
+	if (!token->str)
 		ft_exit(EXIT_FAILURE);
-	delete_backslashes(token);
+	// delete_backslashes(token);
 	if (token->delimiter != ' ')
 		(*curr_pos)++;
+	else if (token->delimiter == ' ')
+		delete_quotes(token->str);
 	return (token);
 }

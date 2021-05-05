@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 10:26:41 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/04 18:56:40 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/05 08:36:02 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,22 +148,4 @@ void	skip_spaces(const char *input, int *curr_pos)
 {
 	while (ft_isspace(input[*curr_pos]))
 		(*curr_pos)++;
-}
-
-void	delete_backslashes(t_token *token)
-{
-	char	*str;
-	int		i;
-
-	if (token->delimiter != ' ')
-		return ;
-	i = 0;
-	str = token->str;
-	while (str[i])
-	{
-		if (str[i] == '\\'
-			&& (str[i + 1] == '\'' || str[i + 1] == '"' ||  str[i + 1] == ' '))
-			strcpy(&str[i], (const char *)&str[i + 1]);
-		i++;
-	}
 }
