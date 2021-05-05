@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:44:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/04 12:19:31 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/05 11:22:04 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	execute_cmd(t_cmd *cmd, t_list **env, int pipe);
 
 void	execute_program(char **tokens, t_list *redirs, char **envp);
 int		has_path(char *first_token);
-char 	*get_abs_path(char *program_name);
+char 	*get_absolute_path(char *program_name);
 void	add_slash(char ***path_envs);
 
 /*

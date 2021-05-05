@@ -19,10 +19,10 @@
 **			- [type] param_value
 ** @return:	[type] return_value
 ** Line-by-line comments:
-** @9		Fork returns twice:
+** @9		Fork returns twice more or less at the same time:
 **			- a first time inside the child process with the value 0
-**			- a second time inside the parent process with a value above 0 once
-**			the child process finishes
+**			- a second time inside the parent process with the value of the
+**			process id of the child
 ** @14		The wait function allows to stop the parent process while the child
 **			process is running
 */
@@ -36,7 +36,7 @@ void	execute_program(char **tokens, t_list *redirs, char **envp)
 	if (has_path(tokens[0]))
 		abs_path = ft_strdup(tokens[0]);
 	else
-		abs_path = get_abs_path(tokens[0]);
+		abs_path = get_absolute_path(tokens[0]);
 	pid = fork();	
 	if (pid == 0)
 	{
@@ -44,10 +44,10 @@ void	execute_program(char **tokens, t_list *redirs, char **envp)
 		if (errno == ENOENT)
 		{
 			write_func_err_message(tokens[0], "command not found");
-			exit(EXIT_CMD_NOT_FOUND);
+			ft_exit(EXIT_CMD_NOT_FOUND);
 		}
 		else
-			exit(EXIT_FAILURE);
+			ft_exit(EXIT_FAILURE);
 	}
 	if (pid > 0)
 	{
@@ -74,35 +74,45 @@ int	has_path(char *first_token)
 	return (check);
 }
 
-char *get_abs_path(char *program_name)
+char *get_absolute_path(char *program_name)
 {
-	char		**path_envs;
+	char		*absolute_path;
+	char		*path_env;
+	char		**path_env_split;
 	int			i;
-	char		*path_name;
 	struct stat	statbuf;
 
-	path_envs = ft_split(ft_getenv("PATH"), ":");
-	if (!path_envs)
-		ft_exit(EXIT_FAILURE);
-	add_slash(&path_envs);
-	i = 0;
-	while (path_envs[i])
+	path_env = ft_getenv("PATH");
+	if (!path_env)
 	{
-		path_name = ft_strjoin(path_envs[i], program_name);
-		if (!path_name)
+		absolute_path = ft_strdup(program_name);
+		if (!absolute_path)
 			ft_exit(EXIT_FAILURE);
-		if (stat(path_name, &statbuf) == EXIT_SUCCESS)
+		return (absolute_path);
+	}
+	path_env_split = ft_split(path_env, ":");
+	free(path_env);
+	if (!path_env_split)
+		ft_exit(EXIT_FAILURE);
+	add_slash(&path_env_split);
+	i = 0;
+	while (path_env_split[i])
+	{
+		absolute_path = ft_strjoin(path_env_split[i], program_name);
+		if (!absolute_path)
+			ft_exit(EXIT_FAILURE);
+		if (stat(absolute_path, &statbuf) == EXIT_SUCCESS)
 			break ;
-		free(path_name);
+		free(absolute_path);
 		i++;
 	}
-	if (!path_envs[i])
-		path_name = ft_strdup(program_name);
-	free_arr((void **)path_envs);
-	return (path_name);
+	if (!path_env_split[i])
+		absolute_path = ft_strdup(program_name);
+	free_arr((void **)path_env_split);
+	return (absolute_path);
 }
 
-void	add_slash(char ***path_envs)
+void	add_slash(char ***path_env_split)
 {
 	int		i;
 	char	*tmp;
@@ -110,15 +120,15 @@ void	add_slash(char ***path_envs)
 	char	*path;
 
 	i = 0;
-	while ((*path_envs)[i])
+	while ((*path_env_split)[i])
 	{
-		path = (*path_envs)[i];
+		path = (*path_env_split)[i];
 		len = ft_strlen(path);
 		if (path[len - 1] != '/')
 		{
 			tmp = ft_strjoin(path, "/");
 			free(path);
-			(*path_envs)[i] = tmp;
+			(*path_env_split)[i] = tmp;
 		}
 		i++;
 	}

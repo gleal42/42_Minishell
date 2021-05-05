@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 17:33:17 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/05 10:27:43 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/05 11:33:04 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	main(int argc, char **argv, char **envp)
 		// print_ast(g_msh.ast);
 		execute_ast(&g_msh.ast, &g_msh.dup_envp);
 		free_ast(g_msh.ast);
+		g_msh.ast = 0;
 	}
 	return (0);
 }
