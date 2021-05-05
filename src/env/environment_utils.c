@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 15:17:53 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/02 23:57:12 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/05 14:59:18 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ char *new_substr, int replace_i)
 
 	i = 0;
 	len = ft_strlen(original) - ft_strlen(old_substr) + ft_strlen(new_substr);
-	final = malloc(sizeof(char) * len + 1);
+	final = malloc(sizeof(char) * (len + 1));
 	if (final == 0)
 		ft_exit(EXIT_FAILURE);
 	while (*original)

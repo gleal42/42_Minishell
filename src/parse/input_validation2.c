@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/02 17:37:13 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/03 12:22:16 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/05 16:06:45 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,9 @@ int	has_non_supported(const char *input, char *test, char *err_message)
 	if (ft_strstr_quotes((char *)input, test) != 0)
 	{
 		check = 1;
-		ft_strcpy(err_message, test);
-		ft_strcat(err_message, " not supported");
+		ft_strcpy(err_message, "\"");
+		ft_strcat(err_message, test);
+		ft_strcat(err_message, "\" not supported");
 	}
 	else
 		check = 0;
@@ -130,14 +131,15 @@ int	has_forbidden_sequence(const char *input, char *test, char *err_message)
 ** 			the input until the quote found is closed
 ** 10-14	If we find a '|' and a space, we check that the next non-space
 **			character is equal to '|'. If it is, then the input is invalid
+** @20-21	Both skip_quotes and skip_spaces do some parsing and they could
+**			reach the end of the string so we need to check that before
+** 			incrementing otherwise we segfault
 */
 
 int	has_spaces_between_char(const char *input, char c, char *err_message)
 {
-	int	check;
 	int	i;
 
-	check = 0;
 	i = 0;
 	while (input[i])
 	{
@@ -149,14 +151,14 @@ int	has_spaces_between_char(const char *input, char c, char *err_message)
 			skip_spaces((char *)input, &i);
 			if (input[i] == c)
 			{
-				check = 1;
 				ft_strcpy(err_message, "syntax error near unexpected token `");
 				ft_strncat(err_message, &c, 1);
 				ft_strcat(err_message, "'");
-				break ;
+				return (1);
 			}
 		}
-		i++;
+		if (input[i])
+			i++;
 	}
-	return (check);
+	return (0);
 }
