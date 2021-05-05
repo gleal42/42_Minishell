@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/26 14:59:48 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/03 00:22:52 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/05 22:10:33by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,10 @@ different places
 ** @return:	[int] exit status(1 if unsuccessful)
 ** Line-by-line comments:
 ** @5			get current directory for OLDPWD	
-** @10-14		change to home in case of no args
-** @16-17		change to old_pwd in case of hyphen
-** @18-19		change to any other absolute or relative path
+** @10-11		change to home in case of no args
+** @15-16		change to old_pwd in case of hyphen
+** @17-18		change to any other absolute or relative path
+** @19-23		error message in case of failure
 */
 
 int	ft_cd(t_list *tokens, t_list **env)
@@ -34,7 +35,10 @@ int	ft_cd(t_list *tokens, t_list **env)
 	int		status;
 
 	if (getcwd(pwd, 1024) == NULL)
+	{
+		write_gen_err_message(strerror(errno));
 		return (1);
+	}
 	if (tokens == 0)
 		status = change_dir_home(pwd, env);
 	else
@@ -45,7 +49,10 @@ int	ft_cd(t_list *tokens, t_list **env)
 		else if (chdir(arg) == 0)
 			status = update_directories(pwd, env);
 		else
+		{
+			write_gen_err_message(strerror(errno));
 			status = 1;
+		}
 	}
 	return (status);
 }
@@ -56,8 +63,9 @@ int	ft_cd(t_list *tokens, t_list **env)
 **			- [t_list *] environment variable linked list pointer
 ** @return:	[int] exit status (to be implemented)
 ** Line-by-line comments:
-** @9	function will update the environment variable linked list 
-** with the new working directory values
+** @9		function will update the environment variable linked list 
+**				with the new working directory values
+** @7-11	error message in case of failure
 */
 
 int	change_dir_home(char *cur_pwd, t_list **env)
@@ -69,7 +77,10 @@ int	change_dir_home(char *cur_pwd, t_list **env)
 	if (chdir(home) == 0)
 		status = update_directories(cur_pwd, env);
 	else
+	{
+		write_gen_err_message(strerror(errno));
 		status = 1;
+	}
 	free(home);
 	home = 0;
 	return (status);
@@ -81,8 +92,9 @@ int	change_dir_home(char *cur_pwd, t_list **env)
 **			- [t_list *] environment variable linked list pointer
 ** @return:	[int] exit status (to be implemented)
 ** Line-by-line comments:
-** @9	function will update the environment variable linked list 
-** with the new working directory values
+** @9		function will update the environment variable linked list 
+** 				with the new working directory values
+** @14-18	error message in case of failure
 */
 
 int	change_to_old_dir(char	*cur_pwd, t_list **env)
@@ -101,7 +113,10 @@ int	change_to_old_dir(char	*cur_pwd, t_list **env)
 		if (chdir(old_dir) == 0)
 			status = update_directories(cur_pwd, env);
 		else
+		{
+			write_gen_err_message(strerror(errno));
 			status = 1;
+		}
 		free(old_dir);
 		old_dir = 0;
 	}

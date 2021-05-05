@@ -25,7 +25,6 @@ void	env_vars(t_list	*tokens, int last_status)
 	char	**str;
 	char	delim;
 
-
 	while (tokens)
 	{
 		str = &((t_token *)tokens->data)->str;

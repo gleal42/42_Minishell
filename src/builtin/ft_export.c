@@ -12,10 +12,25 @@
 
 #include "builtins.h"
 
-int		ft_export(t_list *tokens, t_list **env)
+/*
+** - if no arguments print all environment variables
+** (including unnassigned ones(e.g. VAR instead of VAR=10))
+** - if there are arguments each argument is a potential
+** environment variable to be added to the environment
+** variable linked list
+** @param:	- [t_list *] list of tokens in a command
+**			- [t_list **] pointer to envp linked list
+** @return:	[int] exit status
+** Line-by-line comments:
+** @18-19	in case the variable already exists we
+** 			just need to update it in the list
+** @20-21	if the variable doesn't exist we create
+**			a new node in the envp linked list
+*/
+
+int	ft_export(t_list *tokens, t_list **env)
 {
 	char	*var;
-	char	*value;
 	char	*token_str;
 	int		status;
 
@@ -24,34 +39,39 @@ int		ft_export(t_list *tokens, t_list **env)
 		status = print_all_exported_vars(*env);
 	else
 	{
-		while(tokens)
+		while (tokens)
 		{
 			token_str = ft_strdup(((t_token *)tokens->data)->str);
 			if (token_str == 0)
 				ft_exit(EXIT_FAILURE);
+			if (!has_valid_identifier_export(token_str))
+				return (1);
 			var = get_var_name(token_str);
-			value = get_value_name(token_str);
 			if (is_env_var(var, *env))
-			{
-				update_environment_var(var, value, *env);
-				free(token_str);
-			}
+				update_env_var_with_token(&token_str, var, *env);
 			else
 				create_environment_var(&token_str, env);
-			tokens = tokens->next;
 			free(var);
-			free(value);
+			tokens = tokens->next;
 		}
 	}
 	return (status);
 }
 
-int		print_all_exported_vars(t_list *env)
+/*
+** Prints all the environment variables with the proper formatting
+** @param:	- [t_list **] pointer to envp linked list
+** Line-by-line comments:
+** @8-14	if variable is assigned (has equal sign) then we need
+**			to add double quotes
+*/
+
+void	print_all_exported_vars(t_list *env)
 {
 	char	*env_str;
 	int		i;
 
-	while(env)
+	while (env)
 	{
 		i = -1;
 		env_str = (char *)env->data;
@@ -66,12 +86,22 @@ int		print_all_exported_vars(t_list *env)
 			printf("declare -x %s\n", env_str);
 		env = env->next;
 	}
-	return (0);
+	return ;
+}
+
+void	update_env_var_with_token(char **token_str, char *var, t_list *env)
+{
+	char	*value;
+
+	value = get_value_name(*token_str);
+	update_environment_var(var, value, env);
+	free(*token_str);
+	free(value);
 }
 
 void	create_environment_var(char **token_str, t_list **env)
 {
-	t_list *new_var;
+	t_list	*new_var;
 
 	new_var = ft_lstnew(*token_str);
 	if (new_var == 0)

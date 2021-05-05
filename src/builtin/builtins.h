@@ -50,6 +50,7 @@ int		ft_pwd(void);
 
 int		ft_export(t_list *tokens, t_list **env);
 int		print_all_exported_vars(t_list *env);
+void	update_env_var_with_token(char **token_str, char *var, t_list *env);
 void	create_environment_var(char **token_str, t_list **env);
 
 /*
@@ -57,8 +58,8 @@ void	create_environment_var(char **token_str, t_list **env);
 */
 
 int		ft_unset(t_list *tokens, t_list **env);
-int	has_valid_identifier(char *token_str);
-int	is_token_valid_unset(char *token_str,char *err_message);
+void	delete_env_var(char *var, t_list **env);
+void	ft_delete_list_str(void *data);
 
 /*
 ** File builtins_utils.c.c
@@ -67,5 +68,16 @@ int	is_token_valid_unset(char *token_str,char *err_message);
 int		update_directories(char *old_dir, t_list **env);
 int		update_environment_var(char *var, char *new_value, t_list *env);
 char	*replace_env_value(char **env_ptr, char	*var_name, char *new_value);
+int		has_valid_identifier_export(char *token_str);
+int		is_token_valid_export(char *token_str, char *err_message);
+
+/*
+** File builtins_utils2.c.c
+*/
+
+int		has_valid_identifier_unset(char *token_str);
+int		is_token_valid_unset(char *token_str, char *err_message);
+void	ft_lstdel_node_nbr(t_list **lst, int node_nbr, void (*del)(void *));
+void	ft_lstdel_middle(t_list **lst, int node_nbr, void (*del)(void*));
 
 #endif

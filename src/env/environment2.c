@@ -6,12 +6,11 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 17:21:45 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/04 19:43:53 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/05 23:47:47 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "environment.h"
-
 
 /*
 ** Gets the value stored in the environment variable
@@ -22,7 +21,6 @@ linked list given a variable name
 ** Line-by-line comments:
 ** @14	comment
 */
-
 
 char	*ft_getenv(char *key)
 {
@@ -39,7 +37,7 @@ char	*ft_getenv(char *key)
 		while (key[i] && curr_envp[i] && (key[i] == curr_envp[i]))
 			i++;
 		if (!key[i] && (curr_envp[i] == '='
-							|| curr_envp[i] == '\0'))
+				|| curr_envp[i] == '\0'))
 		{
 			value = ft_strdup(&(curr_envp[i + 1]));
 			if (!value)

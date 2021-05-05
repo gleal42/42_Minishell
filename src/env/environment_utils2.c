@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 22:04:11 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/04 22:18:21 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/05 23:49:14 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*get_value_name(char *str)
 	if (str[i] == '$')
 		i++;
 	while (str[i] && !is_delimiter(str[i]) && str[i] != '$'
-			&& str[i] != '=')
+		&& str[i] != '=')
 		i++;
 	i++;
 	len = ft_strlen(str) - i;
