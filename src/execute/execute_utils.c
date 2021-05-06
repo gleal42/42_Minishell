@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 17:53:43 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/06 12:25:35 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/06 18:57:32da-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,11 @@ int	execute_builtin(t_list	*tokens, t_list **env)
 	return (0);
 }
 
-int	*init_pids(int nb_cmds)
+pid_t	*init_pids(int nb_cmds)
 {
-	int	*pids;
+	pid_t	*pids;
 
-	pids = ft_calloc(nb_cmds, sizeof(int));
+	pids = ft_calloc(nb_cmds, sizeof(pid_t));
 	if (!pids)
 		ft_exit(EXIT_FAILURE);
 	return (pids);
@@ -68,11 +68,13 @@ int	**init_pipes(int nb_cmds)
 	int	**pipes;
 	int	i;
 
-	pipes = ft_calloc(nb_cmds + 1, sizeof(int *));
+	if (nb_cmds == 1)
+		return (0);
+	pipes = ft_calloc(nb_cmds - 1, sizeof(int *));
 	if (!pipes)
 		ft_exit(EXIT_FAILURE);
 	i = 0;
-	while (i < nb_cmds + 1)
+	while (i < nb_cmds - 1)
 	{
 		pipes[i] = ft_calloc(2, sizeof(int));
 		if (!pipes[i])

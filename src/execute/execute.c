@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:42:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/06 13:01:40 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/06 16:11:44dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,14 @@
 **			and return value).
 */
 
-void	execute_ast(t_ast **ast, t_list **env)
+void	execute_ast(t_ast **ast)
 {
 	t_list		*cmd_table;
 
 	cmd_table = (*ast)->cmd_tables;
 	while (cmd_table)
 	{
-		execute_cmd_table((t_cmd_table *)cmd_table->data, env);
+		execute_cmd_table((t_cmd_table *)cmd_table->data);
 		cmd_table = cmd_table->next;
 	}
 }
@@ -57,14 +57,13 @@ void	execute_ast(t_ast **ast, t_list **env)
 **			multiple arguments)
 */
 
-void	execute_cmd_table(t_cmd_table *cmd_table, t_list **env)
+void	execute_cmd_table(t_cmd_table *cmd_table)
 {
 	int	nb_cmds;
-	int	*pids;
+	pid_t	*pids;
 	int	**pipes;
 	int	i;
 	t_list	*cmds;
-	int	status;
 
 	nb_cmds = ft_lstsize(cmd_table->cmds);
 	pids = init_pids(nb_cmds);
@@ -76,19 +75,54 @@ void	execute_cmd_table(t_cmd_table *cmd_table, t_list **env)
 		pids[i] = fork();
 		if (pids[i] < 0)
 			ft_exit(EXIT_FAILURE);
-		if (pids[i] == 0)
-			execute_cmd(cmds->data);
-		if (pids[i] > 0)
-		{
-			wait(&status);
-			if (WIFEXITED(status))
-				g_msh.exit_status = WEXITSTATUS(status);
-			else if (WIFSIGNALED(status))
-				g_msh.exit_status = WTERMSIG(status);
-		}
+		else if (pids[i] == 0)
+			exec_child_process(cmds->data, pipes, nb_cmds , i);
+		else if (pids[i] > 0)
+			exec_parent_process(pids[i]);
+		i++;
+		cmds = cmds->next;
 	}
-	(void)pipes;
-	(void)env;
+	close(pipes[0][0]);
+	close(pipes[0][1]);
+	// close(pipes[1][0]);
+	// close(pipes[1][1]);
+	// i--;
+	// while (i--)
+	// {
+	// 	close(pipes[i][0]);
+	// 	close(pipes[i][1]);
+	// }
+}
+
+void	exec_child_process(t_cmd *cmd,
+							int **pipes,
+							int nb_cmds,
+							int process_index)
+{
+	if (process_index == 1)
+		dup2(pipes[0][0], STDIN_FILENO);
+	if (process_index == 0)
+		dup2(pipes[0][1], STDOUT_FILENO);
+	// if (process_index != 0)
+	// 	dup2(pipes[process_index][0], STDIN_FILENO);
+	// if (process_index != nb_cmds - 1)
+	// 	dup2(pipes[process_index + 1][1], STDOUT_FILENO);
+	// if (process_index != 0)
+	// 	close(pipes[process_index][0]);
+	// if (process_index != nb_cmds - 1)
+	// 	close(pipes[process_index + 1][1]);
+	// nb_cmds--;
+	// while (nb_cmds--)
+	// {
+	// 	close(pipes[nb_cmds][0]);
+	// 	close(pipes[nb_cmds][1]);
+	// }
+	close(pipes[0][0]);
+	close(pipes[0][1]);
+	// close(pipes[0][0]);
+	// close(pipes[1][1]);
+	execute_cmd(cmd);
+	(void)nb_cmds;
 }
 
 void	execute_cmd(t_cmd *cmd)
@@ -104,6 +138,16 @@ void	execute_cmd(t_cmd *cmd)
 	free(envp);
 }
 
+void	exec_parent_process(pid_t pid)
+{
+	int	status;
+
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+		g_msh.exit_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		g_msh.exit_status = WTERMSIG(status);
+}
 
 	// t_list	*cmds;
 	// int		pipe;
