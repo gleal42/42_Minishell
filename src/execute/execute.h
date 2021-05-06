@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:44:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/06 18:59:35 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/06 20:26:00 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	exec_child_process(t_cmd *cmd,
 							int nb_cmds,
 							int process_index);
 void	execute_cmd(t_cmd *cmd);
-void	exec_parent_process(pid_t pid);
+void	exec_parent_process(int nb_cmds);
 
 /*
 ** File execute_utils.c

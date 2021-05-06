@@ -77,21 +77,22 @@ void	execute_cmd_table(t_cmd_table *cmd_table)
 			ft_exit(EXIT_FAILURE);
 		else if (pids[i] == 0)
 			exec_child_process(cmds->data, pipes, nb_cmds , i);
-		else if (pids[i] > 0)
-			exec_parent_process(pids[i]);
+		// else if (pids[i] > 0)
+		// 	exec_parent_process();
 		i++;
 		cmds = cmds->next;
 	}
 	close(pipes[0][0]);
 	close(pipes[0][1]);
-	// close(pipes[1][0]);
-	// close(pipes[1][1]);
+	close(pipes[1][0]);
+	close(pipes[1][1]);
 	// i--;
-	// while (i--)
+	// while (i-- > 0)
 	// {
 	// 	close(pipes[i][0]);
 	// 	close(pipes[i][1]);
 	// }
+	exec_parent_process(nb_cmds);
 }
 
 void	exec_child_process(t_cmd *cmd,
@@ -99,14 +100,14 @@ void	exec_child_process(t_cmd *cmd,
 							int nb_cmds,
 							int process_index)
 {
-	if (process_index == 1)
-		dup2(pipes[0][0], STDIN_FILENO);
-	if (process_index == 0)
-		dup2(pipes[0][1], STDOUT_FILENO);
-	// if (process_index != 0)
-	// 	dup2(pipes[process_index][0], STDIN_FILENO);
-	// if (process_index != nb_cmds - 1)
-	// 	dup2(pipes[process_index + 1][1], STDOUT_FILENO);
+	// if (process_index == 1)
+	// 	dup2(pipes[0][0], STDIN_FILENO);
+	// if (process_index == 0)
+	// 	dup2(pipes[0][1], STDOUT_FILENO);
+	if (process_index != 0)
+		dup2(pipes[process_index][0], STDIN_FILENO);
+	if (process_index != nb_cmds - 1)
+		dup2(pipes[process_index + 1][1], STDOUT_FILENO);
 	// if (process_index != 0)
 	// 	close(pipes[process_index][0]);
 	// if (process_index != nb_cmds - 1)
@@ -119,8 +120,8 @@ void	exec_child_process(t_cmd *cmd,
 	// }
 	close(pipes[0][0]);
 	close(pipes[0][1]);
-	// close(pipes[0][0]);
-	// close(pipes[1][1]);
+	close(pipes[1][0]);
+	close(pipes[1][1]);
 	execute_cmd(cmd);
 	(void)nb_cmds;
 }
@@ -138,15 +139,18 @@ void	execute_cmd(t_cmd *cmd)
 	free(envp);
 }
 
-void	exec_parent_process(pid_t pid)
+void	exec_parent_process(int nb_cmds)
 {
 	int	status;
 
-	waitpid(pid, &status, 0);
+	// while (nb_cmds--)
+		// wait(&status);
 	if (WIFEXITED(status))
 		g_msh.exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
 		g_msh.exit_status = WTERMSIG(status);
+	(void)nb_cmds;
+	(void)status;
 }
 
 	// t_list	*cmds;
