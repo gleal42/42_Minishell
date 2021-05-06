@@ -26,6 +26,8 @@
 ** @15		If execve returns, it necessarily mean that execve failed
 ** @14		The wait function allows to stop the parent process while the child
 **			process is running
+** @25		WIFEXISTED - program terminated on its own
+** @27		WIFSIGNALED - program was killed by a signal
 ** @25		If fork fails, it returns a negative value
 */
 
