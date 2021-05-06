@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 11:06:43 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/03 17:48:58 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/05 17:13:02 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ int	is_input_valid_not_supported(const char *input, char *err_message)
 
 	if (has_non_supported(input, "<<", err_message)
 		|| has_non_supported(input, "*", err_message)
+		|| has_non_supported(input, "\\", err_message)
 		|| has_non_supported(input, "&&", err_message)
 		|| has_non_supported(input, "&", err_message)
 		|| has_non_supported(input, "||", err_message))
@@ -124,7 +125,7 @@ int	is_input_valid_not_supported(const char *input, char *err_message)
 ** @return:	[int] true or false
 ** Line-by-line comments:
 ** @10-11	If we find a double quotes and single quotes are not open,
-**			we set has_double_quotes_open to its opposite, meaning:
+**			we set has_dquotes_open to its opposite, meaning:
 **			- true if it was initially false (we are opening double quotes)
 **			- false if it was initially true (we are closing double quotes)
 **			We don't care about double quotes if single quotes are open because
@@ -135,21 +136,22 @@ int	is_input_valid_not_supported(const char *input, char *err_message)
 int	has_quotes_open(const char *input, char *err_message)
 {
 	int	check;
-	int	has_double_quotes_open;
-	int	has_single_quotes_open;
+	int	has_dquotes_open;
+	int	has_squotes_open;
 
 	check = 1;
-	has_double_quotes_open = 0;
-	has_single_quotes_open = 0;
+	has_dquotes_open = 0;
+	has_squotes_open = 0;
 	while (*input)
 	{
-		if (*input == '"' && has_single_quotes_open == 0)
-			has_double_quotes_open = !has_double_quotes_open;
-		else if (*input == '\'' && has_double_quotes_open == 0)
-			has_single_quotes_open = !has_single_quotes_open;
+		if (*input == '"' && *(input - 1) != '\\' && has_squotes_open == 0)
+			has_dquotes_open = !has_dquotes_open;
+		else if (*input == '\'' && *(input - 1) != '\\'
+			&& has_dquotes_open == 0)
+			has_squotes_open = !has_squotes_open;
 		input++;
 	}
-	if (has_double_quotes_open || has_single_quotes_open)
+	if (has_dquotes_open || has_squotes_open)
 	{
 		check = 1;
 		ft_strcpy(err_message, "syntax error: open quotes");

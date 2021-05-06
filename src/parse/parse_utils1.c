@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 10:26:41 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/03 15:36:47 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/05 11:49:46 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,8 @@ char	*ft_strstr_quotes(char *str, char *to_find)
 			skip_quotes(str, &i);
 		if (!ft_strncmp(&str[i], to_find, ft_strlen(to_find)))
 			return (&str[i]);
-		i++;
+		if (str[i])
+			i++;
 	}
 	return (0);
 }

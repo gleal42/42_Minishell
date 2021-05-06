@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 17:33:17 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/04 17:52:17 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/06 16:09:29 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	main(int argc, char **argv, char **envp)
 		//print_ast(g_msh.ast);
 		execute_ast(&g_msh.ast, &g_msh.dup_envp);
 		free_ast(g_msh.ast);
+		g_msh.ast = 0;
 	}
 	return (0);
 }
@@ -81,4 +82,12 @@ void	init_minishell(t_msh *msh, char **envp)
 	ft_bzero(msh, sizeof(msh));
 	duplicate_env(&msh->dup_envp, envp);
 	init_termcaps(&msh->termcaps);
+	signal(SIGINT, catch_signals);
+	signal(SIGQUIT, catch_signals);
+}
+
+void	catch_signals(int signum)
+{
+	(void)signum;
+	ft_putstr("\n");
 }

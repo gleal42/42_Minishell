@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/02 10:11:09 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/02 11:26:07 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/05 15:08:19 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,21 @@
 ** @param:	- [char *] buffer where input chars and ctrl-c have been stored
 **			- [int *] size of the buffer before last read. We pass pointer
 **					  because we need to set it to 0
+** Line-by-line comments:
+** @5-9		After pressing Ctrl-C, we need to rewind the input history
 */
 
-void	reset_cmd_line(char *buf, int *i)
+void	reset_cmd_line(char *buf, int *i, t_dlist **input_history)
 {
 	write(STDOUT_FILENO, "^C\n", ft_strlen("^C\n"));
 	write_prompt();
 	ft_bzero(buf, BUFSIZ);
 	*i = 0;
+	if (*input_history)
+	{
+		while ((*input_history)->prev)
+			*input_history = (*input_history)->prev;
+	}
 }
 
 /*

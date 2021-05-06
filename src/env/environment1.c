@@ -20,7 +20,7 @@
 ** @11-12	When using single quotes there is no env var substitution;
 */
 
-void	env_vars(t_list	*tokens, int last_status)
+void	env_vars(t_list	*tokens)
 {
 	char	**str;
 	char	delim;
@@ -35,7 +35,7 @@ void	env_vars(t_list	*tokens, int last_status)
 		if (delim != '\'')
 		{
 			replace_vars_with_values(str);
-			replace_special_params(str, last_status);
+			replace_special_params(str, g_msh.exit_status);
 		}
 		tokens = tokens->next;
 	}
@@ -69,11 +69,9 @@ void	replace_vars_with_values(char **str)
 				final = replace_midstring(*str, var, value, i);
 				free(value);
 				free(*str);
-				value = 0;
 				*str = final;
 			}
 			free(var);
-			var = 0;
 		}
 		i++;
 	}
