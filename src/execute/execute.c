@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:42:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/04 12:20:38 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/06 13:01:40 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,20 +59,66 @@ void	execute_ast(t_ast **ast, t_list **env)
 
 void	execute_cmd_table(t_cmd_table *cmd_table, t_list **env)
 {
+	int	nb_cmds;
+	int	*pids;
+	int	**pipes;
+	int	i;
 	t_list	*cmds;
-	int		pipe;
+	int	status;
 
+	nb_cmds = ft_lstsize(cmd_table->cmds);
+	pids = init_pids(nb_cmds);
+	pipes = init_pipes(nb_cmds);
+	i = 0;
 	cmds = cmd_table->cmds;
-	while (cmds)
+	while (i < nb_cmds)
 	{
-		if (cmds->next == NULL)
-			pipe = 0;
-		else
-			pipe = 1;
-		execute_cmd((t_cmd *)cmds->data, env, pipe);
-		cmds = cmds->next;
+		pids[i] = fork();
+		if (pids[i] < 0)
+			ft_exit(EXIT_FAILURE);
+		if (pids[i] == 0)
+			execute_cmd(cmds->data);
+		if (pids[i] > 0)
+		{
+			wait(&status);
+			if (WIFEXITED(status))
+				g_msh.exit_status = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+				g_msh.exit_status = WTERMSIG(status);
+		}
 	}
+	(void)pipes;
+	(void)env;
 }
+
+void	execute_cmd(t_cmd *cmd)
+{
+	char	**tokens;
+	char	**envp;
+
+	env_vars(cmd->tokens);
+	tokens = convert_list_to_arr_tokens(cmd->tokens);
+	envp = convert_list_to_arr(g_msh.dup_envp);
+	execute_program(tokens, envp, cmd->redirs);
+	free(tokens);
+	free(envp);
+}
+
+
+	// t_list	*cmds;
+	// int		pipe;
+
+	// cmds = cmd_table->cmds;
+	// while (cmds)
+	// {
+	// 	if (cmds->next == NULL)
+	// 		pipe = 0;
+	// 	else
+	// 		pipe = 1;
+	// 	execute_cmd((t_cmd *)cmds->data, env, pipe);
+	// 	cmds = cmds->next;
+	// }
+// }
 
 /*
 ** Executes the command based on the first token/word
@@ -87,26 +133,26 @@ void	execute_cmd_table(t_cmd_table *cmd_table, t_list **env)
 ** @12		Executes recreated functions (echo, cd, pwd, export, unset, env, exit)
 */
 
-void	execute_cmd(t_cmd *cmd, t_list **env, int pipe)
-{
-	t_list	*tokens;
-	char	*first;
-	char	**arr_tokens;
-	char	**arr_env;
+// void	execute_cmd(t_cmd *cmd, t_list **env, int pipe)
+// {
+// 	t_list	*tokens;
+// 	char	*first;
+// 	char	**arr_tokens;
+// 	char	**arr_env;
 
-	tokens = cmd->tokens;
-	if (tokens == 0)
-		return ;
-	env_vars(tokens);
-	arr_tokens = convert_list_to_arr_tokens(tokens);
-	arr_env = convert_list_to_arr(*env);
-	first = ((t_token *)tokens->data)->str;
-	if (ft_strcmp(first, "exit") == 0 && pipe == 0)
-		ft_exit(0);
-	if (is_builtin(first))
-		g_msh.exit_status = execute_builtin(tokens, env);
-	else
-		execute_program(arr_tokens, cmd->redirs, arr_env);
-	free(arr_tokens);
-	free(arr_env);
-}
+// 	tokens = cmd->tokens;
+// 	if (tokens == 0)
+// 		return ;
+// 	env_vars(tokens);
+// 	arr_tokens = convert_list_to_arr_tokens(tokens);
+// 	arr_env = convert_list_to_arr(*env);
+// 	first = ((t_token *)tokens->data)->str;
+// 	if (ft_strcmp(first, "exit") == 0 && pipe == 0)
+// 		ft_exit(0);
+// 	if (is_builtin(first))
+// 		g_msh.exit_status = execute_builtin(tokens, env);
+// 	else
+// 		execute_program(arr_tokens, cmd->redirs, arr_env);
+// 	free(arr_tokens);
+// 	free(arr_env);
+// }

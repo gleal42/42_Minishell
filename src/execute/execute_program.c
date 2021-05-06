@@ -31,38 +31,22 @@
 ** @25		If fork fails, it returns a negative value
 */
 
-void	execute_program(char **tokens, t_list *redirs, char **envp)
+void	execute_program(char **tokens, char **envp, t_list *redirs)
 {
-	pid_t	pid;
-	int		status;
 	char	*exec_path;
 
 	if (has_relative_path(tokens[0]))
 		exec_path = ft_strdup(tokens[0]);
 	else
-		exec_path = get_absolute_path(tokens[0]);
-	pid = fork();
-	if (pid == 0)
+	exec_path = get_absolute_path(tokens[0]);
+	execve(exec_path, tokens, envp);
+	if (errno == ENOENT)
 	{
-		execve(exec_path, tokens, envp);
-		if (errno == ENOENT)
-		{
-			write_func_err_message(tokens[0], "command not found");
-			exit(EXIT_CMD_NOT_FOUND);
-		}
-		else
-			exit(EXIT_FAILURE);
+		write_func_err_message(tokens[0], "command not found");
+		exit(EXIT_CMD_NOT_FOUND);
 	}
-	if (pid > 0)
-	{
-		pid = wait(&status);
-		if (WIFEXITED(status))
-			g_msh.exit_status = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-			g_msh.exit_status = WTERMSIG(status);
-	}
-	if (pid < 0)
-		ft_exit(EXIT_FAILURE);
+	else
+		exit(EXIT_FAILURE);
 	free(exec_path);
 	(void)redirs;
 }

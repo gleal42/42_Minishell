@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 17:53:43 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/01 22:24:15 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/06 12:25:35 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,35 @@ int	execute_builtin(t_list	*tokens, t_list **env)
 	if (ft_strcmp(first, "cd") == 0)
 		return (ft_cd(tokens->next, env));
 	return (0);
+}
+
+int	*init_pids(int nb_cmds)
+{
+	int	*pids;
+
+	pids = ft_calloc(nb_cmds, sizeof(int));
+	if (!pids)
+		ft_exit(EXIT_FAILURE);
+	return (pids);
+}
+
+int	**init_pipes(int nb_cmds)
+{
+	int	**pipes;
+	int	i;
+
+	pipes = ft_calloc(nb_cmds + 1, sizeof(int *));
+	if (!pipes)
+		ft_exit(EXIT_FAILURE);
+	i = 0;
+	while (i < nb_cmds + 1)
+	{
+		pipes[i] = ft_calloc(2, sizeof(int));
+		if (!pipes[i])
+			ft_exit(EXIT_FAILURE);
+		if (pipe(pipes[i]) == -1)
+			ft_exit(EXIT_FAILURE);
+		i++;
+	}
+	return (pipes);
 }
