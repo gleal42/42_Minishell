@@ -23,8 +23,10 @@
 **			- a first time inside the child process with the value 0
 **			- a second time inside the parent process with the value of the
 **			process id of the child
+** @15		If execve returns, it necessarily mean that execve failed
 ** @14		The wait function allows to stop the parent process while the child
 **			process is running
+** @25		If fork fails, it returns a negative value
 */
 
 void	execute_program(char **tokens, t_list *redirs, char **envp)

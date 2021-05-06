@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 16:48:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/05 16:49:32 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/05 19:12:07 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # include "structs.h"
 # include "constants.h"
 # include "utils.h"
+# include "signals.h"
 
 # include "free_memory.h"
 # include "ft_exit.h"

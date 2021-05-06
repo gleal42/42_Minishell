@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 17:33:17 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/05 16:57:30 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/05 19:12:15 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,5 @@ void	init_minishell(t_msh *msh, char **envp)
 	init_termcaps(&msh->termcaps);
 	signal(SIGINT, catch_signals);
 	signal(SIGQUIT, catch_signals);
-}
-
-void	catch_signals(int signum)
-{
-	(void)signum;
-	ft_putstr("\n");
+	signal(SIGSEGV, catch_seg_fault);
 }
