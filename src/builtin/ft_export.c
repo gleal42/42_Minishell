@@ -36,7 +36,7 @@ int	ft_export(t_list *tokens, t_list **env)
 
 	status = 0;
 	if (tokens == 0)
-		status = print_all_exported_vars(*env);
+		print_all_exported_vars(*env);
 	else
 	{
 		while (tokens)
@@ -55,7 +55,7 @@ int	ft_export(t_list *tokens, t_list **env)
 			tokens = tokens->next;
 		}
 	}
-	return (status);
+	return (0);
 }
 
 /*
