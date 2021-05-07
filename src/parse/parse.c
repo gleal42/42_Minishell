@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 10:37:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/07 21:04:42 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/07 23:27:15 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ t_ast	*get_ast(const char *input)
 	curr_pos = 0;
 	while (input[curr_pos])
 	{
-		skip_spaces(input, &curr_pos);
 		cmd_table = ft_lstnew((void *)get_cmd_table(input, &curr_pos));
 		if (!cmd_table)
 			ft_exit(EXIT_FAILURE);
@@ -78,6 +77,7 @@ t_cmd_table	*get_cmd_table(const char *input, int *curr_pos)
 		ft_exit(EXIT_FAILURE);
 	while (input[*curr_pos])
 	{
+		skip_spaces(input, curr_pos);
 		cmd = ft_lstnew((void *)get_cmd(input, curr_pos));
 		if (!cmd)
 			ft_exit(EXIT_FAILURE);
