@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 22:23:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/07 23:25:53 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/07 23:57:27 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ void	execute_cmd_table(t_cmd_table *cmd_table)
 	cmds = cmd_table->cmds;
 	while (i < nb_cmds)
 	{
+		if (cmds->next == 0)
+			check_exit(cmds->data);
 		pids[i] = fork();
 		if (pids[i] < 0)
 			ft_exit(EXIT_FAILURE);
@@ -122,9 +124,14 @@ void	execute_cmd(t_cmd *cmd)
 	env_vars(cmd->tokens);
 	tokens = convert_list_to_arr_tokens(cmd->tokens);
 	envp = convert_list_to_arr(g_msh.dup_envp);
-	execute_program(tokens, envp, cmd->redirs);
-	if (errno == ENOENT)
-		write_func_err_message(tokens[0], "command not found");
+	if (is_builtin(tokens[0]))
+		execute_builtin(cmd->tokens, &g_msh.dup_envp);
+	else
+	{
+		execute_program(tokens, envp, cmd->redirs);
+		if (errno == ENOENT)
+			write_func_err_message(tokens[0], "command not found");
+	}
 	free(tokens);
 	free(envp);
 	if (errno == ENOENT)

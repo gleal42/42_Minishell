@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:44:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/07 10:27:30 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/08 00:05:57 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,6 @@ int		is_builtin(char *first_token);
 int		execute_builtin(t_list	*tokens, t_list **env);
 pid_t	*init_pids(int nb_cmds);
 int		**init_pipes(int nb_cmds);
+void	check_exit(t_cmd *cmd);
 
 #endif
