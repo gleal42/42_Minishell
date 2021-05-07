@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 17:53:43 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/06 18:57:32da-silv         ###   ########.fr       */
+/*   Updated: 2021/05/07 21:35:02 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,12 @@ int	is_builtin(char *first_token)
 	if (ft_strcmp(first_token, "env") == 0)
 		return (1);
 	if (ft_strcmp(first_token, "cd") == 0)
+		return (1);
+	if (ft_strcmp(first_token, "pwd") == 0)
+		return (1);
+	if (ft_strcmp(first_token, "export") == 0)
+		return (1);
+	if (ft_strcmp(first_token, "unset") == 0)
 		return (1);
 	else
 		return (0);
@@ -50,6 +56,12 @@ int	execute_builtin(t_list	*tokens, t_list **env)
 		return (ft_env(*env));
 	if (ft_strcmp(first, "cd") == 0)
 		return (ft_cd(tokens->next, env));
+	if (ft_strcmp(first, "pwd") == 0)
+		return (ft_pwd());
+	if (ft_strcmp(first, "export") == 0)
+		return (ft_export(tokens->next, env));
+	if (ft_strcmp(first, "unset") == 0)
+		return (ft_unset(tokens->next, env));
 	return (0);
 }
 

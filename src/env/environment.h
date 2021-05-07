@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 14:59:16 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/04 12:13:38 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/06 16:10:21 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,11 @@ int		ft_strnstr_iterator(char *haystack, char *needle, size_t len);
 char	*replace_midstring(char *original, char *old_substr,
 			char *new_substr, int replace_i);
 void	tilde_join(char **str, char **home_path);
+
+/*
+** File environment_utils2.c
+*/
+
+char	*get_value_name(char *str);
 
 #endif

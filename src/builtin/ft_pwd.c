@@ -1,33 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/26 14:19:39 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/03 19:48:32by gleal            ###   ########.fr       */
+/*   Created: 2021/05/03 18:11:26 by gleal             #+#    #+#             */
+/*   Updated: 2021/05/03 18:19:37 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
 /*
-** prints environment variable string linked lists one by one
+** prints current working directory
 ** @param:	- [t_list *] environment variable string linked list
 ** @return:	[int] exit status 
 */
 
-int	ft_env(t_list *env)
+int	ft_pwd(void)
 {
-	char	*env_str;
+	char	pwd[1024];
 
-	while (env)
-	{
-		env_str = (char *)env->data;
-		if (ft_strchr(env_str, '='))
-			printf("%s\n", env_str);
-		env = env->next;
-	}
+	if (getcwd(pwd, 1024) == NULL)
+		return (1);
+	printf("%s\n", pwd);
 	return (0);
 }
