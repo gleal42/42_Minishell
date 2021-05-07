@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/21 14:42:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/06 16:11:44dda-silv         ###   ########.fr       */
+/*   Created: 2021/05/07 22:23:06 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/05/07 22:54:15 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void	exec_child_process(t_cmd *cmd,
 
 	if (has_redirs_input(cmd->redirs))
 	{
+		printf("\033[0;34m📌 Here in %s line %d\n\033[0m", __FILE__, __LINE__);
 		fd_input = set_redirs_input(cmd->redirs);
 		dup2(fd_input, STDIN_FILENO);
 		close(fd_input);
@@ -104,11 +105,12 @@ void	exec_child_process(t_cmd *cmd,
 		dup2(pipes[process_index - 1][0], STDIN_FILENO);
 	if (has_redirs_output(cmd->redirs))
 	{
+		printf("\033[0;34m📌 Here in %s line %d\n\033[0m", __FILE__, __LINE__);
 		fd_output = set_redirs_output(cmd->redirs);
 		dup2(fd_output, STDOUT_FILENO);
 		close(fd_output);
 	}
-	if (process_index != nb_cmds - 1)
+	else if (process_index != nb_cmds - 1)
 		dup2(pipes[process_index][1], STDOUT_FILENO);
 	close_all_pipes(pipes, nb_cmds);
 	execute_cmd(cmd);

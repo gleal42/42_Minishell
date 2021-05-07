@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 16:48:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/07 19:16:27 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/07 22:29:39 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MAIN_H
 
 # include <string.h>
+# include <fcntl.h>
 # include <curses.h>
 # include <termcap.h>
 # include <errno.h>

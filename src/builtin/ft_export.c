@@ -32,9 +32,7 @@ int	ft_export(t_list *tokens, t_list **env)
 {
 	char	*var;
 	char	*token_str;
-	int		status;
 
-	status = 0;
 	if (tokens == 0)
 		print_all_exported_vars(*env);
 	else

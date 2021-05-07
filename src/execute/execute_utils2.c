@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_program.c                                  :+:      :+:    :+:   */
+/*   execute_utils2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/03 22:10:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/04 14:35:15dda-silv         ###   ########.fr       */
+/*   Created: 2021/05/07 22:22:51 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/05/07 22:40:56 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,29 @@ int	has_redirs_input(t_list *redirs)
 
 int	set_redirs_input(t_list *redirs)
 {
-	(void)redirs;
-	return (1);
+	int		fd_input;
+	t_redir	*redir;
+	char	*file;
+
+	fd_input = 0;
+	while (redirs)
+	{
+		redir = (t_redir *)redirs->data;
+		if (!ft_strcmp(redir->type, "<"))
+		{
+			file = redir->direction->str;
+			if (fd_input != 0)
+				close(fd_input);
+			fd_input = open(file, O_RDONLY);
+			if (fd_input == -1)
+			{
+				write_gen_func_err_message(file, strerror(errno));
+				exit(errno);
+			}
+		}
+		redirs = redirs->next;
+	}
+	return (fd_input);
 }
 
 int	has_redirs_output(t_list *redirs)
@@ -102,6 +123,30 @@ int	has_redirs_output(t_list *redirs)
 
 int	set_redirs_output(t_list *redirs)
 {
-	(void)redirs;
-	return (1);
+	int		fd_output;
+	t_redir	*redir;
+	char	*file;
+
+	fd_output = 0;
+	while (redirs)
+	{
+		redir = (t_redir *)redirs->data;
+		if (!ft_strcmp(redir->type, ">") || !ft_strcmp(redir->type, ">>"))
+		{
+			file = redir->direction->str;
+			if (fd_output != 0)
+				close(fd_output);
+			if (!ft_strcmp(redir->type, ">"))
+				fd_output = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+			else if (!ft_strcmp(redir->type, ">>"))
+				fd_output = open(file, O_WRONLY | O_CREAT | O_APPEND, 0666);
+			if (fd_output == -1)
+			{
+				write_gen_func_err_message(file, strerror(errno));
+				exit(errno);
+			}
+		}
+		redirs = redirs->next;
+	}
+	return (fd_output);
 }
