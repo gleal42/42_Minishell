@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 10:37:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/05 15:27:18 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/07 18:41:18 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ t_ast	*get_ast(const char *input)
 	curr_pos = 0;
 	while (input[curr_pos])
 	{
+		skip_spaces(input, &curr_pos);
 		cmd_table = ft_lstnew((void *)get_cmd_table(input, &curr_pos));
 		if (!cmd_table)
 			ft_exit(EXIT_FAILURE);
@@ -110,22 +111,29 @@ t_cmd_table	*get_cmd_table(const char *input, int *curr_pos)
 t_cmd	*get_cmd(const char *input, int *curr_pos)
 {
 	t_cmd	*cmd;
-	t_list	*token;
+	t_list	*new_node;
 
 	cmd = ft_calloc(1, sizeof(t_cmd));
 	if (!cmd)
 		ft_exit(EXIT_FAILURE);
-	skip_spaces(input, curr_pos);
-	while (input[*curr_pos] && !is_delimiter(input[*curr_pos]))
+	while (input[*curr_pos] && input[*curr_pos] != ';'
+			&& input[*curr_pos] != '|')
 	{
-		token = ft_lstnew((void *)get_token(input, curr_pos));
-		if (!token)
-			ft_exit(EXIT_FAILURE);
-		ft_lstadd_back(&cmd->tokens, token);
-		skip_spaces(input, curr_pos);
+		if (input[*curr_pos] != '>' && input[*curr_pos] != '<')
+		{
+			new_node = ft_lstnew((void *)get_token(input, curr_pos));
+			if (!new_node)
+				ft_exit(EXIT_FAILURE);
+			ft_lstadd_back(&cmd->tokens, new_node);
+		}
+		else if (input[*curr_pos] == '>' || input[*curr_pos] == '<')
+		{
+			new_node = ft_lstnew((void *)get_redir(input, curr_pos));
+			if (!new_node)
+				ft_exit(EXIT_FAILURE);
+			ft_lstadd_back(&cmd->redirs, new_node);
+		}
 	}
-	if (input[*curr_pos] == '>' || input[*curr_pos] == '<')
-		cmd->redirs = get_redirs(input, curr_pos);
 	return (cmd);
 }
 
@@ -181,5 +189,37 @@ t_token	*get_token(const char *input, int *curr_pos)
 		(*curr_pos)++;
 	else if (token->delimiter == ' ')
 		delete_quotes(token->str);
+	skip_spaces(input, curr_pos);
 	return (token);
+}
+
+/*
+** Gets a single redirection
+** @param:	- [const char *] the unchanged line entered in stdin
+**			- [int *] the current parsing position within the input  
+** @return:	[t_redir *] struct with a string with the direction and the type
+** Line-by-line comments:
+** @6-14	Gets the type
+** @16		Gets the file
+*/
+
+t_redir	*get_redir(const char *input, int *curr_pos)
+{
+	t_redir	*redir;
+
+	redir = ft_calloc(1, sizeof(t_redir));
+	if (!redir)
+		ft_exit(EXIT_FAILURE);
+	if (input[*curr_pos] == '<')
+		*redir->type = input[(*curr_pos)++];
+	else if (!ft_strncmp(&input[*curr_pos], ">>", 2))
+	{
+		ft_strncpy(redir->type, (char *)&input[*curr_pos], 2);
+		*curr_pos += 2;
+	}
+	else if (input[*curr_pos] == '>')
+		*redir->type = input[(*curr_pos)++];
+	skip_spaces(input, curr_pos);
+	redir->direction = get_token(input, curr_pos);
+	return (redir);
 }
