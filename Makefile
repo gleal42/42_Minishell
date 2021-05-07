@@ -6,7 +6,7 @@
 #    By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/11 09:33:15 by dda-silv          #+#    #+#              #
-#    Updated: 2021/04/25 13:18:36 by dda-silv         ###   ########.fr        #
+#    Updated: 2021/05/03 17:48:06 by dda-silv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -90,11 +90,11 @@ debug:						re
 # Format functions
 
 normH:
-							norminette $(shell find $(PATH_SRC) -name *.h)
+							@ norminette $(shell find $(PATH_SRC) -name *.h)
 							@ make -C $(PATH_LIBFT) normH
 
 normC:
-							norminette $(SRCS)
+							@ norminette $(SRCS)
 							@ make -C $(PATH_LIBFT) normC
 
 norm:						normH normC

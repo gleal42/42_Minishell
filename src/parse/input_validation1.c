@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 11:06:43 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/05 15:10:56 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/05 17:13:02 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ int	is_input_valid(const char *input)
 ** Line-by-line comments:
 ** @4-9		has_char_at_beginning() and has_char_at_end() trim whitespaces at
 **			both ends of the input before checking
-** @10-14	The has_forbidden_sequence() function remove alls white spaces (except between
-**			quotes) before checking
+** @10-14	The has_forbidden_sequence() function remove alls white spaces
+** 			(except between quotes) before checking
 */
 
 int	is_input_valid_unexpected_token(const char *input, char *err_message)
