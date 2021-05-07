@@ -84,8 +84,8 @@ void	execute_cmd_table(t_cmd_table *cmd_table)
 	}
 	close(pipes[0][0]);
 	close(pipes[0][1]);
-	close(pipes[1][0]);
-	close(pipes[1][1]);
+	// close(pipes[1][0]);
+	// close(pipes[1][1]);
 	// i--;
 	// while (i-- > 0)
 	// {
@@ -100,14 +100,14 @@ void	exec_child_process(t_cmd *cmd,
 							int nb_cmds,
 							int process_index)
 {
-	// if (process_index == 1)
-	// 	dup2(pipes[0][0], STDIN_FILENO);
-	// if (process_index == 0)
-	// 	dup2(pipes[0][1], STDOUT_FILENO);
-	if (process_index != 0)
-		dup2(pipes[process_index][0], STDIN_FILENO);
-	if (process_index != nb_cmds - 1)
-		dup2(pipes[process_index + 1][1], STDOUT_FILENO);
+	if (process_index == 1)
+		dup2(pipes[0][0], STDIN_FILENO);
+	if (process_index == 0)
+		dup2(pipes[0][1], STDOUT_FILENO);
+	// if (process_index != 0)
+	// 	dup2(pipes[process_index][0], STDIN_FILENO);
+	// if (process_index != nb_cmds - 1)
+	// 	dup2(pipes[process_index + 1][1], STDOUT_FILENO);
 	// if (process_index != 0)
 	// 	close(pipes[process_index][0]);
 	// if (process_index != nb_cmds - 1)
@@ -120,8 +120,8 @@ void	exec_child_process(t_cmd *cmd,
 	// }
 	close(pipes[0][0]);
 	close(pipes[0][1]);
-	close(pipes[1][0]);
-	close(pipes[1][1]);
+	// close(pipes[1][0]);
+	// close(pipes[1][1]);
 	execute_cmd(cmd);
 	(void)nb_cmds;
 }
@@ -143,8 +143,8 @@ void	exec_parent_process(int nb_cmds)
 {
 	int	status;
 
-	// while (nb_cmds--)
-		// wait(&status);
+	while (nb_cmds--)
+		wait(&status);
 	if (WIFEXITED(status))
 		g_msh.exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
