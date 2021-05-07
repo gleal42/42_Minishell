@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:44:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/07 09:42:24 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/07 10:27:30 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@
 void	execute_ast(t_ast **ast);
 void	execute_cmd_table(t_cmd_table *cmd_table);
 void	exec_child_process(t_cmd *cmd,
-							int **pipes,
-							int nb_cmds,
-							int process_index);
+			int **pipes,
+			int nb_cmds,
+			int process_index);
 void	execute_cmd(t_cmd *cmd);
 void	exec_parent_process(int nb_cmds,
-							pid_t pid,
-							int **pipes,
-							int process_index);
+			pid_t pid,
+			int **pipes,
+			int process_index);
 
 /*
 ** File execute_utils.c

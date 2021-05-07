@@ -59,10 +59,10 @@ void	execute_ast(t_ast **ast)
 
 void	execute_cmd_table(t_cmd_table *cmd_table)
 {
-	int	nb_cmds;
+	int		nb_cmds;
 	pid_t	*pids;
-	int	**pipes;
-	int	i;
+	int		**pipes;
+	int		i;
 	t_list	*cmds;
 
 	nb_cmds = ft_lstsize(cmd_table->cmds);
@@ -76,12 +76,14 @@ void	execute_cmd_table(t_cmd_table *cmd_table)
 		if (pids[i] < 0)
 			ft_exit(EXIT_FAILURE);
 		else if (pids[i] == 0)
-			exec_child_process(cmds->data, pipes, nb_cmds , i);
+			exec_child_process(cmds->data, pipes, nb_cmds, i);
 		else if (pids[i] > 0)
 			exec_parent_process(nb_cmds, pids[i], pipes, i);
 		i++;
 		cmds = cmds->next;
 	}
+	free(pids);
+	free_arr((void **)pipes);
 }
 
 void	exec_child_process(t_cmd *cmd,
@@ -116,7 +118,10 @@ void	execute_cmd(t_cmd *cmd)
 		exit(EXIT_FAILURE);
 }
 
-void	exec_parent_process(int nb_cmds, pid_t pid, int **pipes, int process_index)
+void	exec_parent_process(int nb_cmds,
+							pid_t pid,
+							int **pipes,
+							int process_index)
 {
 	int	status;
 
