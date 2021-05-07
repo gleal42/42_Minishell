@@ -91,8 +91,23 @@ void	exec_child_process(t_cmd *cmd,
 							int nb_cmds,
 							int process_index)
 {
-	if (process_index != 0)
+	int		fd_input;
+	int		fd_output;
+
+	if (has_redirs_input(cmd->redirs))
+	{
+		fd_input = set_redirs_input(cmd->redirs);
+		dup2(fd_input, STDIN_FILENO);
+		close(fd_input);
+	}
+	else if (process_index != 0)
 		dup2(pipes[process_index - 1][0], STDIN_FILENO);
+	if (has_redirs_output(cmd->redirs))
+	{
+		fd_output = set_redirs_output(cmd->redirs);
+		dup2(fd_output, STDOUT_FILENO);
+		close(fd_output);
+	}
 	if (process_index != nb_cmds - 1)
 		dup2(pipes[process_index][1], STDOUT_FILENO);
 	close_all_pipes(pipes, nb_cmds);

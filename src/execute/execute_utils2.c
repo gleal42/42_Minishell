@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execute_program.h"
+#include "execute_utils2.h"
 
 /*
 ** Executes a program. The program can either be local (e.g. ./a.out) or
@@ -54,4 +54,54 @@ void	close_all_pipes(int **pipes, int nb_cmds)
 		close(pipes[nb_pipes][0]);
 		close(pipes[nb_pipes][1]);
 	}
+}
+
+int	has_redirs_input(t_list *redirs)
+{
+	int		check;
+	t_redir	*redir;
+
+	check = 0;
+	while (redirs)
+	{
+		redir = (t_redir *)redirs->data;
+		if (!ft_strcmp(redir->type, "<"))
+		{
+			check = 1;
+			break ;
+		}
+		redirs = redirs->next;
+	}
+	return (check);
+}
+
+int	set_redirs_input(t_list *redirs)
+{
+	(void)redirs;
+	return (1);
+}
+
+int	has_redirs_output(t_list *redirs)
+{
+	int		check;
+	t_redir	*redir;
+
+	check = 0;
+	while (redirs)
+	{
+		redir = (t_redir *)redirs->data;
+		if (!ft_strcmp(redir->type, ">") || !ft_strcmp(redir->type, ">>"))
+		{
+			check = 1;
+			break ;
+		}
+		redirs = redirs->next;
+	}
+	return (check);
+}
+
+int	set_redirs_output(t_list *redirs)
+{
+	(void)redirs;
+	return (1);
 }
