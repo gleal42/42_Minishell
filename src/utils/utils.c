@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 10:38:08 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/04 14:27:27 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/07 09:48:47 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ void	write_gen_err_message(char *err_message)
 
 void	write_func_err_message(char *func_name, char *err_message)
 {
-	ft_putstr(func_name);
-	ft_putstr(": ");
-	ft_putstr(err_message);
-	ft_putstr("\n");
+	ft_putstr_fd(func_name, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	ft_putstr_fd(err_message, STDERR_FILENO);
+	ft_putstr_fd("\n", STDERR_FILENO);
 }
 
 /*

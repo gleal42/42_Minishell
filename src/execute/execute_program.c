@@ -38,15 +38,20 @@ void	execute_program(char **tokens, char **envp, t_list *redirs)
 	if (has_relative_path(tokens[0]))
 		exec_path = ft_strdup(tokens[0]);
 	else
-	exec_path = get_absolute_path(tokens[0]);
+		exec_path = get_absolute_path(tokens[0]);
 	execve(exec_path, tokens, envp);
-	if (errno == ENOENT)
-	{
-		write_func_err_message(tokens[0], "command not found");
-		exit(EXIT_CMD_NOT_FOUND);
-	}
-	else
-		exit(EXIT_FAILURE);
 	free(exec_path);
 	(void)redirs;
+}
+
+void	close_all_pipes(int **pipes, int nb_cmds)
+{
+	int	nb_pipes;
+
+	nb_pipes = nb_cmds - 1;
+	while (nb_pipes--)
+	{
+		close(pipes[nb_pipes][0]);
+		close(pipes[nb_pipes][1]);
+	}
 }

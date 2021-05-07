@@ -77,22 +77,11 @@ void	execute_cmd_table(t_cmd_table *cmd_table)
 			ft_exit(EXIT_FAILURE);
 		else if (pids[i] == 0)
 			exec_child_process(cmds->data, pipes, nb_cmds , i);
-		// else if (pids[i] > 0)
-		// 	exec_parent_process();
+		else if (pids[i] > 0)
+			exec_parent_process(nb_cmds, pids[i], pipes, i);
 		i++;
 		cmds = cmds->next;
 	}
-	close(pipes[0][0]);
-	close(pipes[0][1]);
-	// close(pipes[1][0]);
-	// close(pipes[1][1]);
-	// i--;
-	// while (i-- > 0)
-	// {
-	// 	close(pipes[i][0]);
-	// 	close(pipes[i][1]);
-	// }
-	exec_parent_process(nb_cmds);
 }
 
 void	exec_child_process(t_cmd *cmd,
@@ -100,30 +89,12 @@ void	exec_child_process(t_cmd *cmd,
 							int nb_cmds,
 							int process_index)
 {
-	if (process_index == 1)
-		dup2(pipes[0][0], STDIN_FILENO);
-	if (process_index == 0)
-		dup2(pipes[0][1], STDOUT_FILENO);
-	// if (process_index != 0)
-	// 	dup2(pipes[process_index][0], STDIN_FILENO);
-	// if (process_index != nb_cmds - 1)
-	// 	dup2(pipes[process_index + 1][1], STDOUT_FILENO);
-	// if (process_index != 0)
-	// 	close(pipes[process_index][0]);
-	// if (process_index != nb_cmds - 1)
-	// 	close(pipes[process_index + 1][1]);
-	// nb_cmds--;
-	// while (nb_cmds--)
-	// {
-	// 	close(pipes[nb_cmds][0]);
-	// 	close(pipes[nb_cmds][1]);
-	// }
-	close(pipes[0][0]);
-	close(pipes[0][1]);
-	// close(pipes[1][0]);
-	// close(pipes[1][1]);
+	if (process_index != 0)
+		dup2(pipes[process_index - 1][0], STDIN_FILENO);
+	if (process_index != nb_cmds - 1)
+		dup2(pipes[process_index][1], STDOUT_FILENO);
+	close_all_pipes(pipes, nb_cmds);
 	execute_cmd(cmd);
-	(void)nb_cmds;
 }
 
 void	execute_cmd(t_cmd *cmd)
@@ -135,72 +106,25 @@ void	execute_cmd(t_cmd *cmd)
 	tokens = convert_list_to_arr_tokens(cmd->tokens);
 	envp = convert_list_to_arr(g_msh.dup_envp);
 	execute_program(tokens, envp, cmd->redirs);
+	if (errno == ENOENT)
+		write_func_err_message(tokens[0], "command not found");
 	free(tokens);
 	free(envp);
+	if (errno == ENOENT)
+		exit(EXIT_CMD_NOT_FOUND);
+	else
+		exit(EXIT_FAILURE);
 }
 
-void	exec_parent_process(int nb_cmds)
+void	exec_parent_process(int nb_cmds, pid_t pid, int **pipes, int process_index)
 {
 	int	status;
 
-	while (nb_cmds--)
-		wait(&status);
+	if (nb_cmds == process_index)
+		close_all_pipes(pipes, nb_cmds);
+	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
 		g_msh.exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
 		g_msh.exit_status = WTERMSIG(status);
-	(void)nb_cmds;
-	(void)status;
 }
-
-	// t_list	*cmds;
-	// int		pipe;
-
-	// cmds = cmd_table->cmds;
-	// while (cmds)
-	// {
-	// 	if (cmds->next == NULL)
-	// 		pipe = 0;
-	// 	else
-	// 		pipe = 1;
-	// 	execute_cmd((t_cmd *)cmds->data, env, pipe);
-	// 	cmds = cmds->next;
-	// }
-// }
-
-/*
-** Executes the command based on the first token/word
-** @param:	- [t_cmd *] current command
-**			- [t_list **] pointer to linked list with all the environment
-						  variables
-**			- [int] idenfifies if the output will be redirected or if we should
-**					execute the command
-** @return:	[int] exit status of command
-** Line-by-line comments:
-** @7		Replaces environment variables by their values
-** @12		Executes recreated functions (echo, cd, pwd, export, unset, env, exit)
-*/
-
-// void	execute_cmd(t_cmd *cmd, t_list **env, int pipe)
-// {
-// 	t_list	*tokens;
-// 	char	*first;
-// 	char	**arr_tokens;
-// 	char	**arr_env;
-
-// 	tokens = cmd->tokens;
-// 	if (tokens == 0)
-// 		return ;
-// 	env_vars(tokens);
-// 	arr_tokens = convert_list_to_arr_tokens(tokens);
-// 	arr_env = convert_list_to_arr(*env);
-// 	first = ((t_token *)tokens->data)->str;
-// 	if (ft_strcmp(first, "exit") == 0 && pipe == 0)
-// 		ft_exit(0);
-// 	if (is_builtin(first))
-// 		g_msh.exit_status = execute_builtin(tokens, env);
-// 	else
-// 		execute_program(arr_tokens, cmd->redirs, arr_env);
-// 	free(arr_tokens);
-// 	free(arr_env);
-// }
