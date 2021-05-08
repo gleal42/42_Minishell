@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_input1.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 15:23:20 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/05 11:55:47 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/08 22:24:52 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ char	*get_input(t_dlist *input_history, t_termcaps *termcaps)
 			reset_cmd_line(buf, &i, &input_history);
 		else if (buf[i] == CTRL_D)
 			exit_program(buf, i);
+		else if (buf[i] == CTRL_B)
+			kill_processes(g_msh.pids, g_msh.nb_cmds);
 		else
 			i += write(STDOUT_FILENO, &buf[i], 1);
 	}

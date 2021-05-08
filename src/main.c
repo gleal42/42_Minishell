@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 21:35:14 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/08 00:30:20 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/08 23:07:02 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		turn_off_canonical_mode(&g_msh.termcaps);
 		write_prompt();
+		//g_msh.kill_proc = 0;
 		input = ft_dlstnew((void *)get_input(g_msh.input_history,
 					&g_msh.termcaps));
 		if (!input)
@@ -59,7 +60,7 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		turn_on_canonical_mode(&g_msh.termcaps);
 		g_msh.ast = get_ast((const char *)input->data);
-		print_ast(g_msh.ast);
+		//print_ast(g_msh.ast);
 		execute_ast(&g_msh.ast);
 		free_ast(g_msh.ast);
 		g_msh.ast = 0;

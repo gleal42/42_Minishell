@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_input2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/02 10:11:09 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/05 15:08:19 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/08 23:00:40 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,24 @@ char	*extract_input(char *buf, int i)
 	if (!input)
 		ft_exit(EXIT_FAILURE);
 	return (input);
+}
+
+void	kill_processes(pid_t  *pids, int cmd_nbrs)
+{
+	printf("\033[0;34m📌 Here in %s line %d\n\033[0m", __FILE__, __LINE__);
+	g_msh.kill_proc = 1;
+	int	i;
+	i = 0;
+	while (i < cmd_nbrs)
+	{
+		if (pids[i] == 0)
+			kill(pids[i], SIGQUIT);
+		i++;
+	}
+}
+
+void	kill_processes_other(int status)
+{
+	(void)status;
+	kill_processes(g_msh.pids , g_msh.nb_cmds);
 }
