@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 22:23:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/07 23:57:27 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/08 01:04:09 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,9 +121,9 @@ void	execute_cmd(t_cmd *cmd)
 	char	**tokens;
 	char	**envp;
 
-	env_vars(cmd->tokens);
 	tokens = convert_list_to_arr_tokens(cmd->tokens);
 	envp = convert_list_to_arr(g_msh.dup_envp);
+	env_vars(cmd->tokens);
 	if (is_builtin(tokens[0]))
 		execute_builtin(cmd->tokens, &g_msh.dup_envp);
 	else
@@ -146,8 +146,7 @@ void	exec_parent_process(int nb_cmds,
 							int process_index)
 {
 	int	status;
-
-	if (nb_cmds == process_index)
+	if (nb_cmds == process_index + 1)
 		close_all_pipes(pipes, nb_cmds);
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
