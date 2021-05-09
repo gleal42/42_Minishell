@@ -10,3 +10,4 @@ tmp/
 bin/
 sandbox/
 .vscode/
+tester_*/

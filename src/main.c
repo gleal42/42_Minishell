@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 21:35:14 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/07 22:21:37 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/09 16:24:56 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_dlist	*input;
 
-	(void)argc;
-	(void)argv;
+	if (argc >= 2)
+		test_minishell(argv[2], envp);
 	init_minishell(&g_msh, envp);
 	while (1)
 	{
@@ -79,10 +79,21 @@ void	init_minishell(t_msh *msh, char **envp)
 {
 	if (!isatty(STDIN_FILENO))
 		ft_exit(EXIT_FAILURE);
-	ft_bzero(msh, sizeof(msh));
+	ft_bzero(msh, sizeof(t_msh));
 	duplicate_env(&msh->dup_envp, envp);
 	init_termcaps(&msh->termcaps);
 	signal(SIGINT, catch_signals);
 	signal(SIGQUIT, catch_signals);
 	signal(SIGSEGV, catch_seg_fault);
+}
+
+void	test_minishell(char *test, char **envp)
+{
+	ft_bzero(&g_msh, sizeof(t_msh));
+	duplicate_env(&(&g_msh)->dup_envp, envp);
+	g_msh.ast = get_ast((const char *)test);
+	execute_ast(&g_msh.ast);
+	free_ast(g_msh.ast);
+	g_msh.ast = 0;
+	ft_exit(EXIT_FAILURE);
 }
