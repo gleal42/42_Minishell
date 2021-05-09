@@ -35,6 +35,7 @@ void	execute_ast(t_ast **ast)
 	cmd_table = (*ast)->cmd_tables;
 	while (cmd_table)
 	{
+		//g_msh.cmd_table = 0;
 		execute_cmd_table((t_cmd_table *)cmd_table->data);
 		g_msh.nb_cmds = 0;
 		g_msh.pids = 0;
@@ -96,11 +97,15 @@ void	exec_child_process(t_cmd *cmd,
 	int		fd_input;
 	int		fd_output;
 	
-	if (g_msh.exit_status == 3)
-		ft_exit(EXIT_FAILURE);
-	//signal(SIGQUIT, kill_processes_other);
+	if (g_msh.exit_status == 3 && process_index != 0)
+	{
+		signal(SIGQUIT, SIG_DFL);
+		kill(0, SIGQUIT);
+	}
+	//ft_exit(EXIT_FAILURE);
+	//signal(SIGQUIT, kill_the_child);
 	//kill(g_msh.pids[process_index], SIGQUIT);
-	//kill_processes(g_msh.pids, g_msh.nb_cmds);
+	//kill_child(g_msh.pids, g_msh.nb_cmds);
 	//if (g_msh.kill_proc == 1)
 		//kill(0, SIGQUIT);
 	if (has_redirs_input(cmd->redirs))
@@ -161,7 +166,7 @@ void	exec_parent_process(int nb_cmds,
 		g_msh.exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
 	{
-		kill(0, SIGQUIT);
+		//kill(0, SIGQUIT);
 		printf("\033[0;34m📌 Here in %s line %d\n\033[0m", __FILE__, __LINE__);
 		g_msh.exit_status = WTERMSIG(status);
 	}
