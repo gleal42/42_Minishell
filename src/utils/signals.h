@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 19:10:58 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/05 19:11:24 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/09 16:17:00 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,5 +17,6 @@
 
 void	catch_signals(int signum);
 void	catch_seg_fault(int signum);
+void	catch_quitsignal(int signum);
 
 #endif

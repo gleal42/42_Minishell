@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 21:35:14 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/08 23:07:02 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/09 18:42:13 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,6 @@ void	init_minishell(t_msh *msh, char **envp)
 	duplicate_env(&msh->dup_envp, envp);
 	init_termcaps(&msh->termcaps);
 	signal(SIGINT, catch_signals);
-	signal(SIGQUIT, catch_signals);
 	signal(SIGSEGV, catch_seg_fault);
+	signal(SIGQUIT, kill_processes_other);
 }
