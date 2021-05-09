@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 17:53:43 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/07 21:35:02 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/08 00:17:35 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,18 +51,18 @@ int	execute_builtin(t_list	*tokens, t_list **env)
 
 	first = ((t_token *)tokens->data)->str;
 	if (ft_strcmp(first, "echo") == 0)
-		return (ft_echo(tokens->next));
+		exit(ft_echo(tokens->next));
 	if ((ft_strcmp(first, "env") == 0) && tokens->next == 0)
-		return (ft_env(*env));
+		exit(ft_env(*env));
 	if (ft_strcmp(first, "cd") == 0)
-		return (ft_cd(tokens->next, env));
+		exit(ft_cd(tokens->next, env));
 	if (ft_strcmp(first, "pwd") == 0)
-		return (ft_pwd());
+		exit(ft_pwd());
 	if (ft_strcmp(first, "export") == 0)
-		return (ft_export(tokens->next, env));
+		exit(ft_export(tokens->next, env));
 	if (ft_strcmp(first, "unset") == 0)
-		return (ft_unset(tokens->next, env));
-	return (0);
+		exit(ft_unset(tokens->next, env));
+	exit(0);
 }
 
 pid_t	*init_pids(int nb_cmds)
@@ -96,4 +96,15 @@ int	**init_pipes(int nb_cmds)
 		i++;
 	}
 	return (pipes);
+}
+
+void	check_exit(t_cmd *cmd)
+{
+	t_token	*tokens;
+	char	*first_cmd;
+
+	tokens = cmd->tokens->data;
+	first_cmd = tokens->str;
+	if (ft_strcmp(first_cmd, "exit") == 0)	
+		ft_exit(EXIT_SUCCESS);
 }
