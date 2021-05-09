@@ -86,7 +86,7 @@ void	execute_cmd_table(t_cmd_table *cmd_table)
 		cmds = cmds->next;
 	}
 	free(g_msh.pids);
-	free_arr((void **)pipes);
+	//free_arr((void **)pipes);
 }
 
 void	exec_child_process(t_cmd *cmd,
@@ -99,15 +99,11 @@ void	exec_child_process(t_cmd *cmd,
 	
 	if (g_msh.exit_status == 3 && process_index != 0)
 	{
+		if (process_index == nb_cmds - 1)
+			printf("Quit: 3\n");
 		signal(SIGQUIT, SIG_DFL);
 		kill(0, SIGQUIT);
 	}
-	//ft_exit(EXIT_FAILURE);
-	//signal(SIGQUIT, kill_the_child);
-	//kill(g_msh.pids[process_index], SIGQUIT);
-	//kill_child(g_msh.pids, g_msh.nb_cmds);
-	//if (g_msh.kill_proc == 1)
-		//kill(0, SIGQUIT);
 	if (has_redirs_input(cmd->redirs))
 	{
 		fd_input = set_redirs_input(cmd->redirs);
@@ -160,14 +156,9 @@ void	exec_parent_process(int nb_cmds,
 	int	status;
 	if (nb_cmds == process_index + 1)
 		close_all_pipes(pipes, nb_cmds);
-	//waitpid(pid, &status, WCONTINUED);
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
 		g_msh.exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
-	{
-		//kill(0, SIGQUIT);
-		printf("\033[0;34m📌 Here in %s line %d\n\033[0m", __FILE__, __LINE__);
 		g_msh.exit_status = WTERMSIG(status);
-	}
 }

@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/08 22:54:52 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/09 21:54:54 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,6 @@ typedef struct s_msh
 	int				exit_status;
 	pid_t			*pids;
 	int				nb_cmds;
-	int				kill_proc;
 }				t_msh;
 
 #endif

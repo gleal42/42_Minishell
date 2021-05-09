@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 21:35:14 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/09 21:13:35 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/09 21:55:10 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ int	main(int argc, char **argv, char **envp)
 	{
 		turn_off_canonical_mode(&g_msh.termcaps);
 		write_prompt();
-		//g_msh.kill_proc = 0;
 		input = ft_dlstnew((void *)get_input(g_msh.input_history,
 					&g_msh.termcaps));
 		if (!input)

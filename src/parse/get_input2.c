@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/02 10:11:09 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/09 21:25:07 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/09 22:29:01 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,42 +77,8 @@ char	*extract_input(char *buf, int i)
 	return (input);
 }
 
-void	kill_child(pid_t  *pids, int cmd_nbrs)
-{
-	(void)pids;
-	//(void)cmd_nbrs;
-	printf("KILL CHILD\n");
-	printf("%d\n", cmd_nbrs);
-	if (cmd_nbrs != 3)
-		kill(0, SIGCHLD);
-/*	signal(SIGQUIT, SIG_DFL);
-	kill(0, SIGQUIT);*/
-/*	int i;
-	i = 0;
-	while (i + 1 < cmd_nbrs)
-	{
-		kill(0, SIGCHLD);
-		i++;
-	}*/
-	//kill(0, SIGQUIT);
-	//signal(SIGQUIT, SIG_DFL);
-	//g_msh.kill_proc = 1;
-/*	int	i;
-	i = 0;
-	while (i < cmd_nbrs)
-	{
-		if (pids[i] == 0)
-			kill(pids[i], SIGQUIT);
-		i++;
-	}*/
-}
-
 void	kill_the_child(int status)
 {
 	(void)status;
-	printf("KILL THE CHILD\n");
-	printf("\033[0;34m📌 Here in %s line %d\n\033[0m", __FILE__, __LINE__);
 	kill(0, SIGCHLD);
-	//kill_child(g_msh.pids , g_msh.nb_cmds);
-	//signal(status, SIG_DFL);
 }
