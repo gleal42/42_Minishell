@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 17:53:43 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/08 00:17:35 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/10 11:00:36 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	**init_pipes(int nb_cmds)
 
 	if (nb_cmds == 1)
 		return (0);
-	pipes = ft_calloc(nb_cmds - 1, sizeof(int *));
+	pipes = ft_calloc(nb_cmds, sizeof(int *));
 	if (!pipes)
 		ft_exit(EXIT_FAILURE);
 	i = 0;
