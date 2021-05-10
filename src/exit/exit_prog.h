@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.h                                          :+:      :+:    :+:   */
+/*   exit_prog.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/03 17:33:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/10 14:52:16 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/05/10 19:45:29 by gleal             #+#    #+#             */
+/*   Updated: 2021/05/10 19:45:44 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_EXIT_H
-# define FT_EXIT_H
+#ifndef EXIT_PROG_H
+# define EXIT_PROG_H
 
 # include "main.h"
 

@@ -16,6 +16,14 @@
 # include "main.h"
 # include "environment.h"
 
+
+/*
+** File ft_exit.c
+*/
+
+int	is_exit(t_list *cmds);
+void	ft_exit(t_list *cmds);
+
 /*
 ** File ft_echo.c
 */

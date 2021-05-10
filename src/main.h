@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 16:48:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/10 09:06:26 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/10 19:48:29 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 # include "signals.h"
 
 # include "free_memory.h"
-# include "ft_exit.h"
+# include "exit_prog.h"
 
 # include "termcaps.h"
 

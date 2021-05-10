@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   exit_prog.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 17:32:51 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/10 14:52:16 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/10 19:42:45y glgleal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_exit.h"
+#include "exit_prog.h"
 
 /*
 ** Exits the program by doing some cleaning before

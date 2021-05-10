@@ -35,7 +35,10 @@ void	execute_ast(t_ast *ast)
 	cmd_table = ast->cmd_tables;
 	while (cmd_table)
 	{
-		execute_cmd_table(((t_cmd_table *)cmd_table->data)->cmds);
+		if (is_exit(((t_cmd_table *)cmd_table->data)->cmds))
+			ft_exit(((t_cmd_table *)cmd_table->data)->cmds);
+		else
+			execute_cmd_table(((t_cmd_table *)cmd_table->data)->cmds);
 		cmd_table = cmd_table->next;
 	}
 }
