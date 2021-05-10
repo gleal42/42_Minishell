@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 18:55:52 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/05 14:57:28 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/09 17:13:24 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,7 @@ void	init_termcaps(t_termcaps *termcaps)
 {
 	char	*term_type;
 
-	if (tcgetattr(STDIN_FILENO, &termcaps->old_term) == -1)
-		ft_exit(EXIT_FAILURE);
+	tcgetattr(STDIN_FILENO, &termcaps->old_term);
 	if (IS_UNIX)
 	{
 		termcaps->buffer = ft_calloc(2048, 1);
@@ -130,8 +129,7 @@ void	turn_off_canonical_mode(t_termcaps *termcaps)
 	termcaps->new_term.c_iflag &= ~IXON;
 	termcaps->new_term.c_cc[VMIN] = 1;
 	termcaps->new_term.c_cc[VTIME] = 0;
-	if (tcsetattr(STDIN_FILENO, TCSANOW, &termcaps->new_term) == -1)
-		ft_exit(EXIT_FAILURE);
+	tcsetattr(STDIN_FILENO, TCSANOW, &termcaps->new_term);
 }
 
 /*
@@ -145,8 +143,7 @@ void	turn_off_canonical_mode(t_termcaps *termcaps)
 
 void	turn_on_canonical_mode(t_termcaps *termcaps)
 {
-	if (tcsetattr(STDIN_FILENO, TCSANOW, &termcaps->old_term) == -1)
-		ft_exit(EXIT_FAILURE);
+	tcsetattr(STDIN_FILENO, TCSANOW, &termcaps->old_term);
 }
 
 /*

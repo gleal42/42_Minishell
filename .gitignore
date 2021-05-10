@@ -11,3 +11,4 @@ bin/
 sandbox/
 .vscode/
 tester_*/
+minishell_test.*
