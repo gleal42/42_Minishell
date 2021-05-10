@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/10 16:49:40 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/10 22:54:30 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,7 @@ typedef struct s_msh
 	t_list			*dup_envp;
 	int				exit_status;
 	int				nb_forks;
+	int				cmd_table_nbr;
 }				t_msh;
 
 #endif

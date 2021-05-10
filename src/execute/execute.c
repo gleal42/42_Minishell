@@ -33,13 +33,12 @@ void	exec_ast(t_ast *ast)
 	t_list		*cmd_table;
 
 	cmd_table = ast->cmd_tables;
+	g_msh.cmd_table_nbr = 0;
 	while (cmd_table)
 	{
-		if (is_exit(((t_cmd_table *)cmd_table->data)->cmds))
-			ft_exit(((t_cmd_table *)cmd_table->data)->cmds);
-		else
-			exec_cmd_table(((t_cmd_table *)cmd_table->data)->cmds);
+		exec_cmd_table(((t_cmd_table *)cmd_table->data)->cmds);
 		cmd_table = cmd_table->next;
+		g_msh.cmd_table_nbr++;
 		g_msh.nb_forks = 0;
 	}
 }
@@ -120,9 +119,17 @@ void	exec_cmd(t_cmd *cmd, int nb_cmds, int **pipes, int process_index)
 void	exec_builtin(t_list *tokens, t_list **env)
 {
 	char	*program_name;
+	t_list	*cur_table;
+	int		cur_table_nb;
 
+	cur_table = g_msh.ast->cmd_tables;
+	cur_table_nb = g_msh.cmd_table_nbr;
 	program_name = ((t_token *)tokens->data)->str;
-	if (ft_strcmp(program_name, "echo") == 0)
+	while (cur_table_nb-- > 0)
+		cur_table = cur_table->next;
+	if (is_exit(((t_cmd_table *)cur_table->data)->cmds))
+		ft_exit(((t_cmd_table *)cur_table->data)->cmds);
+	else if (ft_strcmp(program_name, "echo") == 0)
 		g_msh.exit_status = ft_echo(tokens->next);
 	else if ((ft_strcmp(program_name, "env") == 0) && tokens->next == 0)
 		g_msh.exit_status = ft_env(*env);

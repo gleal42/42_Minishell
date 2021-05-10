@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 17:53:43 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/10 18:31:05 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/10 22:34:15 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@ int	is_builtin(t_list *tokens)
 	char	*program_name;
 
 	program_name = ((t_token *)tokens->data)->str;
-	if (ft_strcmp(program_name, "echo") == 0)
+	if (ft_strcmp(program_name, "exit") == 0)
+		check = 1;
+	else if (ft_strcmp(program_name, "echo") == 0)
 		check = 1;
 	else if (ft_strcmp(program_name, "env") == 0)
 		check = 1;
