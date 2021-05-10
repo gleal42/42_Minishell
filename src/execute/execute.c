@@ -28,14 +28,13 @@
 **			and return value).
 */
 
-void	execute_ast(t_ast **ast)
+void	execute_ast(t_ast *ast)
 {
 	t_list		*cmd_table;
 
-	cmd_table = (*ast)->cmd_tables;
+	cmd_table = ast->cmd_tables;
 	while (cmd_table)
 	{
-		//g_msh.cmd_table = 0;
 		execute_cmd_table((t_cmd_table *)cmd_table->data);
 		g_msh.nb_cmds = 0;
 		g_msh.pids = 0;
@@ -86,7 +85,7 @@ void	execute_cmd_table(t_cmd_table *cmd_table)
 		cmds = cmds->next;
 	}
 	free(g_msh.pids);
-	//free_arr((void **)pipes);
+	free_arr((void **)pipes);
 }
 
 void	exec_child_process(t_cmd *cmd,
@@ -137,7 +136,7 @@ void	execute_cmd(t_cmd *cmd)
 	else
 	{
 		execute_program(tokens, envp, cmd->redirs);
-		if (errno == ENOENT)
+		if (errno == ENOENT && ft_strcmp(tokens[0], "exit") != 0)
 			write_func_err_message(tokens[0], "command not found");
 	}
 	free(tokens);

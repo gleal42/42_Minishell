@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:44:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/08 00:05:57 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/10 09:46:03 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 ** File execute.c
 */
 
-void	execute_ast(t_ast **ast);
+void	execute_ast(t_ast *ast);
 void	execute_cmd_table(t_cmd_table *cmd_table);
 void	exec_child_process(t_cmd *cmd,
 			int **pipes,
