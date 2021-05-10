@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 16:48:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/10 09:06:26 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/10 17:08:31 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@
 # include "input_validation.h"
 
 # include "execute.h"
+# include "execute_utils3.h"
 # include "execute_utils2.h"
 # include "execute_program_utils.h"
 # include "environment.h"

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 19:10:23 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/09 16:29:39 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/10 17:41:55 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	catch_signals(int signum)
 {
 	(void)signum;
-	//ft_putstr("\n");
+	ft_putstr("\n");
 }
 
 void	catch_seg_fault(int signum)

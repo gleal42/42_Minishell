@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:44:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/10 14:53:05 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/10 18:19:19 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,12 @@
 ** File execute.c
 */
 
-void	execute_ast(t_ast *ast);
-void	execute_cmd_table(t_list *cmds);
-void	exec_child_process(t_cmd *cmd,
-			int **pipes,
+void	exec_ast(t_ast *ast);
+void	exec_cmd_table(t_list *cmds);
+void	exec_cmd(t_cmd *cmd, int nb_cmds, int **pipes, int process_index);
+void	exec_builtin(t_list	*tokens, t_list **env);
+void	exec_program(t_list *lst_tokens,
 			int nb_cmds,
-			int process_index);
-void	execute_cmd(t_cmd *cmd);
-void	exec_parent_process(int nb_cmds,
-			pid_t pid,
 			int **pipes,
 			int process_index);
 
@@ -35,9 +32,7 @@ void	exec_parent_process(int nb_cmds,
 ** File execute_utils.c
 */
 
-int		is_builtin(char *first_token);
-int		execute_builtin(t_list	*tokens, t_list **env);
-pid_t	*init_pids(int nb_cmds);
+int		is_builtin(t_list *tokens);
 int		**init_pipes(int nb_cmds);
 void	check_exit(t_cmd *cmd);
 

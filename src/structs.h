@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/10 11:22:25 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/10 16:49:40 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ typedef struct s_cmd
 {
 	t_list		*tokens;
 	t_list		*redirs;
+	int			is_builtin;
 }				t_cmd;
 
 /*
@@ -154,6 +155,7 @@ typedef struct s_msh
 	t_termcaps		termcaps;
 	t_list			*dup_envp;
 	int				exit_status;
+	int				nb_forks;
 }				t_msh;
 
 #endif

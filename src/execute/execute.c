@@ -28,15 +28,16 @@
 **			and return value).
 */
 
-void	execute_ast(t_ast *ast)
+void	exec_ast(t_ast *ast)
 {
 	t_list		*cmd_table;
 
 	cmd_table = ast->cmd_tables;
 	while (cmd_table)
 	{
-		execute_cmd_table(((t_cmd_table *)cmd_table->data)->cmds);
+		exec_cmd_table(((t_cmd_table *)cmd_table->data)->cmds);
 		cmd_table = cmd_table->next;
+		g_msh.nb_forks = 0;
 	}
 }
 
@@ -57,106 +58,120 @@ void	execute_ast(t_ast *ast)
 **			multiple arguments)
 */
 
-void	execute_cmd_table(t_list *cmds)
+void	exec_cmd_table(t_list *cmds)
 {
 	int		nb_cmds;
-	pid_t	*pids;
 	int		**pipes;
 	int		i;
 
 	nb_cmds = ft_lstsize(cmds);
-	pids = init_pids(nb_cmds);
 	pipes = init_pipes(nb_cmds);
 	i = 0;
 	while (i < nb_cmds)
 	{
-		if (cmds->next == 0)
-			check_exit(cmds->data);
-		pids[i] = fork();
-		if (pids[i] < 0)
-			exit_prog(EXIT_FAILURE);
-		else if (pids[i] == 0)
-			exec_child_process(cmds->data, pipes, nb_cmds, i);
-		else if (pids[i] > 0)
-			exec_parent_process(nb_cmds, pids[i], pipes, i);
+		exec_cmd(cmds->data, nb_cmds, pipes, i);
 		cmds = cmds->next;
 		i++;
 	}
-	free(pids);
+	close_all_pipes(pipes, nb_cmds);
+	while (g_msh.nb_forks > 0)
+	{
+		wait(&g_msh.exit_status);
+		if (WIFEXITED(g_msh.exit_status))
+			g_msh.exit_status = WEXITSTATUS(g_msh.exit_status);
+		else if (WIFSIGNALED(g_msh.exit_status))
+			g_msh.exit_status = WTERMSIG(g_msh.exit_status);
+		g_msh.nb_forks--;
+	}
 	free_arr((void **)pipes);
 }
 
-void	exec_child_process(t_cmd *cmd,
-							int **pipes,
-							int nb_cmds,
-							int process_index)
+void	exec_cmd(t_cmd *cmd, int nb_cmds, int **pipes, int process_index)
 {
-	int		fd_input;
-	int		fd_output;
-	
-	if (g_msh.exit_status == 3 && process_index != 0)
-	{
-		if (process_index == nb_cmds - 1)
-			printf("Quit: 3\n");
-		signal(SIGQUIT, SIG_DFL);
-		kill(0, SIGQUIT);
-	}
-	if (has_redirs_input(cmd->redirs))
-	{
-		fd_input = set_redirs_input(cmd->redirs);
-		dup2(fd_input, STDIN_FILENO);
-		close(fd_input);
-	}
-	else if (process_index != 0)
-		dup2(pipes[process_index - 1][0], STDIN_FILENO);
-	if (has_redirs_output(cmd->redirs))
-	{
-		fd_output = set_redirs_output(cmd->redirs);
-		dup2(fd_output, STDOUT_FILENO);
-		close(fd_output);
-	}
-	else if (process_index != nb_cmds - 1)
-		dup2(pipes[process_index][1], STDOUT_FILENO);
-	close_all_pipes(pipes, nb_cmds);
-	execute_cmd(cmd);
+	int	saved_stdout;
+	int	saved_stdin;
+
+	env_vars(cmd->tokens);
+	saved_stdout = dup(STDOUT_FILENO);
+	saved_stdin = dup(STDIN_FILENO);
+	set_redirs_pipes(cmd->redirs, nb_cmds, pipes, process_index);
+	if (is_builtin(cmd->tokens))
+		exec_builtin(cmd->tokens, &g_msh.dup_envp);
+	else
+		exec_program(cmd->tokens, nb_cmds, pipes, process_index);
+	dup2(saved_stdout, STDOUT_FILENO);
+	dup2(saved_stdin, STDIN_FILENO);
+	close(saved_stdout);
+	close(saved_stdin);
 }
 
-void	execute_cmd(t_cmd *cmd)
+/*
+** Redirects to builtin functions
+** @param:	- [t_list *] list of tokens in a command
+**			- [t_list **] pointer to environment variable linked list
+** @return:	[int] command return values
+** Line-by-line comments:
+** @6			we're only asked to deal with env with no arguments
+*/
+
+void	exec_builtin(t_list *tokens, t_list **env)
 {
+	char	*program_name;
+
+	program_name = ((t_token *)tokens->data)->str;
+	if (ft_strcmp(program_name, "echo") == 0)
+		g_msh.exit_status = ft_echo(tokens->next);
+	else if ((ft_strcmp(program_name, "env") == 0) && tokens->next == 0)
+		g_msh.exit_status = ft_env(*env);
+	else if (ft_strcmp(program_name, "cd") == 0)
+		g_msh.exit_status = ft_cd(tokens->next, env);
+	else if (ft_strcmp(program_name, "pwd") == 0)
+		g_msh.exit_status = ft_pwd();
+	else if (ft_strcmp(program_name, "export") == 0)
+		g_msh.exit_status = ft_export(tokens->next, env);
+	else if (ft_strcmp(program_name, "unset") == 0)
+		g_msh.exit_status = ft_unset(tokens->next, env);
+}
+
+void	exec_program(t_list *lst_tokens,
+					int nb_cmds,
+					int **pipes,
+					int process_index)
+{
+	char	*exec_path;
 	char	**tokens;
 	char	**envp;
+	pid_t	pid;
 
-	tokens = convert_list_to_arr_tokens(cmd->tokens);
+	tokens = convert_list_to_arr_tokens(lst_tokens);
 	envp = convert_list_to_arr(g_msh.dup_envp);
-	env_vars(cmd->tokens);
-	if (is_builtin(tokens[0]))
-		execute_builtin(cmd->tokens, &g_msh.dup_envp);
+	if (has_relative_path(tokens[0]))
+		exec_path = ft_strdup(tokens[0]);
 	else
+		exec_path = get_absolute_path(tokens[0]);
+	g_msh.nb_forks++;
+	pid = fork();
+	if (pid < 0)
+		exit_prog(EXIT_FAILURE);
+	else if (pid == 0)
 	{
-		execute_program(tokens, envp, cmd->redirs);
+		if (g_msh.exit_status == 3 && process_index != 0)
+		{
+			if (process_index == nb_cmds - 1)
+				printf("Quit: 3\n");
+			signal(SIGQUIT, SIG_DFL);
+			kill(0, SIGQUIT);
+		}
+		close_all_pipes(pipes, nb_cmds);
+		execve(exec_path, tokens, envp);
 		if (errno == ENOENT && ft_strcmp(tokens[0], "exit") != 0)
 			write_func_err_message(tokens[0], "command not found");
+		if (errno == ENOENT)
+			exit(EXIT_CMD_NOT_FOUND);
+		else
+			exit(EXIT_FAILURE);
 	}
+	free(exec_path);
 	free(tokens);
 	free(envp);
-	if (errno == ENOENT)
-		exit(EXIT_CMD_NOT_FOUND);
-	else
-		exit(EXIT_FAILURE);
-}
-
-void	exec_parent_process(int nb_cmds,
-							pid_t pid,
-							int **pipes,
-							int process_index)
-{
-	int	status;
-
-	if (nb_cmds == process_index + 1)
-		close_all_pipes(pipes, nb_cmds);
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		g_msh.exit_status = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
-		g_msh.exit_status = WTERMSIG(status);
 }
