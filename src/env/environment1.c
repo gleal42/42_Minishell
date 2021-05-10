@@ -123,7 +123,7 @@ void	replace_special_params(char **str, int last_status)
 	{
 		status_string = ft_itoa(last_status);
 		if (status_string == 0)
-			return (ft_exit(EXIT_FAILURE));
+			return (exit_prog(EXIT_FAILURE));
 		final = replace_midstring(*str, "$?", status_string, replace_spot);
 		free(status_string);
 		status_string = 0;

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 17:32:51 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/03 17:34:19 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/10 14:52:16 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 **			we need to make sure they are as they were when the program started
 */
 
-void	ft_exit(int exit_code)
+void	exit_prog(int exit_code)
 {
 	if (g_msh.termcaps.keys_off)
 		tputs(g_msh.termcaps.keys_off, 1, ft_putint);

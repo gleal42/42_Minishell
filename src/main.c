@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 21:35:14 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/10 09:59:58 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/10 14:52:16 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	main(int argc, char **argv, char **envp)
 		input = ft_dlstnew((void *)get_input(g_msh.input_history,
 					&g_msh.termcaps));
 		if (!input)
-			ft_exit(EXIT_FAILURE);
+			exit_prog(EXIT_FAILURE);
 		ft_dlstadd_front(&g_msh.input_history, input);
 		if (!is_input_valid((const char *)input->data))
 			continue ;
@@ -78,7 +78,7 @@ int	main(int argc, char **argv, char **envp)
 void	init_minishell(t_msh *msh, char **envp)
 {
 	if (!isatty(STDIN_FILENO))
-		ft_exit(EXIT_FAILURE);
+		exit_prog(EXIT_FAILURE);
 	ft_bzero(msh, sizeof(t_msh));
 	duplicate_env(&msh->dup_envp, envp);
 	init_termcaps(&msh->termcaps);

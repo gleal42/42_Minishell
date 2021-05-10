@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_input2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/02 10:11:09 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/09 22:29:01 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/10 14:52:16 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	exit_program(char *buf, int i)
 		return ;
 	}
 	write(STDOUT_FILENO, "exit\n", ft_strlen("exit\n"));
-	ft_exit(EXIT_SUCCESS);
+	exit_prog(EXIT_SUCCESS);
 }
 
 /*
@@ -73,7 +73,7 @@ char	*extract_input(char *buf, int i)
 	buf[i - 1] = '\0';
 	input = ft_strdup(buf);
 	if (!input)
-		ft_exit(EXIT_FAILURE);
+		exit_prog(EXIT_FAILURE);
 	return (input);
 }
 

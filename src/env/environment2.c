@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 17:21:45 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/05 23:47:47 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/10 14:52:16 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*ft_getenv(char *key)
 		{
 			value = ft_strdup(&(curr_envp[i + 1]));
 			if (!value)
-				ft_exit(EXIT_FAILURE);
+				exit_prog(EXIT_FAILURE);
 			return (value);
 		}
 		envp = envp->next;
@@ -56,16 +56,16 @@ void	duplicate_env(t_list **dup_envp, char **envp)
 	char	*tmp;
 
 	if (!envp || !envp[0])
-		ft_exit(EXIT_FAILURE);
+		exit_prog(EXIT_FAILURE);
 	i = 0;
 	while (envp[i] != NULL)
 	{
 		tmp = ft_strdup(envp[i]);
 		if (!tmp)
-			ft_exit(EXIT_FAILURE);
+			exit_prog(EXIT_FAILURE);
 		next_env = ft_lstnew(tmp);
 		if (!next_env)
-			ft_exit(EXIT_FAILURE);
+			exit_prog(EXIT_FAILURE);
 		ft_lstadd_back(dup_envp, next_env);
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/02 17:37:13 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/05 16:06:45 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/10 14:52:16 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	has_char_at_end(const char *input, char c, char *err_message)
 
 	cpy = ft_strtrim(input, " \t\n\v\f\r");
 	if (!cpy)
-		ft_exit(EXIT_FAILURE);
+		exit_prog(EXIT_FAILURE);
 	len = ft_strlen(cpy);
 	if (cpy[len - 1] == c)
 	{
@@ -102,7 +102,7 @@ int	has_forbidden_sequence(const char *input, char *test, char *err_message)
 
 	trimmed = ft_strtrim_all(input, " \t\n\v\f\r");
 	if (!trimmed)
-		ft_exit(EXIT_FAILURE);
+		exit_prog(EXIT_FAILURE);
 	if (ft_strstr_quotes(trimmed, test) != 0)
 	{
 		check = 1;

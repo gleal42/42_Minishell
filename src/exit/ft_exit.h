@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 17:33:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/03 17:33:53 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/10 14:52:16 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,6 @@
 
 # include "main.h"
 
-void	ft_exit(int exit_code);
+void	exit_prog(int exit_code);
 
 #endif

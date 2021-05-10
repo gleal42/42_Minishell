@@ -50,10 +50,10 @@ char	*replace_env_value(char **env_ptr, char	*var_name, char *new_value)
 
 	temp = ft_strjoin(var_name, "=");
 	if (!temp)
-		ft_exit(EXIT_FAILURE);
+		exit_prog(EXIT_FAILURE);
 	final = ft_strjoin(temp, new_value);
 	if (!final)
-		ft_exit(EXIT_FAILURE);
+		exit_prog(EXIT_FAILURE);
 	free(temp);
 	temp = 0;
 	free(*env_ptr);

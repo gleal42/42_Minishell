@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 17:53:43 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/10 11:00:36 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/10 14:52:16 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ pid_t	*init_pids(int nb_cmds)
 
 	pids = ft_calloc(nb_cmds, sizeof(pid_t));
 	if (!pids)
-		ft_exit(EXIT_FAILURE);
+		exit_prog(EXIT_FAILURE);
 	return (pids);
 }
 
@@ -84,15 +84,15 @@ int	**init_pipes(int nb_cmds)
 		return (0);
 	pipes = ft_calloc(nb_cmds, sizeof(int *));
 	if (!pipes)
-		ft_exit(EXIT_FAILURE);
+		exit_prog(EXIT_FAILURE);
 	i = 0;
 	while (i < nb_cmds - 1)
 	{
 		pipes[i] = ft_calloc(2, sizeof(int));
 		if (!pipes[i])
-			ft_exit(EXIT_FAILURE);
+			exit_prog(EXIT_FAILURE);
 		if (pipe(pipes[i]) == -1)
-			ft_exit(EXIT_FAILURE);
+			exit_prog(EXIT_FAILURE);
 		i++;
 	}
 	return (pipes);
@@ -106,5 +106,5 @@ void	check_exit(t_cmd *cmd)
 	tokens = cmd->tokens->data;
 	first_cmd = tokens->str;
 	if (ft_strcmp(first_cmd, "exit") == 0)	
-		ft_exit(EXIT_SUCCESS);
+		exit_prog(EXIT_SUCCESS);
 }

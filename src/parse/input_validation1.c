@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 11:06:43 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/05 17:13:02 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/10 14:52:16 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,7 @@ int	has_char_at_beginning(const char *input, char c, char *err_message)
 
 	cpy = ft_strtrim(input, " \t\n\v\f\r");
 	if (!cpy)
-		ft_exit(EXIT_FAILURE);
+		exit_prog(EXIT_FAILURE);
 	if (cpy[0] == c)
 	{
 		check = 1;

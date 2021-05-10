@@ -41,7 +41,7 @@ int	ft_export(t_list *tokens, t_list **env)
 		{
 			token_str = ft_strdup(((t_token *)tokens->data)->str);
 			if (token_str == 0)
-				ft_exit(EXIT_FAILURE);
+				exit_prog(EXIT_FAILURE);
 			if (!has_valid_identifier_export(token_str))
 				return (1);
 			var = get_var_name(token_str);
@@ -103,6 +103,6 @@ void	create_environment_var(char **token_str, t_list **env)
 
 	new_var = ft_lstnew(*token_str);
 	if (new_var == 0)
-		ft_exit(EXIT_FAILURE);
+		exit_prog(EXIT_FAILURE);
 	ft_lstadd_front(env, new_var);
 }

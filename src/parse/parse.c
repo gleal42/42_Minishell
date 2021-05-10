@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 10:37:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/07 23:27:15 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/10 14:52:16 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,13 @@ t_ast	*get_ast(const char *input)
 
 	ast = ft_calloc(1, sizeof(t_ast));
 	if (!ast)
-		ft_exit(EXIT_FAILURE);
+		exit_prog(EXIT_FAILURE);
 	curr_pos = 0;
 	while (input[curr_pos])
 	{
 		cmd_table = ft_lstnew((void *)get_cmd_table(input, &curr_pos));
 		if (!cmd_table)
-			ft_exit(EXIT_FAILURE);
+			exit_prog(EXIT_FAILURE);
 		ft_lstadd_back(&ast->cmd_tables, cmd_table);
 	}
 	ast->return_value = &((t_cmd_table *)cmd_table->data)->return_value;
@@ -74,13 +74,13 @@ t_cmd_table	*get_cmd_table(const char *input, int *curr_pos)
 
 	cmd_table = ft_calloc(1, sizeof(t_cmd_table));
 	if (!cmd_table)
-		ft_exit(EXIT_FAILURE);
+		exit_prog(EXIT_FAILURE);
 	while (input[*curr_pos])
 	{
 		skip_spaces(input, curr_pos);
 		cmd = ft_lstnew((void *)get_cmd(input, curr_pos));
 		if (!cmd)
-			ft_exit(EXIT_FAILURE);
+			exit_prog(EXIT_FAILURE);
 		ft_lstadd_back(&cmd_table->cmds, cmd);
 		if (input[*curr_pos] == '|')
 			(*curr_pos)++;
@@ -115,7 +115,7 @@ t_cmd	*get_cmd(const char *input, int *curr_pos)
 
 	cmd = ft_calloc(1, sizeof(t_cmd));
 	if (!cmd)
-		ft_exit(EXIT_FAILURE);
+		exit_prog(EXIT_FAILURE);
 	while (input[*curr_pos] && input[*curr_pos] != ';'
 			&& input[*curr_pos] != '|')
 	{
@@ -123,14 +123,14 @@ t_cmd	*get_cmd(const char *input, int *curr_pos)
 		{
 			new_node = ft_lstnew((void *)get_token(input, curr_pos));
 			if (!new_node)
-				ft_exit(EXIT_FAILURE);
+				exit_prog(EXIT_FAILURE);
 			ft_lstadd_back(&cmd->tokens, new_node);
 		}
 		else if (input[*curr_pos] == '>' || input[*curr_pos] == '<')
 		{
 			new_node = ft_lstnew((void *)get_redir(input, curr_pos));
 			if (!new_node)
-				ft_exit(EXIT_FAILURE);
+				exit_prog(EXIT_FAILURE);
 			ft_lstadd_back(&cmd->redirs, new_node);
 		}
 	}
@@ -171,7 +171,7 @@ t_token	*get_token(const char *input, int *curr_pos)
 
 	token = ft_calloc(1, sizeof(t_token));
 	if (!token)
-		ft_exit(EXIT_FAILURE);
+		exit_prog(EXIT_FAILURE);
 	token->delimiter = get_delimiter(input, curr_pos);
 	saved_pos = *curr_pos;
 	while (input[*curr_pos])
@@ -184,7 +184,7 @@ t_token	*get_token(const char *input, int *curr_pos)
 	}
 	token->str = ft_substr(input, saved_pos, *curr_pos - saved_pos);
 	if (!token->str)
-		ft_exit(EXIT_FAILURE);
+		exit_prog(EXIT_FAILURE);
 	if (token->delimiter != ' ')
 		(*curr_pos)++;
 	else if (token->delimiter == ' ')
@@ -209,7 +209,7 @@ t_redir	*get_redir(const char *input, int *curr_pos)
 
 	redir = ft_calloc(1, sizeof(t_redir));
 	if (!redir)
-		ft_exit(EXIT_FAILURE);
+		exit_prog(EXIT_FAILURE);
 	if (input[*curr_pos] == '<')
 		*redir->type = input[(*curr_pos)++];
 	else if (!ft_strncmp(&input[*curr_pos], ">>", 2))

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:44:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/10 09:46:03 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/10 14:53:05 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 */
 
 void	execute_ast(t_ast *ast);
-void	execute_cmd_table(t_cmd_table *cmd_table);
+void	execute_cmd_table(t_list *cmds);
 void	exec_child_process(t_cmd *cmd,
 			int **pipes,
 			int nb_cmds,
