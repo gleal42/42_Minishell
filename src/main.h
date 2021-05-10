@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 16:48:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/09 16:11:10 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/10 09:06:26 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,5 @@ t_msh	g_msh;
 void	init_minishell(t_msh *msh, char **envp);
 void	catch_signals(int signum);
 void	test_minishell(char *test, char **envp);
-// void	test_minishell(char *test);
 
 #endif

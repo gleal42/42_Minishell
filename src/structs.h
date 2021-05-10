@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/10 08:32:38 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/10 09:06:33 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,8 @@ typedef struct s_msh
 	t_termcaps		termcaps;
 	t_list			*dup_envp;
 	int				exit_status;
+	pid_t			*pids;
+	int				nb_cmds;
 }				t_msh;
 
 #endif

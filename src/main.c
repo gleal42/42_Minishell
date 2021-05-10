@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 21:35:14 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/10 08:43:58 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/10 09:06:19 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		turn_on_canonical_mode(&g_msh.termcaps);
 		g_msh.ast = get_ast((const char *)input->data);
-		// print_ast(g_msh.ast);
+		//print_ast(g_msh.ast);
 		execute_ast(&g_msh.ast);
 		free_ast(g_msh.ast);
 		g_msh.ast = 0;
@@ -83,8 +83,20 @@ void	init_minishell(t_msh *msh, char **envp)
 	duplicate_env(&msh->dup_envp, envp);
 	init_termcaps(&msh->termcaps);
 	signal(SIGINT, catch_signals);
-	signal(SIGQUIT, catch_signals);
 	signal(SIGSEGV, catch_seg_fault);
+	signal(SIGQUIT, kill_the_child);
+}
+
+void	test_minishell(char *test, char **envp)
+{
+	ft_bzero(&g_msh, sizeof(t_msh));
+	duplicate_env(&(&g_msh)->dup_envp, envp);
+	g_msh.ast = get_ast((const char *)test);
+	// print_ast(g_msh.ast);
+	execute_ast(&g_msh.ast);
+	free_ast(g_msh.ast);
+	g_msh.ast = 0;
+	ft_exit(EXIT_FAILURE);
 }
 
 void	test_minishell(char *test, char **envp)

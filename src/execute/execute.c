@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 22:23:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/08 01:04:09 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/09 18:26:50gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,10 @@ void	execute_ast(t_ast **ast)
 	cmd_table = (*ast)->cmd_tables;
 	while (cmd_table)
 	{
+		//g_msh.cmd_table = 0;
 		execute_cmd_table((t_cmd_table *)cmd_table->data);
+		g_msh.nb_cmds = 0;
+		g_msh.pids = 0;
 		cmd_table = cmd_table->next;
 	}
 }
@@ -59,33 +62,31 @@ void	execute_ast(t_ast **ast)
 
 void	execute_cmd_table(t_cmd_table *cmd_table)
 {
-	int		nb_cmds;
-	pid_t	*pids;
 	int		**pipes;
 	int		i;
 	t_list	*cmds;
 
-	nb_cmds = ft_lstsize(cmd_table->cmds);
-	pids = init_pids(nb_cmds);
-	pipes = init_pipes(nb_cmds);
+	g_msh.nb_cmds = ft_lstsize(cmd_table->cmds);
+	g_msh.pids = init_pids(g_msh.nb_cmds);
+	pipes = init_pipes(g_msh.nb_cmds);
 	i = 0;
 	cmds = cmd_table->cmds;
-	while (i < nb_cmds)
+	while (i < g_msh.nb_cmds)
 	{
 		if (cmds->next == 0)
 			check_exit(cmds->data);
-		pids[i] = fork();
-		if (pids[i] < 0)
+		g_msh.pids[i] = fork();
+		if (g_msh.pids[i] < 0)
 			ft_exit(EXIT_FAILURE);
-		else if (pids[i] == 0)
-			exec_child_process(cmds->data, pipes, nb_cmds, i);
-		else if (pids[i] > 0)
-			exec_parent_process(nb_cmds, pids[i], pipes, i);
+		else if (g_msh.pids[i] == 0)
+			exec_child_process(cmds->data, pipes, g_msh.nb_cmds, i);
+		else if (g_msh.pids[i] > 0)
+			exec_parent_process(g_msh.nb_cmds, g_msh.pids[i], pipes, i);
 		i++;
 		cmds = cmds->next;
 	}
-	free(pids);
-	free_arr((void **)pipes);
+	free(g_msh.pids);
+	//free_arr((void **)pipes);
 }
 
 void	exec_child_process(t_cmd *cmd,
@@ -95,7 +96,14 @@ void	exec_child_process(t_cmd *cmd,
 {
 	int		fd_input;
 	int		fd_output;
-
+	
+	if (g_msh.exit_status == 3 && process_index != 0)
+	{
+		if (process_index == nb_cmds - 1)
+			printf("Quit: 3\n");
+		signal(SIGQUIT, SIG_DFL);
+		kill(0, SIGQUIT);
+	}
 	if (has_redirs_input(cmd->redirs))
 	{
 		fd_input = set_redirs_input(cmd->redirs);

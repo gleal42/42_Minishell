@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_input2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/02 10:11:09 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/05 15:08:19 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/09 22:29:01 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,10 @@ char	*extract_input(char *buf, int i)
 	if (!input)
 		ft_exit(EXIT_FAILURE);
 	return (input);
+}
+
+void	kill_the_child(int status)
+{
+	(void)status;
+	kill(0, SIGCHLD);
 }
