@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 21:35:14 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/10 20:02:55 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/10 20:48:07 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	main(int argc, char **argv, char **envp)
 		turn_on_canonical_mode(&g_msh.termcaps);
 		g_msh.ast = get_ast((const char *)input->data);
 		//print_ast(g_msh.ast);
-		execute_ast(g_msh.ast);
+		exec_ast(g_msh.ast);
 		free_ast(g_msh.ast);
 		g_msh.ast = 0;
 	}
@@ -93,7 +93,7 @@ void	test_minishell(char *test, char **envp)
 	duplicate_env(&(&g_msh)->dup_envp, envp);
 	g_msh.ast = get_ast((const char *)test);
 	// print_ast(g_msh.ast);
-	execute_ast(g_msh.ast);
+	exec_ast(g_msh.ast);
 	free_msh(&g_msh);
 	exit(EXIT_FAILURE);
 }

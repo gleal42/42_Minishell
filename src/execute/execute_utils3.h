@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_utils2.c                                   :+:      :+:    :+:   */
+/*   execute_utils3.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/07 22:22:51 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/10 17:59:16 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/05/10 16:04:57 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/05/10 18:19:45 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execute_utils2.h"
+#ifndef EXECUTE_UTILS3_H
+# define EXECUTE_UTILS3_H
 
-void	close_all_pipes(int **pipes, int nb_cmds)
-{
-	int	nb_pipes;
+# include "main.h"
 
-	nb_pipes = nb_cmds - 1;
-	while (nb_pipes--)
-	{
-		close(pipes[nb_pipes][0]);
-		close(pipes[nb_pipes][1]);
-	}
-}
+void	set_redirs_pipes(t_list *redirs,
+			int nb_cmds,
+			int **pipes,
+			int process_index);
+int		has_redirs_input(t_list *redirs);
+int		set_redirs_input(t_list *redirs);
+int		has_redirs_output(t_list *redirs);
+int		set_redirs_output(t_list *redirs);
+
+#endif

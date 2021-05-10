@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 11:06:43 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/10 14:52:16 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/10 16:58:03 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 **			consistent across different OS. So we choose to set it to
 **			ENOEXEC (Exec format error), which value will adapt across OS
 ** @17-18	If input is valid, we don't need to change errno because
-**			execute_ast() will take care of that
+**			exec_ast() will take care of that
 */
 
 int	is_input_valid(const char *input)

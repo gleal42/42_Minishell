@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 17:53:43 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/10 14:52:16 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/10 18:31:05 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,52 +18,29 @@
 ** @return:	[int] indicates if the token is a builtin or not
 */
 
-int	is_builtin(char *first_token)
+int	is_builtin(t_list *tokens)
 {
-	if (ft_strcmp(first_token, "echo") == 0)
-		return (1);
-	if (ft_strcmp(first_token, "env") == 0)
-		return (1);
-	if (ft_strcmp(first_token, "cd") == 0)
-		return (1);
-	if (ft_strcmp(first_token, "pwd") == 0)
-		return (1);
-	if (ft_strcmp(first_token, "export") == 0)
-		return (1);
-	if (ft_strcmp(first_token, "unset") == 0)
-		return (1);
+	int		check;
+	char	*program_name;
+
+	program_name = ((t_token *)tokens->data)->str;
+	if (ft_strcmp(program_name, "echo") == 0)
+		check = 1;
+	else if (ft_strcmp(program_name, "env") == 0)
+		check = 1;
+	else if (ft_strcmp(program_name, "cd") == 0)
+		check = 1;
+	else if (ft_strcmp(program_name, "pwd") == 0)
+		check = 1;
+	else if (ft_strcmp(program_name, "export") == 0)
+		check = 1;
+	else if (ft_strcmp(program_name, "unset") == 0)
+		check = 1;
 	else
-		return (0);
+		check = 0;
+	return (check);
 }
 
-/*
-** Redirects to builtin functions
-** @param:	- [t_list *] list of tokens in a command
-**			- [t_list **] pointer to environment variable linked list
-** @return:	[int] command return values
-** Line-by-line comments:
-** @6			we're only asked to deal with env with no arguments
-*/
-
-int	execute_builtin(t_list	*tokens, t_list **env)
-{
-	char	*first;
-
-	first = ((t_token *)tokens->data)->str;
-	if (ft_strcmp(first, "echo") == 0)
-		exit(ft_echo(tokens->next));
-	if ((ft_strcmp(first, "env") == 0) && tokens->next == 0)
-		exit(ft_env(*env));
-	if (ft_strcmp(first, "cd") == 0)
-		exit(ft_cd(tokens->next, env));
-	if (ft_strcmp(first, "pwd") == 0)
-		exit(ft_pwd());
-	if (ft_strcmp(first, "export") == 0)
-		exit(ft_export(tokens->next, env));
-	if (ft_strcmp(first, "unset") == 0)
-		exit(ft_unset(tokens->next, env));
-	exit(0);
-}
 
 pid_t	*init_pids(int nb_cmds)
 {
