@@ -101,7 +101,7 @@ void	exec_cmd(t_cmd *cmd, int nb_cmds, int **pipes, int process_index)
 	if (is_builtin(cmd->tokens))
 		exec_builtin(cmd->tokens, &g_msh.dup_envp);
 	else
-		exec_program(cmd->tokens, nb_cmds, pipes, process_index);
+		exec_program(cmd->tokens, nb_cmds, pipes);
 	dup2(saved_stdout, STDOUT_FILENO);
 	dup2(saved_stdin, STDIN_FILENO);
 	close(saved_stdout);
@@ -138,8 +138,7 @@ void	exec_builtin(t_list *tokens, t_list **env)
 
 void	exec_program(t_list *lst_tokens,
 					int nb_cmds,
-					int **pipes,
-					int process_index)
+					int **pipes)
 {
 	char	*exec_path;
 	char	**tokens;
@@ -158,13 +157,6 @@ void	exec_program(t_list *lst_tokens,
 		exit_prog(EXIT_FAILURE);
 	else if (pid == 0)
 	{
-		if (g_msh.exit_status == 3 && process_index != 0)
-		{
-			if (process_index == nb_cmds - 1)
-				printf("Quit: 3\n");
-			signal(SIGQUIT, SIG_DFL);
-			kill(0, SIGQUIT);
-		}
 		close_all_pipes(pipes, nb_cmds);
 		execve(exec_path, tokens, envp);
 		if (errno == ENOENT && ft_strcmp(tokens[0], "exit") != 0)
