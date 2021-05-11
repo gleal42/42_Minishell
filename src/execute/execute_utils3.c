@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 16:04:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/10 16:11:36 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/11 13:34:51 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	set_redirs_pipes(t_list *redirs,
 	if (has_redirs_input(redirs))
 	{
 		fd_input = set_redirs_input(redirs);
+		if (fd_input == 0)
+			return ;
 		dup2(fd_input, STDIN_FILENO);
 		close(fd_input);
 	}
@@ -31,11 +33,14 @@ void	set_redirs_pipes(t_list *redirs,
 	if (has_redirs_output(redirs))
 	{
 		fd_output = set_redirs_output(redirs);
+		if (fd_output == 0)
+			return ;
 		dup2(fd_output, STDOUT_FILENO);
 		close(fd_output);
 	}
 	else if (process_index != nb_cmds - 1)
 		dup2(pipes[process_index][1], STDOUT_FILENO);
+	g_msh.exit_status = EXIT_SUCCESS;
 }
 
 int	has_redirs_input(t_list *redirs)
@@ -76,7 +81,8 @@ int	set_redirs_input(t_list *redirs)
 			if (fd_input == -1)
 			{
 				write_gen_func_err_message(file, strerror(errno));
-				exit(errno);
+				g_msh.exit_status = errno;
+				return (0);
 			}
 		}
 		redirs = redirs->next;
@@ -125,7 +131,8 @@ int	set_redirs_output(t_list *redirs)
 			if (fd_output == -1)
 			{
 				write_gen_func_err_message(file, strerror(errno));
-				exit(errno);
+				g_msh.exit_status = errno;
+				return (0);
 			}
 		}
 		redirs = redirs->next;

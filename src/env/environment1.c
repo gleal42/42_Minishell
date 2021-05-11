@@ -65,7 +65,7 @@ void	replace_vars_with_values(char **str)
 	i = 0;
 	while (str[0][i])
 	{
-		if (str[0][i] == '$')
+		if (str[0][i] == '$' && str[0][i + 1] != '?')
 		{
 			var = get_var_name(&str[0][i]);
 			value = ft_getenv(var + 1);
