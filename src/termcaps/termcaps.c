@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 18:55:52 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/10 14:52:16 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/11 11:26:43 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,10 @@
 ** @param:	- [t_termcaps *] struct with terminal capabilities capabilities
 ** Line-by-line comments:
 ** @3-4		Get the terminal settings
-** @5-10	In Unix, the termcaps library needs to have allocated space.
-**			2048 bytes is by convention. While the GNU version of the lib,
-**			the tgetent allocates space by itself space to buffer and frees it
-** @11-13	Protect against a "TERM" env varible being unset
-** @14-15	Indicate to the termcap lib with type of terminal we are using.
-**			It will save that info internally so that use its capabilities later
-** @16-17	Checks if the terminal has all the capabilities required to run the
+** @5-6		Protect against a "TERM" env varible being unset
+** @7-8		Indicate to the termcap lib with type of terminal we are using.
+**			It will save that info internally to use its capabilities later
+** @9-10	Checks if the terminal has all the capabilities required to run the
 **			the program and sets them to the struct termcaps
 */
 
@@ -32,12 +29,6 @@ void	init_termcaps(t_termcaps *termcaps)
 	char	*term_type;
 
 	tcgetattr(STDIN_FILENO, &termcaps->old_term);
-	if (IS_UNIX)
-	{
-		termcaps->buffer = ft_calloc(2048, 1);
-		if (!termcaps->buffer)
-			exit_prog(EXIT_FAILURE);
-	}
 	term_type = ft_getenv("TERM");
 	if (!term_type)
 		exit_prog(EXIT_FAILURE);
