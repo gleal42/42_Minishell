@@ -12,3 +12,4 @@ sandbox/
 .vscode/
 tester_*/
 minishell_test.*
+valgrind_out.txt
