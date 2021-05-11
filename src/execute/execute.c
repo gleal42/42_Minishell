@@ -97,9 +97,9 @@ void	exec_cmd(t_cmd *cmd, int nb_cmds, int **pipes, int process_index)
 	saved_stdout = dup(STDOUT_FILENO);
 	saved_stdin = dup(STDIN_FILENO);
 	set_redirs_pipes(cmd->redirs, nb_cmds, pipes, process_index);
-	if (is_builtin(cmd->tokens))
+	if (cmd->tokens != 0 && is_builtin(cmd->tokens))
 		exec_builtin(cmd->tokens, &g_msh.dup_envp);
-	else
+	else if (cmd->tokens != 0)
 		exec_program(cmd->tokens, nb_cmds, pipes);
 	dup2(saved_stdout, STDOUT_FILENO);
 	dup2(saved_stdin, STDIN_FILENO);

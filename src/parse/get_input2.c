@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_input2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/02 10:11:09 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/10 21:13:28 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/11 09:56:08 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ void	exit_program(char *buf, int i)
 		buf[i] = '\0';
 		return ;
 	}
-	write(STDOUT_FILENO, "exit\n", ft_strlen("exit\n"));
-	exit_prog(EXIT_SUCCESS);
+	ft_putstr_fd("exit\n", STDERR_FILENO);
+	exit_prog(g_msh.exit_status);
 }
 
 /*
