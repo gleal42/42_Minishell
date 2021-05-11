@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 10:37:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/10 14:52:16 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/11 16:29:18 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ t_ast	*get_ast(const char *input)
 			exit_prog(EXIT_FAILURE);
 		ft_lstadd_back(&ast->cmd_tables, cmd_table);
 	}
-	ast->return_value = &((t_cmd_table *)cmd_table->data)->return_value;
 	return (ast);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/10 22:54:30 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/11 18:57:54 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,11 @@
 ** all the other fields stay NULL / 0 and execute_cmd is not called
 ** @fields:
 ** [t_list *cmd_tables] linked list with command tables (t_cmd_table *) as nodes
-** [int *return_value] pointer to the return_value of the last cmd_table.
-**					   The pointer is set in get_cmd_table()
 */
 
 typedef struct s_ast
 {
 	t_list			*cmd_tables;
-	int				*return_value;
 }				t_ast;
 
 /*
@@ -40,14 +37,12 @@ typedef struct s_ast
 ** - delimiter = ";" (consecutive execution of the next cmd table)
 ** - delimiter = "||" (OR operator)
 ** - delimiter = "&&"" (AND operator)
-** [int return_value] Return value of this cmd table. Useful for && and ||
 */
 
 typedef struct s_cmd_table
 {
 	t_list			*cmds;
 	char			delimiter[2];
-	int				return_value;
 }				t_cmd_table;
 
 /*
@@ -68,7 +63,6 @@ typedef struct s_cmd
 {
 	t_list		*tokens;
 	t_list		*redirs;
-	int			is_builtin;
 }				t_cmd;
 
 /*

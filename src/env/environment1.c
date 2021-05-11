@@ -20,30 +20,56 @@
 ** @11-12	When using single quotes there is no env var substitution;
 */
 
-void	replace_env_in_tokens(t_list **tokens)
+void	replace_env_tokens(t_list **tokens)
+{
+	t_list	*token;
+
+	token = *tokens;
+	while (token)
+	{
+		replace_env_single_token(token->data);
+		token = token->next;
+	}
+	ft_lstclear_if(tokens, is_token_empty, free_token);
+}
+
+/*
+** Replaces the environment variables with the respective values.
+** @param:	- [t_list *]Linked List with struct pointer;
+** Line-by-line comments:
+** @8-10	tilde expansion;
+** @11-12	When using single quotes there is no env var substitution;
+*/
+
+void	replace_env_redirs(t_list **redirs)
+{
+	t_list	*node;
+	t_redir	*redir;
+
+	node = *redirs;
+	while (node)
+	{
+		redir = node->data;
+		replace_env_single_token(redir->direction);
+		node = node->next;
+	}
+}
+
+void	replace_env_single_token(t_token *token)
 {
 	char	**str;
 	char	delimiter;
-	t_list	*node;
-	t_token	*token;
 
-	node = *tokens;
-	while (node)
+	str = &token->str;
+	delimiter = token->delimiter;
+	if (delimiter == ' ' && str[0][0] == '~'
+		&& (str[0][1] == '\0' || str[0][1] == '/'))
+		replace_tilde_with_home(str);
+	if (delimiter != '\'')
 	{
-		token = node->data;
-		str = &token->str;
-		delimiter = token->delimiter;
-		if (delimiter == ' ' && str[0][0] == '~'
-			&& (str[0][1] == '\0' || str[0][1] == '/'))
-			replace_tilde_with_home(str);
-		if (delimiter != '\'')
-		{
-			replace_vars_with_values(str);
-			replace_special_params(str, g_msh.exit_status);
-		}
-		node = node->next;
+		replace_vars_with_values(str);
+		replace_special_params(str, g_msh.exit_status);
 	}
-	ft_lstclear_if(tokens, is_token_empty, free_token);
 }
 
 /*
@@ -84,7 +110,7 @@ void	replace_vars_with_values(char **str)
 ** Replaces the tilde token with the home directory
 ** @param:	- [char *] token
 ** Line-by-line comments:
-** @11	in the replace_env_in_tokens function the condition we
+** @11	in the replace_env_tokens function the condition we
 **		set was having a tilde
 **		with a null char or a forward slash after. 
 **		So this else condition refers to the

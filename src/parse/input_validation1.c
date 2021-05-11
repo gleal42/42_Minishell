@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 11:06:43 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/10 16:58:03 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/11 18:46:22 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ int	is_input_valid_unexpected_token(const char *input, char *err_message)
 		|| has_forbidden_sequence(input, ";;", err_message)
 		|| has_forbidden_sequence(input, ";|", err_message)
 		|| has_forbidden_sequence(input, ";&", err_message)
-		|| has_forbidden_sequence(input, ";;", err_message)
 		|| has_forbidden_sequence(input, ">>>", err_message)
 		|| has_spaces_between_char(input, '|', err_message)
 		|| has_spaces_between_char(input, '>', err_message))
