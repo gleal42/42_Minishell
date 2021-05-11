@@ -39,16 +39,17 @@ int	ft_export(t_list *tokens, t_list **env)
 	{
 		while (tokens)
 		{
-			token_str = ft_strdup(((t_token *)tokens->data)->str);
-			if (token_str == 0)
-				exit_prog(EXIT_FAILURE);
+			token_str = ((t_token *)tokens->data)->str;
 			if (!has_valid_identifier_export(token_str))
 				return (1);
 			var = get_var_name(token_str);
 			if (is_env_var(var, *env))
-				update_env_var_with_token(&token_str, var, *env);
+			{
+				if (ft_strchr(token_str, '='))
+					update_env_var_with_token(token_str, var, *env);
+			}
 			else
-				create_environment_var(&token_str, env);
+				create_environment_var(token_str, env);
 			free(var);
 			tokens = tokens->next;
 		}
@@ -87,21 +88,24 @@ void	print_all_exported_vars(t_list *env)
 	return ;
 }
 
-void	update_env_var_with_token(char **token_str, char *var, t_list *env)
+void	update_env_var_with_token(char *token_str, char *var, t_list *env)
 {
 	char	*value;
 
-	value = get_value_name(*token_str);
+	value = get_value_name(token_str);
 	update_environment_var(var, value, env);
-	free(*token_str);
 	free(value);
 }
 
-void	create_environment_var(char **token_str, t_list **env)
+void	create_environment_var(char *token_str, t_list **env)
 {
 	t_list	*new_var;
+	char	*new_var_str;
 
-	new_var = ft_lstnew(*token_str);
+	new_var_str = ft_strdup(token_str);
+	if (new_var_str == 0)
+		exit_prog(EXIT_FAILURE);
+	new_var = ft_lstnew(new_var_str);
 	if (new_var == 0)
 		exit_prog(EXIT_FAILURE);
 	ft_lstadd_front(env, new_var);
