@@ -20,25 +20,30 @@
 ** @11-12	When using single quotes there is no env var substitution;
 */
 
-void	env_vars(t_list	*tokens)
+void	replace_env_in_tokens(t_list **tokens)
 {
 	char	**str;
-	char	delim;
+	char	delimiter;
+	t_list	*node;
+	t_token	*token;
 
-	while (tokens)
+	node = *tokens;
+	while (node)
 	{
-		str = &((t_token *)tokens->data)->str;
-		delim = ((t_token *)tokens->data)->delimiter;
-		if (delim == ' ' && str[0][0] == '~'
+		token = node->data;
+		str = &token->str;
+		delimiter = token->delimiter;
+		if (delimiter == ' ' && str[0][0] == '~'
 			&& (str[0][1] == '\0' || str[0][1] == '/'))
 			replace_tilde_with_home(str);
-		if (delim != '\'')
+		if (delimiter != '\'')
 		{
 			replace_vars_with_values(str);
 			replace_special_params(str, g_msh.exit_status);
 		}
-		tokens = tokens->next;
+		node = node->next;
 	}
+	ft_lstclear_if(tokens, is_token_empty, free_token);
 }
 
 /*
@@ -60,18 +65,16 @@ void	replace_vars_with_values(char **str)
 	i = 0;
 	while (str[0][i])
 	{
-		if (str[0][i] == '$' && (i == 0 || str[0][i - 1] != '\\'))
+		if (str[0][i] == '$')
 		{
 			var = get_var_name(&str[0][i]);
 			value = ft_getenv(var + 1);
-			if (value)
-			{
-				final = replace_midstring(*str, var, value, i);
-				free(value);
-				free(*str);
-				*str = final;
-			}
+			final = replace_midstring(*str, var, value, i);
+			free(*str);
+			*str = final;
 			free(var);
+			if (value)
+				free(value);
 		}
 		i++;
 	}
@@ -81,7 +84,7 @@ void	replace_vars_with_values(char **str)
 ** Replaces the tilde token with the home directory
 ** @param:	- [char *] token
 ** Line-by-line comments:
-** @11	in the env_vars function the condition we
+** @11	in the replace_env_in_tokens function the condition we
 **		set was having a tilde
 **		with a null char or a forward slash after. 
 **		So this else condition refers to the

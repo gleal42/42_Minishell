@@ -93,7 +93,7 @@ void	exec_cmd(t_cmd *cmd, int nb_cmds, int **pipes, int process_index)
 	int	saved_stdout;
 	int	saved_stdin;
 
-	env_vars(cmd->tokens);
+	replace_env_in_tokens(&cmd->tokens);
 	saved_stdout = dup(STDOUT_FILENO);
 	saved_stdin = dup(STDIN_FILENO);
 	set_redirs_pipes(cmd->redirs, nb_cmds, pipes, process_index);

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 15:17:53 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/10 14:52:16 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/11 11:50:21 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,14 +113,14 @@ char *new_substr, int replace_i)
 
 	i = 0;
 	len = ft_strlen(original) - ft_strlen(old_substr) + ft_strlen(new_substr);
-	final = malloc(sizeof(char) * (len + 1));
+	final = ft_calloc(len + 1, sizeof(char));
 	if (final == 0)
 		exit_prog(EXIT_FAILURE);
 	while (*original)
 	{
 		if (i == replace_i)
 		{
-			while (*new_substr)
+			while (new_substr && *new_substr)
 				final[i++] = *(new_substr++);
 			original += ft_strlen(old_substr);
 		}

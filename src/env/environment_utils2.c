@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 22:04:11 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/10 14:52:16 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/11 12:47:09 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,17 @@ char	*get_value_name(char *str)
 	if (!value)
 		exit_prog(EXIT_FAILURE);
 	return (value);
+}
+
+int	is_token_empty(void *data)
+{
+	int		check;
+	t_token	*token;
+
+	token = data;
+	if (*token->str == '\0' && token->delimiter == ' ')
+		check = 1;
+	else
+		check = 0;
+	return (check);
 }
