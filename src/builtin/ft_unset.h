@@ -1,29 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*   ft_unset.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/03 18:11:26 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/12 09:06:50 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/05/12 09:07:11 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/05/12 09:07:39 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_pwd.h"
+#ifndef FT_UNSET_H
+# define FT_UNSET_H
 
-/*
-** prints current working directory
-** @param:	- [t_list *] environment variable string linked list
-** @return:	[int] exit status 
-*/
+# include "main.h"
 
-int	ft_pwd(void)
-{
-	char	pwd[1024];
+int		ft_unset(t_list *tokens, t_list **env);
+void	delete_env_var(char *var, t_list **env);
+void	ft_delete_list_str(void *data);
 
-	if (getcwd(pwd, 1024) == NULL)
-		return (1);
-	printf("%s\n", pwd);
-	return (0);
-}
+#endif

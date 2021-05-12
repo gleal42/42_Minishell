@@ -1,25 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_utils2.c                                   :+:      :+:    :+:   */
+/*   get_absolute_path.h                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/07 22:22:51 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/10 17:59:16 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/05/05 16:47:12 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/05/12 10:25:33 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execute_utils2.h"
+#ifndef GET_ABSOLUTE_PATH_H
+# define GET_ABSOLUTE_PATH_H
 
-void	close_all_pipes(int **pipes, int nb_cmds)
-{
-	int	nb_pipes;
+# include "main.h"
 
-	nb_pipes = nb_cmds - 1;
-	while (nb_pipes--)
-	{
-		close(pipes[nb_pipes][0]);
-		close(pipes[nb_pipes][1]);
-	}
-}
+int		has_relative_path(char *first_token);
+char	*get_absolute_path(char *program_name);
+char	**get_path_env_split(void);
+char	*get_correct_path(char *program_name, char **path_env_split);
+void	add_slash(char ***path_env_split);
+
+#endif

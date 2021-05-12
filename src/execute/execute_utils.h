@@ -1,29 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*   execute_utils.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/03 18:11:26 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/12 09:06:50 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/05/12 10:20:04 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/05/12 10:20:33 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_pwd.h"
+#ifndef EXECUTE_UTILS_H
+# define EXECUTE_UTILS_H
 
-/*
-** prints current working directory
-** @param:	- [t_list *] environment variable string linked list
-** @return:	[int] exit status 
-*/
+# include "main.h"
 
-int	ft_pwd(void)
-{
-	char	pwd[1024];
+int		**init_pipes(int nb_cmds);
+int		is_builtin(t_list *tokens);
 
-	if (getcwd(pwd, 1024) == NULL)
-		return (1);
-	printf("%s\n", pwd);
-	return (0);
-}
+#endif

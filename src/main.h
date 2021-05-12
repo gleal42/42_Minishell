@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 16:48:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/10 20:47:30 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/12 10:25:37 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,19 @@
 
 # include "structs.h"
 # include "constants.h"
+
+# include "builtin_utils.h"
+# include "ft_cd.h"
+# include "ft_exit.h"
+# include "ft_echo.h"
+# include "ft_env.h"
+# include "ft_pwd.h"
+# include "ft_export.h"
+# include "ft_unset.h"
+
+# include "environment.h"
+# include "environment_utils.h"
+
 # include "utils.h"
 # include "signals.h"
 
@@ -44,21 +57,10 @@
 # include "input_validation.h"
 
 # include "execute.h"
-# include "execute_utils3.h"
-# include "execute_utils2.h"
-# include "execute_program_utils.h"
-# include "environment.h"
-# include "builtins.h"
-
-/*
-** TO DELETE WHEN PROJECT FINISHED
-*/
-
-# include "print_ast.h"
-
-/*
-** TO DELETE WHEN PROJECT FINISHED
-*/
+# include "execute_utils.h"
+# include "fork_exec_wait.h"
+# include "redirections_pipes.h"
+# include "get_absolute_path.h"
 
 t_msh	g_msh;
 

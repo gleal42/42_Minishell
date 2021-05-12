@@ -1,29 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*   ft_env.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/03 18:11:26 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/12 09:06:50 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/05/12 09:03:43 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/05/12 09:04:03 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_pwd.h"
+#ifndef FT_ENV_H
+# define FT_ENV_H
 
-/*
-** prints current working directory
-** @param:	- [t_list *] environment variable string linked list
-** @return:	[int] exit status 
-*/
+# include "main.h"
 
-int	ft_pwd(void)
-{
-	char	pwd[1024];
+int		ft_env(t_list *env);
 
-	if (getcwd(pwd, 1024) == NULL)
-		return (1);
-	printf("%s\n", pwd);
-	return (0);
-}
+#endif

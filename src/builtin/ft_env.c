@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
+#include "ft_env.h"
 
 /*
 ** prints environment variable string linked lists one by one

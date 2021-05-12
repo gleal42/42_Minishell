@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_program_utils.c                            :+:      :+:    :+:   */
+/*   get_absolute_path.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 16:46:03 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/10 14:52:16 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/12 10:25:40 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execute_program_utils.h"
+#include "get_absolute_path.h"
 
 int	has_relative_path(char *first_token)
 {

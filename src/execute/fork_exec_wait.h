@@ -1,29 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*   fork_exec_wait.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/03 18:11:26 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/12 09:06:50 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/05/12 09:41:00 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/05/12 09:49:04 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_pwd.h"
+#ifndef FORK_EXEC_WAIT_H
+# define FORK_EXEC_WAIT_H
 
-/*
-** prints current working directory
-** @param:	- [t_list *] environment variable string linked list
-** @return:	[int] exit status 
-*/
+# include "main.h"
 
-int	ft_pwd(void)
-{
-	char	pwd[1024];
+void	exec_child(char **tokens, char **envp, int nb_cmds, int **pipes);
+void	exec_parent(int **pipes, int nb_cmds);
+void	close_all_pipes(int **pipes, int nb_cmds);
 
-	if (getcwd(pwd, 1024) == NULL)
-		return (1);
-	printf("%s\n", pwd);
-	return (0);
-}
+#endif

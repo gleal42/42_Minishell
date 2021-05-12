@@ -1,28 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_ast.h                                        :+:      :+:    :+:   */
+/*   ft_echo.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/25 10:40:38 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/04/28 11:24:09 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/05/12 09:01:52 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/05/12 09:03:08 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PRINT_AST_H
-# define PRINT_AST_H
+#ifndef FT_ECHO_H
+# define FT_ECHO_H
 
 # include "main.h"
 
-/*
-** Functions below will be deleted when project is finished
-*/
-
-void	print_ast(t_ast *ast);
-void	print_cmd_table(t_cmd_table *cmd_table);
-void	print_cmd(t_cmd *cmd);
-void	print_token(t_token *token, int i);
-void	print_redir(t_redir *redir);
+int		ft_echo(t_list *tokens);
+int		has_repeated_char_in_str(char repeat_chr,
+			char *str,
+			unsigned int start);
 
 #endif

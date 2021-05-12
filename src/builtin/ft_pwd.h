@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_utils2.h                                   :+:      :+:    :+:   */
+/*   ft_pwd.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/07 19:15:39 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/10 16:45:24 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/05/12 09:04:54 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/05/12 09:06:47 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXECUTE_UTILS2_H
-# define EXECUTE_UTILS2_H
+#ifndef FT_PWD_H
+# define FT_PWD_H
 
 # include "main.h"
 
-void	close_all_pipes(int **pipes, int nb_cmds);
+int		ft_pwd(void);
 
 #endif

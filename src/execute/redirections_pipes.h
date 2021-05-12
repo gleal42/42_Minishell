@@ -1,24 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_program_utils.h                            :+:      :+:    :+:   */
+/*   redirections_pipes.h                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/05 16:47:12 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/06 12:59:20 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/05/10 16:04:57 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/05/12 11:16:40 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXECUTE_PROGRAM_UTILS_H
-# define EXECUTE_PROGRAM_UTILS_H
+#ifndef REDIRECTIONS_PIPES_H
+# define REDIRECTIONS_PIPES_H
 
 # include "main.h"
 
-int		has_relative_path(char *first_token);
-char	*get_absolute_path(char *program_name);
-char	**get_path_env_split(void);
-char	*get_correct_path(char *program_name, char **path_env_split);
-void	add_slash(char ***path_env_split);
+void	set_redirs_pipes(t_list *redirs,
+			int nb_cmds,
+			int **pipes,
+			int process_index);
+int		has_redirs(t_list *redirs, char *type);
+int		open_files(t_list *redirs, char *type);
+int		open_file_input(t_redir *redir, int fd);
+int		open_file_output(t_redir *redir, int fd);
 
 #endif

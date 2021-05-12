@@ -36,10 +36,10 @@ void	exec_ast(t_ast *ast)
 	g_msh.cmd_table_nbr = 0;
 	while (cmd_table)
 	{
+		g_msh.nb_forks = 0;
 		exec_cmd_table(((t_cmd_table *)cmd_table->data)->cmds);
 		cmd_table = cmd_table->next;
 		g_msh.cmd_table_nbr++;
-		g_msh.nb_forks = 0;
 	}
 }
 
@@ -75,16 +75,7 @@ void	exec_cmd_table(t_list *cmds)
 		cmds = cmds->next;
 		i++;
 	}
-	close_all_pipes(pipes, nb_cmds);
-	while (g_msh.nb_forks > 0)
-	{
-		wait(&g_msh.exit_status);
-		if (WIFEXITED(g_msh.exit_status))
-			g_msh.exit_status = WEXITSTATUS(g_msh.exit_status);
-		else if (WIFSIGNALED(g_msh.exit_status))
-			g_msh.exit_status = WTERMSIG(g_msh.exit_status);
-		g_msh.nb_forks--;
-	}
+	exec_parent(pipes, nb_cmds);
 	free_arr((void **)pipes);
 }
 
@@ -147,37 +138,20 @@ void	exec_builtin(t_list *tokens, t_list **env)
 		g_msh.exit_status = ft_unset(tokens->next, env);
 }
 
-void	exec_program(t_list *lst_tokens,
-					int nb_cmds,
-					int **pipes)
+void	exec_program(t_list *lst_tokens, int nb_cmds, int **pipes)
 {
-	char	*exec_path;
 	char	**tokens;
 	char	**envp;
 	pid_t	pid;
 
 	tokens = convert_list_to_arr_tokens(lst_tokens);
 	envp = convert_list_to_arr(g_msh.dup_envp);
-	if (has_relative_path(tokens[0]))
-		exec_path = ft_strdup(tokens[0]);
-	else
-		exec_path = get_absolute_path(tokens[0]);
 	g_msh.nb_forks++;
 	pid = fork();
 	if (pid < 0)
 		exit_prog(EXIT_FAILURE);
 	else if (pid == 0)
-	{
-		close_all_pipes(pipes, nb_cmds);
-		execve(exec_path, tokens, envp);
-		if (errno == ENOENT && ft_strcmp(tokens[0], "exit") != 0)
-			write_func_err_message(tokens[0], "command not found");
-		if (errno == ENOENT)
-			exit(EXIT_CMD_NOT_FOUND);
-		else
-			exit(EXIT_FAILURE);
-	}
-	free(exec_path);
+		exec_child(tokens, envp, nb_cmds, pipes);
 	free(tokens);
 	free(envp);
 }
