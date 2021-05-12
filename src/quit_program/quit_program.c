@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit_prog.c                                        :+:      :+:    :+:   */
+/*   quit_program.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 11:07:39 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/11 11:30:39 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/12 11:51:47 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exit_prog.h"
+#include "quit_program.h"
 
 /*
 ** Exits the program by doing some cleaning before
@@ -21,9 +21,9 @@
 **			we need to make sure they are as they were when the program started
 */
 
-void	exit_prog(int exit_code)
+void	quit_program(int exit_code)
 {
-	t_termcaps *termcaps;
+	t_termcaps	*termcaps;
 
 	termcaps = &g_msh.termcaps;
 	if (termcaps->keys_off)

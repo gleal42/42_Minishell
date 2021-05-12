@@ -104,9 +104,9 @@ void	create_environment_var(char *token_str, t_list **env)
 
 	new_var_str = ft_strdup(token_str);
 	if (new_var_str == 0)
-		exit_prog(EXIT_FAILURE);
+		quit_program(EXIT_FAILURE);
 	new_var = ft_lstnew(new_var_str);
 	if (new_var == 0)
-		exit_prog(EXIT_FAILURE);
+		quit_program(EXIT_FAILURE);
 	ft_lstadd_front(env, new_var);
 }

@@ -1,20 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit_prog.h                                        :+:      :+:    :+:   */
+/*   write_term.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/10 19:45:29 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/10 19:45:44 by gleal            ###   ########.fr       */
+/*   Created: 2021/04/21 10:38:39 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/05/12 12:14:55 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXIT_PROG_H
-# define EXIT_PROG_H
+#ifndef WRITE_TERM_H
+# define WRITE_TERM_H
 
 # include "main.h"
 
-void	exit_prog(int exit_code);
+void	write_prompt(void);
+void	write_gen_err_message(char *err_message);
+void	write_func_err_message(char *func_name, char *err_message);
+void	write_gen_func_err_message(char *func_name, char *err_message);
 
 #endif

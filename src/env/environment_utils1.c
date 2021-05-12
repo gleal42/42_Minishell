@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 15:17:53 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/12 09:18:04 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/12 11:42:17 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	*get_var_name(char *str)
 		i++;
 	var = ft_substr(str, 0, i);
 	if (!var)
-		exit_prog(EXIT_FAILURE);
+		quit_program(EXIT_FAILURE);
 	return (var);
 }
 
@@ -115,7 +115,7 @@ char *new_substr, int replace_i)
 	len = ft_strlen(original) - ft_strlen(old_substr) + ft_strlen(new_substr);
 	final = ft_calloc(len + 1, sizeof(char));
 	if (final == 0)
-		exit_prog(EXIT_FAILURE);
+		quit_program(EXIT_FAILURE);
 	while (*original)
 	{
 		if (i == replace_i)
@@ -149,7 +149,7 @@ void	tilde_join(char **str, char **home_path)
 
 	temp = ft_strjoin(*home_path, &str[0][1]);
 	if (!temp)
-		exit_prog(EXIT_FAILURE);
+		quit_program(EXIT_FAILURE);
 	free(*home_path);
 	*home_path = 0;
 	free(*str);

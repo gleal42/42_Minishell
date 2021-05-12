@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 16:48:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/12 10:25:37 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/12 12:21:14 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,29 +43,26 @@
 # include "environment.h"
 # include "environment_utils.h"
 
-# include "utils.h"
-# include "signals.h"
-
-# include "free_memory.h"
-# include "exit_prog.h"
-
-# include "termcaps.h"
-
-# include "parse.h"
-# include "get_input.h"
-# include "parse_utils.h"
-# include "input_validation.h"
-
 # include "execute.h"
 # include "execute_utils.h"
 # include "fork_exec_wait.h"
 # include "redirections_pipes.h"
 # include "get_absolute_path.h"
 
-t_msh	g_msh;
+# include "parse.h"
+# include "parse_utils.h"
+# include "get_input.h"
+# include "input_validation.h"
 
-void	init_minishell(t_msh *msh, char **envp);
-void	catch_signals(int signum);
-void	test_minishell(char *test, char **envp);
+# include "quit_program.h"
+# include "free_memory.h"
+
+# include "termcaps.h"
+
+# include "init_minishell.h"
+# include "signals.h"
+# include "write_term.h"
+
+t_msh	g_msh;
 
 #endif

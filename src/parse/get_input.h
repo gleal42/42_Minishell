@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 15:28:18 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/10 18:20:05 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/12 11:36:15 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,5 @@ void	delete_single_char(t_termcaps *termcaps, char *buf, int *i);
 void	reset_cmd_line(char *buf, int *i, t_dlist **input_history);
 void	exit_program(char *buf, int i);
 char	*extract_input(char *buf, int i);
-void	kill_child(pid_t *pids, int cmd_nbrs);
-void	kill_the_child(int status);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 16:46:03 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/12 10:25:40 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/12 11:42:17 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*get_absolute_path(char *program_name)
 	{
 		absolute_path = ft_strdup(program_name);
 		if (!absolute_path)
-			exit_prog(EXIT_FAILURE);
+			quit_program(EXIT_FAILURE);
 		return (absolute_path);
 	}
 	absolute_path = get_correct_path(program_name, path_env_split);
@@ -52,7 +52,7 @@ char	**get_path_env_split(void)
 	path_env_split = ft_split(path_env, ":");
 	free(path_env);
 	if (!path_env_split)
-		exit_prog(EXIT_FAILURE);
+		quit_program(EXIT_FAILURE);
 	add_slash(&path_env_split);
 	return (path_env_split);
 }
@@ -68,7 +68,7 @@ char	*get_correct_path(char *program_name, char **path_env_split)
 	{
 		absolute_path = ft_strjoin(path_env_split[i], program_name);
 		if (!absolute_path)
-			exit_prog(EXIT_FAILURE);
+			quit_program(EXIT_FAILURE);
 		if (stat(absolute_path, &statbuf) == EXIT_SUCCESS)
 			break ;
 		free(absolute_path);
@@ -78,7 +78,7 @@ char	*get_correct_path(char *program_name, char **path_env_split)
 	{
 		absolute_path = ft_strdup(program_name);
 		if (!absolute_path)
-			exit_prog(EXIT_FAILURE);
+			quit_program(EXIT_FAILURE);
 	}
 	return (absolute_path);
 }

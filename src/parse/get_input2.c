@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/02 10:11:09 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/11 09:56:08 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/12 11:42:17 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	exit_program(char *buf, int i)
 		return ;
 	}
 	ft_putstr_fd("exit\n", STDERR_FILENO);
-	exit_prog(g_msh.exit_status);
+	quit_program(g_msh.exit_status);
 }
 
 /*
@@ -73,13 +73,6 @@ char	*extract_input(char *buf, int i)
 	buf[i - 1] = '\0';
 	input = ft_strdup(buf);
 	if (!input)
-		exit_prog(EXIT_FAILURE);
+		quit_program(EXIT_FAILURE);
 	return (input);
-}
-
-void	kill_the_child(int status)
-{
-	(void)status;
-	printf("Quit: 3\n");
-	kill(0, SIGCHLD);
 }

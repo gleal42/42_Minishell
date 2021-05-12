@@ -20,7 +20,7 @@
 ** @11-12	When using single quotes there is no env var substitution;
 */
 
-void	replace_env_tokens(t_list **tokens)
+void	replace_envs(t_list **tokens, t_list *redirs)
 {
 	t_list	*token;
 
@@ -31,27 +31,10 @@ void	replace_env_tokens(t_list **tokens)
 		token = token->next;
 	}
 	ft_lstclear_if(tokens, is_token_empty, free_token);
-}
-
-/*
-** Replaces the environment variables with the respective values.
-** @param:	- [t_list *]Linked List with struct pointer;
-** Line-by-line comments:
-** @8-10	tilde expansion;
-** @11-12	When using single quotes there is no env var substitution;
-*/
-
-void	replace_env_redirs(t_list **redirs)
-{
-	t_list	*node;
-	t_redir	*redir;
-
-	node = *redirs;
-	while (node)
+	while (redirs)
 	{
-		redir = node->data;
-		replace_env_single_token(redir->direction);
-		node = node->next;
+		replace_env_single_token(((t_redir *)redirs->data)->direction);
+		redirs = redirs->next;
 	}
 }
 
@@ -152,7 +135,7 @@ void	replace_special_params(char **str, int last_status)
 	{
 		status_string = ft_itoa(last_status);
 		if (status_string == 0)
-			return (exit_prog(EXIT_FAILURE));
+			return (quit_program(EXIT_FAILURE));
 		final = replace_midstring(*str, "$?", status_string, replace_spot);
 		free(status_string);
 		status_string = 0;

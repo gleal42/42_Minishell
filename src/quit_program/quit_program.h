@@ -1,26 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   quit_program.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/05 19:10:23 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/12 11:38:42 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/05/10 19:45:29 by gleal             #+#    #+#             */
+/*   Updated: 2021/05/12 11:43:21 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "signals.h"
+#ifndef QUIT_PROGRAM_H
+# define QUIT_PROGRAM_H
 
-void	catch_sigint(int signum)
-{
-	(void)signum;
-	ft_putstr("\n");
-}
+# include "main.h"
 
-void	catch_sigquit(int signum)
-{
-	(void)signum;
-	printf("Quit: 3\n");
-	kill(0, SIGCHLD);
-}
+void	quit_program(int exit_code);
+
+#endif

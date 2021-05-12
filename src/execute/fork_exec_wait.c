@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 09:25:18 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/12 10:26:09 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/12 11:59:29 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ void	exec_child(char **tokens, char **envp, int nb_cmds, int **pipes)
 	free(tokens);
 	free(envp);
 	if (errno == ENOENT)
-		exit_prog(EXIT_CMD_NOT_FOUND);
+		exit(EXIT_CMD_NOT_FOUND);
 	else
-		exit_prog(EXIT_FAILURE);
+		exit(EXIT_FAILURE);
 }
 
 void	exec_parent(int **pipes, int nb_cmds)

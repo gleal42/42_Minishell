@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 22:04:11 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/12 09:18:33 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/12 11:42:17 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*get_value_name(char *str)
 	len = ft_strlen(str) - i;
 	value = ft_substr(str, i, len);
 	if (!value)
-		exit_prog(EXIT_FAILURE);
+		quit_program(EXIT_FAILURE);
 	return (value);
 }
 

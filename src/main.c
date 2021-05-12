@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 21:35:14 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/10 20:48:07 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/12 12:18:50 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_dlist	*input;
 
-	if (argc >= 2)
-		test_minishell(argv[2], envp);
+	(void)argc;
+	(void)argv;
 	init_minishell(&g_msh, envp);
 	while (1)
 	{
@@ -53,47 +53,15 @@ int	main(int argc, char **argv, char **envp)
 		input = ft_dlstnew((void *)get_input(g_msh.input_history,
 					&g_msh.termcaps));
 		if (!input)
-			exit_prog(EXIT_FAILURE);
+			quit_program(EXIT_FAILURE);
 		ft_dlstadd_front(&g_msh.input_history, input);
 		if (!is_input_valid((const char *)input->data))
 			continue ;
 		turn_on_canonical_mode(&g_msh.termcaps);
 		g_msh.ast = get_ast((const char *)input->data);
-		//print_ast(g_msh.ast);
 		exec_ast(g_msh.ast);
 		free_ast(g_msh.ast);
 		g_msh.ast = 0;
 	}
 	return (0);
-}
-
-/*
-** Set a few things the program needs to run
-** @param:	- [t_msh *] main struct of the program
-**			- [char **] environment pointers that we need to duplicate
-** Line-by-line comments:
-** @1-2		Makes sure that the terminal is linked to the STDIN
-*/
-
-void	init_minishell(t_msh *msh, char **envp)
-{
-	if (!isatty(STDIN_FILENO))
-		exit_prog(EXIT_FAILURE);
-	ft_bzero(msh, sizeof(t_msh));
-	duplicate_env(&msh->dup_envp, envp);
-	init_termcaps(&msh->termcaps);
-	signal(SIGINT, catch_signals);
-	signal(SIGSEGV, catch_seg_fault);
-	signal(SIGQUIT, kill_the_child);
-}
-
-void	test_minishell(char *test, char **envp)
-{
-	ft_bzero(&g_msh, sizeof(t_msh));
-	duplicate_env(&(&g_msh)->dup_envp, envp);
-	g_msh.ast = get_ast((const char *)test);
-	// print_ast(g_msh.ast);
-	exec_ast(g_msh.ast);
-	free_msh(&g_msh);
-	exit(EXIT_FAILURE);
 }

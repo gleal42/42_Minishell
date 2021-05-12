@@ -84,8 +84,7 @@ void	exec_cmd(t_cmd *cmd, int nb_cmds, int **pipes, int process_index)
 	int	saved_stdout;
 	int	saved_stdin;
 
-	replace_env_tokens(&cmd->tokens);
-	replace_env_redirs(&cmd->redirs);
+	replace_envs(&cmd->tokens, cmd->redirs);
 	saved_stdout = dup(STDOUT_FILENO);
 	saved_stdin = dup(STDIN_FILENO);
 	set_redirs_pipes(cmd->redirs, nb_cmds, pipes, process_index);
@@ -145,11 +144,11 @@ void	exec_program(t_list *lst_tokens, int nb_cmds, int **pipes)
 	pid_t	pid;
 
 	tokens = convert_list_to_arr_tokens(lst_tokens);
-	envp = convert_list_to_arr(g_msh.dup_envp);
+	envp = convert_list_to_arr_envp(g_msh.dup_envp);
 	g_msh.nb_forks++;
 	pid = fork();
 	if (pid < 0)
-		exit_prog(EXIT_FAILURE);
+		quit_program(EXIT_FAILURE);
 	else if (pid == 0)
 		exec_child(tokens, envp, nb_cmds, pipes);
 	free(tokens);

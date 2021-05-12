@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 09:10:48 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/12 09:13:30 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/12 11:42:17 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,10 @@ char	*replace_env_value(char **env_ptr, char	*var_name, char *new_value)
 
 	temp = ft_strjoin(var_name, "=");
 	if (!temp)
-		exit_prog(EXIT_FAILURE);
+		quit_program(EXIT_FAILURE);
 	final = ft_strjoin(temp, new_value);
 	if (!final)
-		exit_prog(EXIT_FAILURE);
+		quit_program(EXIT_FAILURE);
 	free(temp);
 	temp = 0;
 	free(*env_ptr);

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 17:21:45 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/10 14:52:16 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/12 11:42:17 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*ft_getenv(char *key)
 		{
 			value = ft_strdup(&(curr_envp[i + 1]));
 			if (!value)
-				exit_prog(EXIT_FAILURE);
+				quit_program(EXIT_FAILURE);
 			return (value);
 		}
 		envp = envp->next;
@@ -56,16 +56,16 @@ void	duplicate_env(t_list **dup_envp, char **envp)
 	char	*tmp;
 
 	if (!envp || !envp[0])
-		exit_prog(EXIT_FAILURE);
+		quit_program(EXIT_FAILURE);
 	i = 0;
 	while (envp[i] != NULL)
 	{
 		tmp = ft_strdup(envp[i]);
 		if (!tmp)
-			exit_prog(EXIT_FAILURE);
+			quit_program(EXIT_FAILURE);
 		next_env = ft_lstnew(tmp);
 		if (!next_env)
-			exit_prog(EXIT_FAILURE);
+			quit_program(EXIT_FAILURE);
 		ft_lstadd_back(dup_envp, next_env);
 		i++;
 	}

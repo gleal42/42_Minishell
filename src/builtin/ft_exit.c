@@ -39,11 +39,11 @@ void	ft_exit(t_list *cmds)
 	first_argument = ((t_cmd *)(cmds->data))->tokens->next;
 	ft_putstr_fd("exit\n", STDERR_FILENO);
 	if (first_argument == 0)
-		exit_prog(g_msh.exit_status);
+		quit_program(g_msh.exit_status);
 	else if (ft_strisnumber(((t_token *)first_argument->data)->str))
 	{
 		if (first_argument->next == 0)
-			exit_prog(ft_atoi(((t_token *)first_argument->data)->str));
+			quit_program(ft_atoi(((t_token *)first_argument->data)->str));
 		else
 		{
 			write_gen_err_message("exit: too many arguments");
@@ -56,6 +56,6 @@ void	ft_exit(t_list *cmds)
 		ft_putstr_fd("msh: exit: ", STDERR_FILENO);
 		ft_putstr_fd(((t_token *)first_argument->data)->str, STDERR_FILENO);
 		ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
-		exit_prog(EXIT_GENERAL_ERROR);
+		quit_program(EXIT_GENERAL_ERROR);
 	}
 }
