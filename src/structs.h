@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/11 18:57:54 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/12 17:00:12 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 # define STRUCTS_H
 
 /*
-** An Abstract Syntax Tree (aka AST) that gathers one or more command tables
-** In case the input is invalid, the raw input stays as first entered and
-** all the other fields stay NULL / 0 and execute_cmd is not called
+** An Abstract Syntax Tree (aka AST) that gathers one or more command tables.
+** The AST is only created if the input is valid (passed is_input_valid()).
+** We know this struct won't win any awards for most useful struct... but it's
+** here for readability purposes
 ** @fields:
 ** [t_list *cmd_tables] linked list with command tables (t_cmd_table *) as nodes
 */
@@ -30,13 +31,10 @@ typedef struct s_ast
 ** A command table with one or more simple commands
 ** @fields:
 ** [t_list *cmds] linked list with simple commands (t_cmd *) as nodes
-** [int nb_cmds] number of simple commands in the command table
 ** [char delimiter[2]] Indicates what is separating this cmd table from the next
 ** Potential values:
 ** - delimiter = "\0" (last command table)
 ** - delimiter = ";" (consecutive execution of the next cmd table)
-** - delimiter = "||" (OR operator)
-** - delimiter = "&&"" (AND operator)
 */
 
 typedef struct s_cmd_table
@@ -51,7 +49,8 @@ typedef struct s_cmd_table
 ** - ls -al dir
 ** - echo "Hello, World!"
 ** @fields:
-** [t_list *tokens] linked list with all the tokens of the simple command
+** [t_list *tokens] linked list with all the tokens (t_token *) of the simple
+** command
 ** Examples: 
 ** - 1st node: "ls" / 2nd node: "-al" / 3rd node: "dir"
 ** - 1st node: "echo" / 2nd node: "Hello, World!"
@@ -66,8 +65,9 @@ typedef struct s_cmd
 }				t_cmd;
 
 /*
-** A token is a serie of characters that represent a program name or an argument
-** Spaces can be part of a token if it's delimited by single or double quotes
+** A token is a series of characters that represent a program name or an
+** argument. Spaces can be part of a token if it's delimited by single or
+** double quotes
 ** @fields:
 ** [char *str] token. Can be an empty string if input is ""
 ** [char delimiter] delimiter
@@ -140,6 +140,14 @@ typedef struct s_termcaps
 ** [t_ast *] struct with the abstract syntax tree
 ** [t_termcaps] struct with the settings of the termical and a few capabilities
 ** [t_list *] the duplicate of environment variables. Each node is a string
+** [int exit_status] exit_status of the last simple command that ran
+** [int nb_forks] each time a child process is created this var is incremented.
+** It allows to properly wait on all processes to finish before moving on but
+** still implementing asynchronous processes
+** [int nb_cmd_tables] counts the cmd_tables as they are being executed so that
+** we can check all simple commands within the current cmd_table. If the exit
+** program name is mentionned alongside other simple commands we don't have to
+** exit, otherwise we do
 */
 
 typedef struct s_msh
@@ -150,7 +158,7 @@ typedef struct s_msh
 	t_list			*dup_envp;
 	int				exit_status;
 	int				nb_forks;
-	int				cmd_table_nbr;
+	int				nb_cmd_tables;
 }				t_msh;
 
 #endif

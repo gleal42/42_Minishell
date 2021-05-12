@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/02 17:37:13 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/12 11:42:17 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/12 18:15:15 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 **                     error message
 ** @return:	[int] true or false
 ** Line-by-line comments:
-** @5-8		We need to trim white space from the input while
-**			not changing the initial input
+** @5-8		We need to trim white space from the input while not changing the
+**			initial input
 */
 
 int	has_char_at_end(const char *input, char c, char *err_message)
@@ -30,7 +30,7 @@ int	has_char_at_end(const char *input, char c, char *err_message)
 	char	*cpy;
 	int		len;
 
-	cpy = ft_strtrim(input, " \t\n\v\f\r");
+	cpy = ft_strtrim(input, WHITE_SPACE);
 	if (!cpy)
 		quit_program(EXIT_FAILURE);
 	len = ft_strlen(cpy);
@@ -100,7 +100,7 @@ int	has_forbidden_sequence(const char *input, char *test, char *err_message)
 	int		check;
 	char	*trimmed;
 
-	trimmed = ft_strtrim_all(input, " \t\n\v\f\r");
+	trimmed = ft_strtrim_all(input, WHITE_SPACE);
 	if (!trimmed)
 		quit_program(EXIT_FAILURE);
 	if (ft_strstr_quotes(trimmed, test) != 0)

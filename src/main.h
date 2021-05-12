@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 16:48:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/12 12:21:14 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/12 16:51:49 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@
 # include "input_validation.h"
 
 # include "quit_program.h"
-# include "free_memory.h"
+# include "free_ast.h"
 
 # include "termcaps.h"
 

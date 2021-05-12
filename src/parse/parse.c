@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 10:37:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/12 12:07:37 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/12 18:05:06 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,14 @@
 ** Extracts the Abstract Syntax Tree (AST) out of the input entered in cmd line.
 ** In this case, the AST is a list that has a cmd_table per node and each
 ** cmd_table has a list a simple command per node. Each simple command has a 
-** list of tokens
-** @return:	[t_ast *] struct with input, list of cmd_tables and a pointer
-**					  to a return value
+** list of tokens and list of redirections
+** @param:	- [const char *] the unchanged line entered in stdin
+** @return:	[t_ast *] struct with a list of cmd_tables
 ** Line-by-line comments:
-** @8		For further use (history), we need to keep the input unchanged
-**			and stored in the struct
-** @14		We pass down the reference of the curr_pos to keep track of the
+** @10		We pass down the reference of the curr_pos to keep track of the
 ** 			parsing executed by every subsequent function
-** @17		In execute(), we'll want to execute the cmd_table in entering order
+** @14		In exec_ast(), we'll want to execute the cmd_table in entering order
 **			so we need to add to the back each new cmd_table
-** @19		ast->return_value now points to the return_value of the last
-**			cmd_table. It makes assigning the value to $? easier
 */
 
 t_ast	*get_ast(const char *input)
@@ -54,16 +50,15 @@ t_ast	*get_ast(const char *input)
 ** Gets a command table, which is a series of simple commands to execute
 ** @param:	- [const char *] the unchanged line entered in stdin
 **			- [int *] the current parsing position within the input  
-** @return:	[t_cmd_table *] struct with list of simple cmds, the delimiter that
-** 						  seperates this cmd_table from the next and the
-**						  return value of this process
+** @return:	[t_cmd_table *] struct with list of simple cmds and the delimiter
+**							that seperates this cmd_table from the next
 ** Line-by-line comments:
-** @13-14	If the delimiter is '|', it means we just got a simple command
+** @14-15	If the delimiter is '|', it means we just got a simple command
 **			and we are about to get a new one. So we increment curr_pos and we
 **			continue parsing
 **			All error handling is done before by is_input_valid() so we don't
 **			need to be on the lookout for bad syntax
-** @15-20	If the delimiter is ';', the current cmd_table is finished
+** @16-21	If the delimiter is ';', the current cmd_table is finished
 */
 
 t_cmd_table	*get_cmd_table(const char *input, int *curr_pos)
@@ -94,17 +89,17 @@ t_cmd_table	*get_cmd_table(const char *input, int *curr_pos)
 }
 
 /*
-** Gets a simple command, which is a series of tokens
+** Gets a simple command, which is a series of tokens or redirections. Tokens
+** and redirection aren't necessarily sorted. This is a valid simple command:
+** > redir1 program_name token1 >> redir2 token2 token3 < redir3
 ** @param:	- [const char *] the unchanged line entered in stdin
 **			- [int *] the current parsing position within the input  
-** @return:	[t_cmd *] struct with an arr of tokens (i.e. strings) and a list
-**                    of redirection in order of entering
+** @return:	[t_cmd *] struct with a list of tokens and a list of redirection
+** 					  in order of entering
 ** Line-by-line comments:
-** @8		A simple command can be delimited by ';', '|', "||" or "&&". While
-**			we don't see those, it means we still are on the same simple command
-**			Redirection case: we count '>' and '<' as delimiter to stop the loop
-**			but only to call get_redirs right after. So we are still in a
-**			simple command if we find '<' or '>'
+** @7-8		Parse until simple command is finished (i.e. '\0', ';' or '|')
+** @10		If not '>' or '<', then it's a token
+** @17		If '>' or '<', then it's a redirection
 */
 
 t_cmd	*get_cmd(const char *input, int *curr_pos)
@@ -137,7 +132,7 @@ t_cmd	*get_cmd(const char *input, int *curr_pos)
 }
 
 /*
-** Gets a token, which represent one argument in the cmd_line. It can
+** Gets a token, which represents one argument in the cmd_line. It can
 ** either be a word or a string of words if quotes are used.
 ** @param:	- [const char *] the unchanged line entered in stdin
 **			- [int *] the current parsing position within the input  
@@ -152,7 +147,7 @@ t_cmd	*get_cmd(const char *input, int *curr_pos)
 **			by get_delimiter(). So we parse while we haven't found it's matching
 **			quote (either single or double)
 ** @13-14	The token is a word and will be finished when we find a delimiter
-**			(' ', ';', '|', ,'&', '<' or '>')
+**			(' ', ';', '|', '<' or '>')
 ** @20-21	We need to do one last increment of curr_pos if we were dealing with
 **			quotes, otherwise next time get_token() will be called it will
 **			process the closing quotes of this token as the opening ones of the
@@ -199,7 +194,8 @@ t_token	*get_token(const char *input, int *curr_pos)
 ** @return:	[t_redir *] struct with a string with the direction and the type
 ** Line-by-line comments:
 ** @6-14	Gets the type
-** @16		Gets the file
+** @16		Gets the file. The file_name is stored inside a t_token because
+** 			we need to know the delimiter around the redirection
 */
 
 t_redir	*get_redir(const char *input, int *curr_pos)
