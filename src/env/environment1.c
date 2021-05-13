@@ -71,7 +71,7 @@ void	replace_env_single_token(t_token *token)
 	if (delimiter != '\'')
 	{
 		replace_vars_with_values(str);
-		replace_special_params(str, g_msh.exit_status);
+		replace_special_params(str);
 	}
 }
 
@@ -143,22 +143,8 @@ function
 ** 		(iterator as opposed to string pointer);
 */
 
-void	replace_special_params(char **str, int last_status)
+void	replace_special_params(char **str)
 {
-	int		replace_spot;
-	char	*status_string;
-	char	*final;
-
-	replace_spot = ft_strnstr_iterator(*str, "$?", ft_strlen(*str));
-	if (replace_spot != -1)
-	{
-		status_string = ft_itoa(last_status);
-		if (status_string == 0)
-			return (quit_program(EXIT_FAILURE));
-		final = replace_midstring(*str, "$?", status_string, replace_spot);
-		free(status_string);
-		status_string = 0;
-		free(*str);
-		*str = final;
-	}
+	replace_status_env(str, g_msh.exit_status);
+	replace_underscore_env(str, g_msh.last_exec_cmd);
 }

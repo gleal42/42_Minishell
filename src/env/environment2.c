@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 17:21:45 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/13 02:22:38 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/13 16:34:16 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,4 +115,42 @@ void	remove_env_value(char	*key)
 		envp = envp->next;
 	}
 	return ;
+}
+
+void	replace_status_env(char **str, int	last_status)
+{
+	int		replace_spot;
+	char	*status_string;
+	char	*final;
+
+	replace_spot = ft_strnstr_iterator(*str, "$?", ft_strlen(*str));
+	while (replace_spot != -1)
+	{
+		status_string = ft_itoa(last_status);
+		if (status_string == 0)
+			return (quit_program(EXIT_FAILURE));
+		final = replace_midstring(*str, "$?", status_string, replace_spot);
+		free(status_string);
+		status_string = 0;
+		free(*str);
+		*str = final;
+		replace_spot = ft_strnstr_iterator(*str, "$?", ft_strlen(*str));
+	}
+}
+
+void	replace_underscore_env(char **str, char *last_cmd)
+{
+	int		replace_spot;
+	char	*last_cmd_str;
+	char	*final;
+
+	replace_spot = ft_strnstr_iterator(*str, "$_", ft_strlen(*str));
+	while (replace_spot != -1)
+	{
+		//ft_strrchr '/' + strdup
+		final = replace_midstring(*str, "$_", last_cmd, replace_spot);
+		free(*str);
+		*str = final;
+		replace_spot = ft_strnstr_iterator(*str, "$_", ft_strlen(*str));
+	}
 }

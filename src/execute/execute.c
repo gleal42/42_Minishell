@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 18:40:32 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/12 19:14:59 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/13 16:21:49 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	exec_ast(t_ast *ast)
 	{
 		g_msh.nb_forks = 0;
 		exec_cmd_table(cmd_table->data);
+		save_last_token(cmd_table->data);
 		cmd_table = cmd_table->next;
 		g_msh.nb_cmd_tables++;
 	}

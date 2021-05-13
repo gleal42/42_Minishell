@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 14:59:16 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/12 17:32:41 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/13 15:38:46 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,6 @@ void	tilde_join(char **str, char **home_path);
 char	*get_value_name(char *str);
 int		is_token_empty(void *data);
 void	replace_string(char *str, char **env_ptr);
+void	unset_oldpwd(void);
 
 #endif
