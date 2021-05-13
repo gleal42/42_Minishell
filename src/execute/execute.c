@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 18:40:32 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/13 12:27:24 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/13 21:14:46 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,12 +112,12 @@ void	exec_cmd_table(t_cmd_table *cmd_table)
 
 void	exec_cmd(t_cmd *cmd, int nb_cmds, int **pipes, int process_index)
 {
-	int	saved_stdout;
 	int	saved_stdin;
+	int	saved_stdout;
 
 	replace_envs(&cmd->tokens, cmd->redirs);
-	saved_stdout = dup(STDOUT_FILENO);
 	saved_stdin = dup(STDIN_FILENO);
+	saved_stdout = dup(STDOUT_FILENO);
 	set_redirs_pipes(cmd->redirs, nb_cmds, pipes, process_index);
 	if (g_msh.exit_status == EXIT_SUCCESS && cmd->tokens != 0)
 	{
@@ -126,10 +126,10 @@ void	exec_cmd(t_cmd *cmd, int nb_cmds, int **pipes, int process_index)
 		else
 			exec_program(cmd->tokens, nb_cmds, pipes);
 	}
-	dup2(saved_stdout, STDOUT_FILENO);
 	dup2(saved_stdin, STDIN_FILENO);
-	close(saved_stdout);
+	dup2(saved_stdout, STDOUT_FILENO);
 	close(saved_stdin);
+	close(saved_stdout);
 }
 
 /*
@@ -180,6 +180,8 @@ void	exec_builtin(t_list *tokens, t_list **env)
 ** @8		Fork() returns twice, a 1st time inside child process with pid == 0
 **			and a 2nd time inside parent process with pid = process ID of child
 **			so a value above 0
+** @13-14	Although they are array of strings, we only need to free the
+**			pointers because the individuals strings are still being used
 */
 
 void	exec_program(t_list *lst_tokens, int nb_cmds, int **pipes)

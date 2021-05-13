@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 09:25:18 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/13 13:22:59 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/13 19:54:03 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 /*
 ** Function only executed inside child process. This process will be replaced by
 ** execve()
-** @param:	- [char **] param_value
-**			- [type] param_value
+** @param:	- [char **] NULL-terminated array of strings with the tokens
+**			- [char **] NULL-terminated array of string with the environment
+**						variables
 **			- [int **] 2D array of ints. Each subarray is a pipe
 **			- [int] index of the current process
 ** @return:	[type] return_value
