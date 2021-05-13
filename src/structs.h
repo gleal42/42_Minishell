@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/12 17:00:12 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/13 10:53:38 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,10 +144,9 @@ typedef struct s_termcaps
 ** [int nb_forks] each time a child process is created this var is incremented.
 ** It allows to properly wait on all processes to finish before moving on but
 ** still implementing asynchronous processes
-** [int nb_cmd_tables] counts the cmd_tables as they are being executed so that
-** we can check all simple commands within the current cmd_table. If the exit
-** program name is mentionned alongside other simple commands we don't have to
-** exit, otherwise we do
+** [t_cmd_table *curr_cmd_table] points to the cmd_table being currently
+** executed. This is useful for when the exit program name is used alongside
+** other simple commands we don't have to exit, otherwise we do
 */
 
 typedef struct s_msh
@@ -158,7 +157,7 @@ typedef struct s_msh
 	t_list			*dup_envp;
 	int				exit_status;
 	int				nb_forks;
-	int				nb_cmd_tables;
+	t_cmd_table		*curr_cmd_table;
 }				t_msh;
 
 #endif
