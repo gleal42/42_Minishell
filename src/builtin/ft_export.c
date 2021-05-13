@@ -22,9 +22,12 @@
 **			- [t_list **] pointer to envp linked list
 ** @return:	[int] exit status
 ** Line-by-line comments:
-** @18-19	in case the variable already exists we
-** 			just need to update it in the list
-** @20-21	if the variable doesn't exist we create
+** @16-17	in case the variable already exists we
+** 			just need to update it in the list 
+			and only if it is assigned:
+			(e.g. If in envp ENVVAR=5
+			export ENVVAR has no effect)
+** @20		if the variable doesn't exist we create
 **			a new node in the envp linked list
 */
 

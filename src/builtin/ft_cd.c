@@ -63,7 +63,8 @@ int	ft_cd(t_list *tokens, t_list **env)
 **			- [t_list *] environment variable linked list pointer
 ** @return:	[int] exit status (to be implemented)
 ** Line-by-line comments:
-** @9		function will update the environment variable linked list 
+** @5		function changes directory and returns 0 on success 
+** @6		function will update the environment variable linked list 
 **				with the new working directory values
 ** @7-11	error message in case of failure
 */
@@ -92,7 +93,7 @@ int	change_dir_home(char *cur_pwd, t_list **env)
 **			- [t_list *] environment variable linked list pointer
 ** @return:	[int] exit status (to be implemented)
 ** Line-by-line comments:
-** @9		function will update the environment variable linked list 
+** @13		function will update the environment variable linked list 
 ** 				with the new working directory values
 ** @14-18	error message in case of failure
 */

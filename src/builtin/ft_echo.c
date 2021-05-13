@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 20:16:20 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/12 09:02:53 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/13 01:45:14 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 ** @param:	- [t_list *] arguments/tokens
 ** @return:	[int] exit_status (always success for now)
 ** Line-by-line comments:
-** @12	there can be multiple flag arguments, but as soon as we get a non
+** @12-18	there can be multiple flag arguments, but as soon as we get a non
 flag argument then flag time is over.
 */
 

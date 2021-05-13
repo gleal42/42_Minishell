@@ -12,6 +12,16 @@
 
 #include "ft_exit.h"
 
+/*
+** checks if this is a valid exit call:
+** @param:	- [type] param_value
+**			- [type] param_value
+** @return:	[type] return_value
+** Line-by-line comments:
+** @10-11	exit not valid in case of pipes
+**			(multiple commands)
+*/
+
 int	is_exit(t_list *cmds)
 {
 	t_list	*tokens_first_cmd;
@@ -31,6 +41,20 @@ int	is_exit(t_list *cmds)
 	else
 		return (0);
 }
+
+/*
+** Recreating the exit function based on different arguments
+** @param:	- [t_list *] all commands in current command table
+** Line-by-line comments:
+** @5-6		no arguments exit status remains the previous one
+			(e.g. cd asjoafsj; exit; echo $? STDOUT: 1)
+** @7		in case of first argument is a number 2 things can happen:
+** @9		- if it is the single argument the exit status is that number
+** @10		- in case of multiple arguments an error message is shown and
+** 			exits failure
+** @18-24	in case of non-numeric argument a general error is 
+** 			displayed in stderror
+*/
 
 void	ft_exit(t_list *cmds)
 {

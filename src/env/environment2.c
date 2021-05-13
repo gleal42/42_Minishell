@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 17:21:45 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/12 11:42:17 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/13 02:22:38 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,20 @@ char	*ft_getenv(char *key)
 	return (0);
 }
 
+/*
+** Creates a copy of the envp string array so that it can be manipulated
+** throughout our program
+** @param:	- [t_list **] stored in linked list for easier exporting and
+**			unsetting (more modular memory allocation)
+**			- [char *] environment vars array of strings 
+**			(third argument in main function)
+** Line-by-line comments:
+** @5	some operating systems don't have the third main argument (array of
+** 		environment variables). In this case the exercise would have needed
+** 		to be solved using the environ extern global variable
+**		(see man environ(7))
+*/
+
 void	duplicate_env(t_list **dup_envp, char **envp)
 {
 	t_list	*next_env;
@@ -69,4 +83,36 @@ void	duplicate_env(t_list **dup_envp, char **envp)
 		ft_lstadd_back(dup_envp, next_env);
 		i++;
 	}
+}
+
+/*
+** In case we want to unnassign an environment variable that
+has been exported (key must be the unnassigned environment variable)
+e.g. USER=gleal receives USER to unnassign
+** @param:	- [char *] environment variable name (unnassigned)
+** Line-by-line comments:
+** @12-16	skip if env var is already unnassigned
+*/
+
+void	remove_env_value(char	*key)
+{
+	int		i;
+	t_list	*envp;
+	char	*curr_envp;
+
+	envp = g_msh.dup_envp;
+	while (envp)
+	{
+		i = 0;
+		curr_envp = (char *)envp->data;
+		while (key[i] && curr_envp[i] && (key[i] == curr_envp[i]))
+			i++;
+		if (!key[i] && curr_envp[i] == '=')
+		{
+			replace_string(key, &curr_envp);
+			envp->data = curr_envp;
+		}
+		envp = envp->next;
+	}
+	return ;
 }

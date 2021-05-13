@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 17:33:11 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/12 09:13:27 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/13 01:41:11 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,11 @@ int	has_valid_identifier_unset(char *token_str)
 ** checks various types if invalid input
 ** @param:	- [char *] token_str
 **			- [char *] pointer to array of chars
-where we will write the message
+** 			where we will write the message
 ** @return:	[int] true/false
+** Line-by-line comments:
+** @6		preventing against "unset $ENVVAR" command
+** 			(the correct formatting is unset ENVVAR)
 */
 
 int	is_token_valid_unset(char *token_str, char *err_message)
@@ -96,8 +99,6 @@ last then I suggest using the ft_lstdel_node_nbr)
 ** @param:	- [t_list *] linked list pointer
 **			- [int] linked list number that will be deleted
 **			- [void (*f)(void*)] pointer to delete function
-** Line-by-line comments:
-** @line-line	comment
 */
 
 void	ft_lstdel_middle(t_list **lst, int node_nbr, void (*del)(void*))

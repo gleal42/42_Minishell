@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment_utils1.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 15:17:53 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/12 11:42:17 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/13 02:06:14 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,9 +138,6 @@ char *new_substr, int replace_i)
 **				(pointer of pointer to be freed)
 **			- [char **] pointer of function to be updated
 **				(pointer of pointer to be freed)
-** @return:	[type] return_value
-** Line-by-line comments:
-** @line-line	comment
 */
 
 void	tilde_join(char **str, char **home_path)

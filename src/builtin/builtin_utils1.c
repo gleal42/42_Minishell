@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 09:10:48 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/12 11:42:17 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/13 01:37:34 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ and previous working directories
 **			- [t_list *] environment variable string linked list
 ** @return:	[int] signs success or failure of the function
 ** Line-by-line comments:
-** @4	allowed function that fills buffer with null terminated string of 
-current working directory;
+** @3	allowed function that fills buffer with null terminated string of 
+** 		current working directory;
+** @5-6 updates current working directory and previous directory
+** 		environment variables
 */
 
 int	update_directories(char *old_dir, t_list **env)
@@ -37,9 +39,9 @@ int	update_directories(char *old_dir, t_list **env)
 /*
 ** Joins the variable name with a equal sign followed by the value
 ** @param:	- [char **] pointer to environment variable string to be
-updated
+**			updated
 **			- [char *] name of variable
-			- [char *] updated value string;
+**			- [char *] updated value string;
 ** @return:	[char *] updated string to be addded to linked list
 */
 
@@ -93,6 +95,16 @@ int	update_environment_var(char *var, char *new_value, t_list *env)
 	return (0);
 }
 
+/*
+** Identifies if token has invalid characters for the export function
+** and prints an error message in case it does
+** @param:	- [char *] export following tokens (arguments)
+** @return:	[int] 1 if true 0 if false.
+** Line-by-line comments:
+** @5		error message array will be filled in case of invalid token
+** @9		prints char array to stderror
+*/
+
 int	has_valid_identifier_export(char *token_str)
 {
 	char	err_message[100];
@@ -109,6 +121,18 @@ int	has_valid_identifier_export(char *token_str)
 		check = 1;
 	return (check);
 }
+
+/*
+** Checks if token string is invalid
+** @param:	- [char *] export following tokens (arguments)
+**			- [char *] array of chars to be printed in stderror
+** @return:	[int] 1 if true 0 if false
+** Line-by-line comments:
+** @3		preventing against empty/null variables
+** @4		preventing against quotes and single quotes 
+** 			(also, backslashes are not part of minishell
+**			so it wouldn't be possible anyway)
+*/
 
 int	is_token_valid_export(char *token_str, char *err_message)
 {

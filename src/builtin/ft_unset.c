@@ -19,7 +19,7 @@
 ** @return:	[int] exit status
 ** Line-by-line comments:
 ** @6		checking for invalid input and writing error message.
-*+ @7-@8	first checking if environment variable exists and
+** @8-@9	first checking if environment variable exists and
 **				deleting it in case it does
 */
 

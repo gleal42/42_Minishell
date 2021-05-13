@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_minishell.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 12:17:17 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/12 12:18:08 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/12 17:06:19 gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	init_minishell(t_msh *msh, char **envp)
 		quit_program(EXIT_FAILURE);
 	ft_bzero(msh, sizeof(t_msh));
 	duplicate_env(&msh->dup_envp, envp);
+	prepare_oldpwd();
 	init_termcaps(&msh->termcaps);
 	signal(SIGINT, catch_sigint);
 	signal(SIGQUIT, catch_sigquit);
