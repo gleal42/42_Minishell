@@ -22,8 +22,10 @@
 ** @param:	- [t_list *] list of token strings that will be analyzed.
 **			- [t_list *] list of redirections strings that will be analyzed.
 ** Line-by-line comments:
-** @6-7		go through each token and replace it in case there is a dollar sign ($)
-** @12-13	go through each redirection and replace it in case there is a dollar sign ($)
+** @6-7		go through each token and replace it in case
+			there is a dollar sign ($)
+** @12-13	go through each redirection and replace it in case
+			there is a dollar sign ($)
 */
 
 void	replace_envs(t_list **tokens, t_list *redirs)
@@ -43,7 +45,6 @@ void	replace_envs(t_list **tokens, t_list *redirs)
 		redirs = redirs->next;
 	}
 }
-
 
 /*
 ** Replaces token in case of environment variables and special characters.

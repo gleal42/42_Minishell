@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 22:04:11 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/12 18:32:16 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/13 02:28:57 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	prepare_oldpwd(void)
 
 void	replace_string(char *src, char **dest)
 {
-	char *temp;
+	char	*temp;
 
 	temp = ft_strdup(src);
 	if (temp == 0)
