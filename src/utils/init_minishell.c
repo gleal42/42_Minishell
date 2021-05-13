@@ -26,7 +26,7 @@ void	init_minishell(t_msh *msh, char **envp)
 		quit_program(EXIT_FAILURE);
 	ft_bzero(msh, sizeof(t_msh));
 	duplicate_env(&msh->dup_envp, envp);
-	prepare_oldpwd();
+	unset_oldpwd();
 	init_termcaps(&msh->termcaps);
 	signal(SIGINT, catch_sigint);
 	signal(SIGQUIT, catch_sigquit);

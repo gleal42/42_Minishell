@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment_utils2.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 22:04:11 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/13 02:28:57 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/13 09:03:37 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ it is empty.
 ** @3-4 in case environment variable is set we update it to delete value.
 */
 
-void	prepare_oldpwd(void)
+void	unset_oldpwd(void)
 {
 	if (is_env_var("OLDPWD", g_msh.dup_envp) == 0)
 		create_environment_var("OLDPWD", &g_msh.dup_envp);

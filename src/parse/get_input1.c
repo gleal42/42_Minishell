@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 15:23:20 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/12 18:21:13 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/13 09:40:22 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,13 @@
 **			that we received from the termcaps lib.
 **			Here we need to keep in mind that the buffer has been previously set
 **			to NULL so the new value set in the buffer are NULL-terminated
-** @15-16	If the number of characters read is above 1 byte and it's not
+** @15-16	If the number of characters read is above 2 bytes and it's not
 **			up / down arrow or backspace, it means it's a special character that
-**			should not be written on the stdout like Ctrl or Home. Yet it's in
-**			our buffer so we need to set to NULL starting where that special
+**			should not be writting on the stdout like Home. Yet it's in our
+**			buffer so we need to set to NULL starting where that special
 **			characters was stored
+**			Because of bit encoding (I think), extended ASCII characters
+**			(e.g. é, @) take 2 bytes instead of 1
 ** @17-18	When user presses ctrl-c, End of Text (ASCII code 3) is sent to
 **			buffer. The expected behaviour is to write "^C" to stdout and reset
 **			the command line
@@ -73,14 +75,14 @@ char	*get_input(t_dlist *input_history, t_termcaps *termcaps)
 			parse_input_history(&input_history, termcaps, buf, &i);
 		else if (!ft_strcmp(&buf[i], termcaps->backspace))
 			delete_single_char(termcaps, buf, &i);
-		else if (nb_char_read > 1)
+		else if (nb_char_read > 2)
 			ft_bzero(&buf[i], BUFSIZ - i);
 		else if (buf[i] == CTRL_C)
 			reset_cmd_line(buf, &i, &input_history);
 		else if (buf[i] == CTRL_D)
 			exit_program(buf, i);
 		else
-			i += write(STDOUT_FILENO, &buf[i], 1);
+			i += write(STDOUT_FILENO, &buf[i], nb_char_read);
 	}
 	input = extract_input(buf, i);
 	return (input);
@@ -191,13 +193,20 @@ int	has_history(t_dlist *input_history, t_termcaps *termcaps, char *buf)
 **			- [char *] buffer where the history input will be set
 **			- [int *] index where are in the buffer
 ** Line-by-line comments:
-** @1		We are deleting both the last char input and the backspace ANSI code
-** @2		Delete the current line from STDOUT
+** @3-7		We are deleting both the last char input and the backspace ANSI code
+** 			Extended ASCII characters take 2 bytes
+** @8		Delete the current line from STDOUT
 */
 
 void	delete_single_char(t_termcaps *termcaps, char *buf, int *i)
 {
-	ft_bzero(&buf[*i - 1], BUFSIZ - *i + 1);
+	int	nb_char_to_delete;
+
+	if (ft_isascii(buf[*i - 1]))
+		nb_char_to_delete = 1;
+	else
+		nb_char_to_delete = 2;
+	ft_bzero(&buf[*i - nb_char_to_delete], BUFSIZ - *i + 2);
 	tputs(termcaps->del_line, 1, ft_putint);
 	write_prompt();
 	*i = write(STDOUT_FILENO, buf, ft_strlen(buf));
