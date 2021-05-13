@@ -146,5 +146,5 @@ function
 void	replace_special_params(char **str)
 {
 	replace_status_env(str, g_msh.exit_status);
-	replace_underscore_env(str, g_msh.last_exec_cmd);
+	replace_underscore_env(str, g_msh.dup_envp);
 }

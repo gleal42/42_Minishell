@@ -13,73 +13,35 @@
 #include "ft_exit.h"
 
 /*
-** checks if this is a valid exit call:
-** @param:	- [type] param_value
-**			- [type] param_value
-** @return:	[type] return_value
+** Recreating the exit function based on different arguments. Mimics bash
+** @param:	- [t_list *] a list of all the arguments used with the exit cmd
 ** Line-by-line comments:
-** @10-11	exit not valid in case of pipes
-**			(multiple commands)
+** @4-5		Case: no arguments so the exit status sent is the one of the last
+**			executed simple command (e.g. cd asjoafsj; exit; echo $? STDOUT: 1)
+** @7-8		Case: first arg is a number but there are more than one arg. Doesn't
+**			exit. Sends error message and returns EXIT_FAILURE
+** @9-15	Case: non-numeric argument. Exits with error message
+** @16-17	Case: arg is a number and only one arg. Exits with arg as exit code
 */
 
-int	is_exit(t_list *cmds)
+int	ft_exit(t_list *exit_arguments)
 {
-	t_list	*tokens_first_cmd;
-	t_list	*second_cmd;
+	char	*first_argument;
 
-	if (cmds == 0)
-		return (0);
-	tokens_first_cmd = ((t_cmd *)(cmds->data))->tokens;
-	if (ft_strcmp(((t_token *)tokens_first_cmd->data)->str, "exit") == 0)
-	{
-		second_cmd = cmds->next;
-		if (second_cmd != 0)
-			return (0);
-		else
-			return (1);
-	}
-	else
-		return (0);
-}
-
-/*
-** Recreating the exit function based on different arguments
-** @param:	- [t_list *] all commands in current command table
-** Line-by-line comments:
-** @5-6		no arguments exit status remains the previous one
-			(e.g. cd asjoafsj; exit; echo $? STDOUT: 1)
-** @7		in case of first argument is a number 2 things can happen:
-** @9		- if it is the single argument the exit status is that number
-** @10		- in case of multiple arguments an error message is shown and
-** 			exits failure
-** @18-24	in case of non-numeric argument a general error is 
-** 			displayed in stderror
-*/
-
-void	ft_exit(t_list *cmds)
-{
-	t_list	*first_argument;
-
-	first_argument = ((t_cmd *)(cmds->data))->tokens->next;
 	ft_putstr_fd("exit\n", STDERR_FILENO);
-	if (first_argument == 0)
+	if (exit_arguments == 0)
 		quit_program(g_msh.exit_status);
-	else if (ft_strisnumber(((t_token *)first_argument->data)->str))
-	{
-		if (first_argument->next == 0)
-			quit_program(ft_atoi(((t_token *)first_argument->data)->str));
-		else
-		{
-			write_gen_err_message("exit: too many arguments");
-			g_msh.exit_status = EXIT_FAILURE;
-			return ;
-		}
-	}
-	else
+	first_argument = ((t_token *)exit_arguments->data)->str;
+	if (ft_strisnumber(first_argument) && exit_arguments->next != 0)
+		write_gen_err_message("exit: too many arguments");
+	else if (!ft_strisnumber(first_argument))
 	{
 		ft_putstr_fd("msh: exit: ", STDERR_FILENO);
-		ft_putstr_fd(((t_token *)first_argument->data)->str, STDERR_FILENO);
+		ft_putstr_fd(first_argument, STDERR_FILENO);
 		ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 		quit_program(EXIT_GENERAL_ERROR);
 	}
+	else if (ft_strisnumber(first_argument) && exit_arguments->next == 0)
+		quit_program(ft_atoi(first_argument));
+	return (EXIT_FAILURE);
 }
