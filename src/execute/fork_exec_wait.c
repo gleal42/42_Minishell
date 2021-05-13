@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fork_exec_wait.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 09:25:18 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/13 13:22:59 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/13 18:29:59 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,12 @@ void	exec_child(char **tokens, char **envp, int nb_cmds, int **pipes)
 	char	*exec_path;
 
 	close_all_pipes(pipes, nb_cmds);
-	if (has_relative_path(tokens[0]))
+	if (has_relative_path(tokens[0]) || has_absolute_path(tokens[0]))
+	{
 		exec_path = ft_strdup(tokens[0]);
+		if (!exec_path)
+			quit_program(EXIT_FAILURE);
+	}
 	else
 		exec_path = get_absolute_path(tokens[0]);
 	execve(exec_path, tokens, envp);

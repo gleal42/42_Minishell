@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_absolute_path.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 16:46:03 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/12 11:42:17 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/13 18:32:17 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	has_relative_path(char *first_token)
 {
 	int	check;
 
-	if (*first_token == '.' || *first_token == '/')
+	if (*first_token == '.')
 		check = 1;
 	else
 		check = 0;

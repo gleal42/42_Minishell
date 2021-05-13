@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment_utils2.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 22:04:11 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/13 09:03:37 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/13 19:46:47 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,29 @@ void	replace_string(char *src, char **dest)
 	free(*dest);
 	*dest = 0;
 	*dest = temp;
+}
+
+char	*get_path_dir(char *path)
+{
+	int	len;
+	int	i;
+	char	*dir_path;
+
+	len = ft_strlen(path);
+	i = len - 1;
+	if (ft_strchr(path, '/') == 0)
+		return (0);
+	while (i >= 0 && path[i] == '/')
+		i--;
+	while (i >= 0 && path[i] != '/')
+		i--;
+	while (i - 1 >= 0 && path[i - 1] == '/')
+		i--;
+	if (i > 0)
+	{
+		dir_path = ft_substr(path, 0, i);
+		if (dir_path == 0)
+			quit_program(EXIT_FAILURE);
+	}
+	return (0);
 }

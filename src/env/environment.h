@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 14:59:16 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/13 15:39:18 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/13 19:44:10 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,13 @@ char	*ft_getenv(char *key);
 void	duplicate_env(t_list **dup_envp, char **envp);
 void	remove_env_value(char	*key);
 void	replace_status_env(char **str, int	last_status);
+void	replace_underscore_env(char **str);
+
+/*
+** File save_last_token.c
+*/
+
+void	save_last_token(t_cmd_table *cmd_table);
+char	*convert_to_path(char *token);
 
 #endif
