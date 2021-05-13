@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/02 10:11:09 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/12 11:42:17 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/12 18:20:03 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,15 @@
 ** @param:	- [char *] buffer where input chars and ctrl-c have been stored
 **			- [int *] size of the buffer before last read. We pass pointer
 **					  because we need to set it to 0
+**			- [t_dlist **] reference to input_history
 ** Line-by-line comments:
-** @5-9		After pressing Ctrl-C, we need to rewind the input history
+** @6-10	After pressing Ctrl-C, we need to rewind the input history
 */
 
 void	reset_cmd_line(char *buf, int *i, t_dlist **input_history)
 {
 	write(STDOUT_FILENO, "^C\n", ft_strlen("^C\n"));
+	g_msh.exit_status = EXIT_CMD_INTERRUPTED;
 	write_prompt();
 	ft_bzero(buf, BUFSIZ);
 	*i = 0;

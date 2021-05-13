@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 11:06:43 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/12 11:42:17 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/12 18:18:25 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	is_input_valid(const char *input)
 ** Line-by-line comments:
 ** @4-9		has_char_at_beginning() and has_char_at_end() trim whitespaces at
 **			both ends of the input before checking
-** @10-14	The has_forbidden_sequence() function remove alls white spaces
+** @10-15	The has_forbidden_sequence() function remove all white spaces
 ** 			(except between quotes) before checking
 */
 
@@ -168,7 +168,7 @@ int	has_quotes_open(const char *input, char *err_message)
 **                     error message
 ** @return:	[int] true or false
 ** Line-by-line comments:
-** @5-8		We need to trim white space from the input while
+** @4-6		We need to trim white space from the input while
 **			not changing the initial input
 */
 
@@ -177,7 +177,7 @@ int	has_char_at_beginning(const char *input, char c, char *err_message)
 	int		check;
 	char	*cpy;
 
-	cpy = ft_strtrim(input, " \t\n\v\f\r");
+	cpy = ft_strtrim(input, WHITE_SPACE);
 	if (!cpy)
 		quit_program(EXIT_FAILURE);
 	if (cpy[0] == c)

@@ -1,24 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_utils.c                                      :+:      :+:    :+:   */
+/*   parse_utils1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 10:26:41 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/05 11:49:46 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/12 18:11:12 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse_utils.h"
 
 /*
-** Checks if the char is a cmd delimiter
+** Checks if the char is a command delimiter
 ** @param:	- [char] the character tested
 ** @return:	[int] true or false
-** Line-by-line comments:
-** @9-10	& isn't supposed to be a delimiter. But "&&" is. If '&' is on its
-**			own, the function is_input_valid() will flag that
 */
 
 int	is_delimiter(char c)
@@ -31,8 +28,6 @@ int	is_delimiter(char c)
 		check = 1;
 	else if (c == '|')
 		check = 1;
-	else if (c == '&')
-		check = 1;
 	else if (c == '<')
 		check = 1;
 	else if (c == '>')
@@ -43,13 +38,12 @@ int	is_delimiter(char c)
 }
 
 /*
-** Gets the delimiter that is enclosing the token starting
-** at input[*curr_pos]
+** Gets the delimiter that is enclosing the token starting at input[*curr_pos]
 ** @param:	- [const char *] the unchanged line entered in stdin
 **			- [int *] the current parsing position within the input  
 ** @return:	[char] delimiter. Space, single quotes or double quotes
 ** Line-by-line comments:
-** @9		We need to increment once if we found quotes so that the token
+** @10		We need to increment once if we found quotes so that the token
 **			starts after the quote
 */
 
@@ -77,6 +71,13 @@ char	get_delimiter(const char *input, int *curr_pos)
 ** @param:	- [char *] string where we are looking (aka the haystack)
 **			- [char *] string to find (aka the needle)
 ** @return:	[char *] address where the needle is
+** Line-by-line comments:
+** @8-9		If we find a single or double quote, we need to skip them. The next
+**			character will be the one after the closing matching quote
+** @10-11	The exact next character after skip_quotes() can be a string to_find
+**			so we can't use else if pattern
+** @12-13	skip_quotes() can reach end of string so we need check for that
+**			before incrementing otherwise we'll segfault
 */
 
 char	*ft_strstr_quotes(char *str, char *to_find)

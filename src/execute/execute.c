@@ -3,29 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/07 22:23:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/09 18:26:50gleal            ###   ########.fr       */
+/*   Created: 2021/05/12 18:40:32 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/05/12 19:14:59 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
 /*
-** This function executes all the command tables entered by the user.
-** At the moment it simply executes each command independently of the
-** exit status of the other command tables.
-** @param:	- [t_ast *] struct that contains all the command and typed
-**						information;
-**			- [t_list **] Pointer to linked list with all the
-**							environment variables;
-** @return:	[int] exit status of the function;
+** Executes all the command tables extracted by get_ast() from the user input
+** @param:	- [t_ast *] struct with a list of cmd_table (t_cmd_table *) as nodes
 ** Line-by-line comments:
-** @1-3		Inside the ast struct there are linked lists in which
-**			t_list->data corresponds to a t_cmd_table struct, which 
-**			contains all the command table information (commands, delimiters
-**			and return value).
+** @7		Each time a child process is created this var is incremented. It
+**			allows to properly wait on all processes to finish before moving on
+**			but still implementing asynchronous processes
+** @10		Edge case: if the "exit" program name is used alongside others
+**			simple commands we don't have to execute it. If it's the only simple
+**			simple command, we do.
+**			The way we implemented the execution, the exec_cmd() only has access
+**			to the simple command it's executing. So we count the cmd_tables as
+**			they are being executed so that we can check all simple commands
+**			within the current cmd_table
 */
 
 void	exec_ast(t_ast *ast)
@@ -33,26 +33,23 @@ void	exec_ast(t_ast *ast)
 	t_list		*cmd_table;
 
 	cmd_table = ast->cmd_tables;
-	g_msh.cmd_table_nbr = 0;
+	g_msh.nb_cmd_tables = 0;
 	while (cmd_table)
 	{
 		g_msh.nb_forks = 0;
-		exec_cmd_table(((t_cmd_table *)cmd_table->data)->cmds);
+		exec_cmd_table(cmd_table->data);
 		cmd_table = cmd_table->next;
-		g_msh.cmd_table_nbr++;
+		g_msh.nb_cmd_tables++;
 	}
 }
 
 /*
-** Redirections still need to be implemented. For each command table
-** this function will execute each command consecutively and redirect
-** the input and output to the following commands if the redirection
-** signs are present. (ask why pipes are not redirections).
-** @param:	- [t_cmd_table] Current command table being executed(series
+** Executes all the simple commands inside a command table. It does it
+** consecutively and redirecting the input and output of the commands depending
+** on the redirections and pipes. Redirections have priority over pipes.
+** @param:	- [t_cmd_table *] current command table being executed. Struct with
+**							  (series
 ** of interconnected commands)
-**			- [t_list **] Pointer to linked list with all the
-**							environment variables;
-** @return:	[int] exit status of the command table;
 ** Line-by-line comments:
 ** @7-10	if there are sevaral commands in a command table
 **			then they need to be connected somehow (otherwise they
@@ -60,12 +57,14 @@ void	exec_ast(t_ast *ast)
 **			multiple arguments)
 */
 
-void	exec_cmd_table(t_list *cmds)
+void	exec_cmd_table(t_cmd_table *cmd_table)
 {
+	t_list	*cmds;
 	int		nb_cmds;
 	int		**pipes;
 	int		i;
 
+	cmds = cmd_table->cmds;
 	nb_cmds = ft_lstsize(cmds);
 	pipes = init_pipes(nb_cmds);
 	i = 0;
@@ -117,7 +116,7 @@ void	exec_builtin(t_list *tokens, t_list **env)
 	int		cur_table_nb;
 
 	cur_table = g_msh.ast->cmd_tables;
-	cur_table_nb = g_msh.cmd_table_nbr;
+	cur_table_nb = g_msh.nb_cmd_tables;
 	program_name = ((t_token *)tokens->data)->str;
 	while (cur_table_nb-- > 0)
 		cur_table = cur_table->next;

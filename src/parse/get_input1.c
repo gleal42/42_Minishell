@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_input1.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 15:23:20 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/09 21:55:17 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/12 18:21:13 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int	is_up_down_arrow(char *buf, t_termcaps *termcaps)
 ** @15-19	Case: down arrow + more than one node in list
 ** @20		Delete the current line from STDOUT
 ** @24		While we are writting the new input, we change the value of *i
-**			so that the next char input while be set after the current input
+**			so that the next char input while be set after the input just wrote
 */
 
 void	parse_input_history(t_dlist **input_history,

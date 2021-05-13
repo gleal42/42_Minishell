@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 18:55:52 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/12 11:42:17 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/12 16:49:08 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 ** @param:	- [t_termcaps *] struct with terminal capabilities capabilities
 ** Line-by-line comments:
 ** @3-4		Get the terminal settings
-** @5-6		Protect against a "TERM" env varible being unset
-** @7-8		Indicate to the termcap lib with type of terminal we are using.
+** @5-7		Protect against a "TERM" env varible being unset
+** @8-9		Indicate to the termcap lib with type of terminal we are using.
 **			It will save that info internally to use its capabilities later
-** @9-10	Checks if the terminal has all the capabilities required to run the
+** @10-11	Checks if the terminal has all the capabilities required to run the
 **			the program and sets them to the struct termcaps
 */
 
@@ -28,7 +28,8 @@ void	init_termcaps(t_termcaps *termcaps)
 {
 	char	*term_type;
 
-	tcgetattr(STDIN_FILENO, &termcaps->old_term);
+	if (tcgetattr(STDIN_FILENO, &termcaps->old_term) == -1)
+		quit_program(EXIT_FAILURE);
 	term_type = ft_getenv("TERM");
 	if (!term_type)
 		quit_program(EXIT_FAILURE);
@@ -120,7 +121,8 @@ void	turn_off_canonical_mode(t_termcaps *termcaps)
 	termcaps->new_term.c_iflag &= ~IXON;
 	termcaps->new_term.c_cc[VMIN] = 1;
 	termcaps->new_term.c_cc[VTIME] = 0;
-	tcsetattr(STDIN_FILENO, TCSANOW, &termcaps->new_term);
+	if (tcsetattr(STDIN_FILENO, TCSANOW, &termcaps->new_term) == -1)
+		quit_program(EXIT_FAILURE);
 }
 
 /*
@@ -134,7 +136,8 @@ void	turn_off_canonical_mode(t_termcaps *termcaps)
 
 void	turn_on_canonical_mode(t_termcaps *termcaps)
 {
-	tcsetattr(STDIN_FILENO, TCSANOW, &termcaps->old_term);
+	if (tcsetattr(STDIN_FILENO, TCSANOW, &termcaps->old_term) == -1)
+		quit_program(EXIT_FAILURE);
 }
 
 /*
