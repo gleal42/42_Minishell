@@ -6,39 +6,16 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 17:53:43 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/12 12:13:21 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/13 22:49:33 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute_utils.h"
 
-int	**init_pipes(int nb_cmds)
-{
-	int	**pipes;
-	int	i;
-
-	if (nb_cmds == 1)
-		return (0);
-	pipes = ft_calloc(nb_cmds, sizeof(int *));
-	if (!pipes)
-		quit_program(EXIT_FAILURE);
-	i = 0;
-	while (i < nb_cmds - 1)
-	{
-		pipes[i] = ft_calloc(2, sizeof(int));
-		if (!pipes[i])
-			quit_program(EXIT_FAILURE);
-		if (pipe(pipes[i]) == -1)
-			quit_program(EXIT_FAILURE);
-		i++;
-	}
-	return (pipes);
-}
-
 /*
-** Checks if token is one of the mandatory builtin function	
+** Checks if first token is one of the mandatory builtin programs
 ** @param:	- [char *] token to be checked
-** @return:	[int] indicates if the token is a builtin or not
+** @return:	[int] true or false
 */
 
 int	is_builtin(t_list *tokens)
@@ -69,12 +46,7 @@ int	is_builtin(t_list *tokens)
 /*
 ** Converts a linked list to a NULL-terminated array of strings
 ** @param:	- [t_list *] list with string as data
-**			- [type] param_value
 ** @return:	[char **] NULL-terminated array of strings
-** Line-by-line comments:
-** @12&15	We don't want to free the strings within each node of the list
-**			because we'll keep their address in strs. The ft_lstdel_int does
-**			nothing to the data within each node
 */
 
 char	**convert_list_to_arr_envp(t_list *lst)
@@ -95,14 +67,9 @@ char	**convert_list_to_arr_envp(t_list *lst)
 }
 
 /*
-** Converts a linked list to a NULL-terminated array of strings
-** @param:	- [t_list *] list with string as data
-**			- [type] param_value
+** Converts a linked list of tokens to a NULL-terminated array of strings
+** @param:	- [t_list *] list with tokens (t_token *) as data
 ** @return:	[char **] NULL-terminated array of strings
-** Line-by-line comments:
-** @12&15	We don't want to free the strings within each node of the list
-**			because we'll keep their address in strs. The ft_lstdel_int does
-**			nothing to the data within each node
 */
 
 char	**convert_list_to_arr_tokens(t_list *lst)
