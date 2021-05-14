@@ -6,11 +6,18 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/13 16:48:00 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/14 02:36:23 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/14 04:12:50 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "environment.h"
+
+/*
+** Adds last token to environment variable underscore
+** @param:	- [t_cmd_table *] latest command table
+** Line-by-line comments:
+** @6-10	last command and token from command table
+*/
 
 void	save_last_token(t_cmd_table *cmd_table)
 {
@@ -28,6 +35,13 @@ void	save_last_token(t_cmd_table *cmd_table)
 	update_environment_var("_", exec_path, g_msh.dup_envp);
 	free(exec_path);
 }
+
+/*
+** In case we call an executable inside the path directory,
+** we will get the corresponding absolute path
+** @param:	- [char *] last token	
+** @return:	[char *] string to be stored inside underscore var
+*/
 
 char	*convert_to_path(char *token)
 {

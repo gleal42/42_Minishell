@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 17:21:45 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/14 02:42:00 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/14 04:06:43 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,15 @@ void	remove_env_value(char	*key)
 	return ;
 }
 
+/*
+** replaces token containing substr "$?" by the 
+** exit status of the last executed function
+** @param:	- [char **] pointer to token that will be replaced
+**			- [int] exit status of last exec function
+** Line-by-line comments:
+** @line-line	comment
+*/
+
 void	replace_status_env(char **str, int	last_status)
 {
 	int		replace_spot;
@@ -137,6 +146,15 @@ void	replace_status_env(char **str, int	last_status)
 		replace_spot = ft_strnstr_iterator(*str, "$?", ft_strlen(*str));
 	}
 }
+
+/*
+** relaces token containing substr "$?" for the
+** typed token
+** @param:	- [char **] pointer to string where 
+**			substitution will take place
+** Line-by-line comments:
+** @12-18	replace all occurences of $_
+*/
 
 void	replace_underscore_env(char **str)
 {
