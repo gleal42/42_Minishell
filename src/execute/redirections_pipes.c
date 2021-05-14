@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 16:04:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/14 11:38:59 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/14 12:18:26 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,25 +58,18 @@ int	**init_pipes(int nb_cmds)
 **					for piping (choosing where to read/write and closing them)
 **			- [int **] 2D array of ints. Each subarray is a pipe
 **			- [int] index of the current process
-** @return:	[type] return_value
 ** Line-by-line comments:
-** @4&15	Order of if / else if important because priority of the redirections
-** @6		We'll receive the file descriptor of the file where the program
-**			will read from. In case, there are more than one input redirection,
-**			in open_all_files(), we'll just close the first ones and keep the last
-**			one
-** @7-8		If there was an issue (e.g. file invalid, couldn't open file), 
-**			the exit status has been set to errno and we receive -1
-** @9-10	Set input stream directed from fd instead of STDIN and close the fd.
-**			Closing it doesn't mean that it isn't active
-** @12		If we don't have input redirections, then it means that its input
-**			comes from the previous simple command. Unless it's the first one.
-** @13		We read from the pipe (process_index - 1)[0] because the previous
+** @1		Parses redirs and open all relevant files. In case, there are more
+**			than one redirection of either input or output, we only keep the
+**			last one
+** @2		There can be issues with opening files (like file invalid). Inside
+**			open_all_files(), the exit_status has been set
+** @3&5		We only need to set piping if there are no redirections
+** @3		If first process then no piping
+** @4		We read from the pipe (process_index - 1)[0] because the previous
 **			index write to that same pipe but to its writing end [1]
-** @15-24	Exact same logic
-** @23		If no input redirections, then write to the next process. Unless
-**			it's the last simple command
-** @24		We write to [1] so that the next simple command can read from [0]
+** @5-6		If last process then no piping
+** @7		We write to [1] so that the next simple command can read from [0]
 */
 
 void	set_redirs_pipes(t_list *redirs,
@@ -86,7 +79,6 @@ void	set_redirs_pipes(t_list *redirs,
 {
 	if (!open_all_files(redirs))
 		return ;
-	printf("\033[0;34m📌 Here in %s line %d\n\033[0m", __FILE__, __LINE__);
 	if (!has_redirs(redirs, "<") && process_index != 0)
 		dup2(pipes[process_index - 1][0], STDIN_FILENO);
 	if (!has_redirs(redirs, ">") && !has_redirs(redirs, ">>")
@@ -126,7 +118,7 @@ int	has_redirs(t_list *redirs, char *type)
 ** Opens all files relating the specified type. Only the last of its type is
 ** left open. For input type, we create them and leave them empty
 ** @param:	- [t_list *] linked list with redirs (t_redir *) as nodes
-**			- [char *] type of stream, either "input" or "output"
+** @return:	[int] 1 if it was successful and 0 if not
 ** Line-by-line comments:
 ** @14-15	If any of the open_file() calls returned -1, it means there was an
 **			error
@@ -145,7 +137,6 @@ int	open_all_files(t_list *redirs)
 	while (redirs)
 	{
 		redir = (t_redir *)redirs->data;
-		printf("\033[0;34m📌 Here in %s line %d\n\033[0m", __FILE__, __LINE__);
 		if (!ft_strcmp(redir->type, "<"))
 			fd_input = open_file(redir, fd_input, O_RDONLY, 0);
 		else if (!ft_strcmp(redir->type, ">"))
@@ -175,6 +166,8 @@ int	open_all_files(t_list *redirs)
 ** @4-5		If -2 then no file has been opened previously. Otherwise it means,
 **			another file is about to be opened and we need to close the
 **			previous one
+** @15-19	Set input stream directed from fd instead of STDIN or STOUDOUT and
+**			close the fd. Closing it doesn't mean that it isn't active
 */
 
 int	open_file(t_redir *redir, int prev_fd, int flags, mode_t permissions)

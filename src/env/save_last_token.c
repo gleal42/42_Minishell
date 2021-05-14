@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/13 16:48:00 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/14 11:45:58 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/14 12:04:11 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
 ** Adds last token to environment variable underscore
 ** @param:	- [t_cmd_table *] latest command table
 ** Line-by-line comments:
-** @6-10	Last command and token from command table
+** @11-12	Last command and token from command table
+** @15-20	Edge case: there are no tokens like "> a > b"
 */
 
 void	save_last_token(t_cmd_table *cmd_table)
