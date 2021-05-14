@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 10:29:13 by dds               #+#    #+#             */
-/*   Updated: 2021/05/14 10:40:24 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/14 15:45:56 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	ft_export(t_list *tokens, t_list **env)
 
 	if (tokens == 0)
 		print_all_exported_vars(*env);
-	else
+	else if (ft_lstsize(g_msh.curr_cmd_table->cmds) == 1)
 	{
 		while (tokens)
 		{

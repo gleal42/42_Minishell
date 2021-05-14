@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 18:40:32 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/14 12:05:13 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/14 15:45:03 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,8 @@ void	exec_builtin(t_list *tokens, t_list **env)
 		g_msh.exit_status = ft_echo(tokens->next);
 	else if ((ft_strcmp(program_name, "env") == 0) && ft_lstsize(tokens) == 1)
 		g_msh.exit_status = ft_env(*env);
-	else if (ft_strcmp(program_name, "cd") == 0)
+	else if (ft_strcmp(program_name, "cd") == 0
+		&& ft_lstsize(g_msh.curr_cmd_table->cmds) == 1)
 		g_msh.exit_status = ft_cd(tokens->next, env);
 	else if (ft_strcmp(program_name, "pwd") == 0)
 		g_msh.exit_status = ft_pwd();
