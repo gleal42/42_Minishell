@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 10:26:41 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/12 18:11:12 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/14 18:57:52 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	get_delimiter(const char *input, int *curr_pos)
 			delimiter = '"';
 		else if (input[*curr_pos] == '\'')
 			delimiter = '\'';
-		(*curr_pos)++;
+		*curr_pos += 1;
 	}
 	else
 		delimiter = ' ';
@@ -148,6 +148,6 @@ void	skip_quotes(char *str, int *i)
 
 void	skip_spaces(const char *input, int *curr_pos)
 {
-	while (ft_isspace(input[*curr_pos]))
+	while (input[*curr_pos] && ft_isspace(input[*curr_pos]))
 		(*curr_pos)++;
 }

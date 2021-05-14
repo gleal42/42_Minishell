@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 10:37:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/12 18:05:06 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/14 18:44:37 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ t_ast	*get_ast(const char *input)
 	curr_pos = 0;
 	while (input[curr_pos])
 	{
+		skip_spaces(input, curr_pos);
 		cmd_table = ft_lstnew((void *)get_cmd_table(input, &curr_pos));
 		if (!cmd_table)
 			quit_program(EXIT_FAILURE);
@@ -166,7 +167,7 @@ t_token	*get_token(const char *input, int *curr_pos)
 	token = ft_calloc(1, sizeof(t_token));
 	if (!token)
 		quit_program(EXIT_FAILURE);
-	token->delimiter = get_delimiter(input, curr_pos);
+	token->delimiter = get_delimiter(input, &curr_pos);
 	saved_pos = *curr_pos;
 	while (input[*curr_pos])
 	{
