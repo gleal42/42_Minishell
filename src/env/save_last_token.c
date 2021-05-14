@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/13 16:48:00 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/13 18:04:30 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/14 02:36:23 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	save_last_token(t_cmd_table *cmd_table)
 char	*convert_to_path(char *token)
 {
 	char	*token_path;
+
 	if (has_relative_path(token))
 	{
 		token_path = ft_strdup(token);

@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 17:21:45 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/13 19:43:41 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/14 02:42:00 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,12 +142,14 @@ void	replace_underscore_env(char **str)
 {
 	int		replace_spot;
 	char	*final;
-	char	*last_cmd_str;
 	char	*to_print;
+	char	*last_exec_cmd;
 
-	last_cmd_str = ft_getenv("_");
-	if (has_absolute_path(last_cmd_str) && is_in_path_env(last_cmd_str))
-		to_print = ft_strrchr(last_cmd_str, '/');
+	last_exec_cmd = ft_getenv("_");
+	if (has_absolute_path(last_exec_cmd))
+		to_print = ft_strrchr(last_exec_cmd, '/') + 1;
+	else
+		to_print = last_exec_cmd;
 	replace_spot = ft_strnstr_iterator(*str, "$_", ft_strlen(*str));
 	while (replace_spot != -1)
 	{
@@ -156,5 +158,4 @@ void	replace_underscore_env(char **str)
 		*str = final;
 		replace_spot = ft_strnstr_iterator(*str, "$_", ft_strlen(*str));
 	}
-	free (last_cmd_str);
 }

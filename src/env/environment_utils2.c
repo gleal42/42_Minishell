@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 22:04:11 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/13 19:46:47 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/14 02:49:58 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,10 @@ void	replace_string(char *src, char **dest)
 	*dest = temp;
 }
 
-char	*get_path_dir(char *path)
+/*char	*get_path_dir(char *path)
 {
-	int	len;
-	int	i;
+	int		len;
+	int		i;
 	char	*dir_path;
 
 	len = ft_strlen(path);
@@ -112,9 +112,11 @@ char	*get_path_dir(char *path)
 		i--;
 	if (i > 0)
 	{
-		dir_path = ft_substr(path, 0, i);
+		dir_path = ft_substr(path, 0, i + 1);
 		if (dir_path == 0)
 			quit_program(EXIT_FAILURE);
+		return (dir_path);
 	}
 	return (0);
 }
+*/

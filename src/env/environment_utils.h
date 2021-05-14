@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 14:59:16 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/13 19:45:41 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/14 02:33:21 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,6 @@ char	*get_path_dir(char *path);
 ** File environment_utils2.c
 */
 
-int	is_in_path_env(char *last_cmd_str);
+int		is_in_path_env(char *last_cmd_str);
 
 #endif
