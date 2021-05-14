@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 16:04:57 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/13 23:13:54 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/14 11:29:51 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	set_redirs_pipes(t_list *redirs,
 			int **pipes,
 			int process_index);
 int		has_redirs(t_list *redirs, char *type);
-int		open_all_files(t_list *redirs, char *type);
+int		open_all_files(t_list *redirs);
 int		open_file(t_redir *redir, int prev_fd, int flags, mode_t permissions);
 
 #endif

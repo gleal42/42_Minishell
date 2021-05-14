@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 16:04:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/14 11:20:41 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/14 11:38:59 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,27 +84,13 @@ void	set_redirs_pipes(t_list *redirs,
 							int **pipes,
 							int process_index)
 {
-	int		fd;
-
-	if (has_redirs(redirs, "<"))
-	{
-		fd = open_all_files(redirs, "input");
-		if (fd == -1)
-			return ;
-		dup2(fd, STDIN_FILENO);
-		close(fd);
-	}
-	else if (process_index != 0)
+	if (!open_all_files(redirs))
+		return ;
+	printf("\033[0;34m📌 Here in %s line %d\n\033[0m", __FILE__, __LINE__);
+	if (!has_redirs(redirs, "<") && process_index != 0)
 		dup2(pipes[process_index - 1][0], STDIN_FILENO);
-	if (has_redirs(redirs, ">") || has_redirs(redirs, ">>"))
-	{
-		fd = open_all_files(redirs, "output");
-		if (fd == -1)
-			return ;
-		dup2(fd, STDOUT_FILENO);
-		close(fd);
-	}
-	else if (process_index != nb_cmds - 1)
+	if (!has_redirs(redirs, ">") && !has_redirs(redirs, ">>")
+		&& process_index != nb_cmds - 1)
 		dup2(pipes[process_index][1], STDOUT_FILENO);
 	g_msh.exit_status = EXIT_SUCCESS;
 }
@@ -141,32 +127,39 @@ int	has_redirs(t_list *redirs, char *type)
 ** left open. For input type, we create them and leave them empty
 ** @param:	- [t_list *] linked list with redirs (t_redir *) as nodes
 **			- [char *] type of stream, either "input" or "output"
-** @return:	[int] the file descriptor of the file left opened
 ** Line-by-line comments:
 ** @14-15	If any of the open_file() calls returned -1, it means there was an
 **			error
 */
 
-int	open_all_files(t_list *redirs, char *type)
+int	open_all_files(t_list *redirs)
 {
-	int		fd;
+	int		fd_input;
+	int		fd_output;
+	int		is_success;
 	t_redir	*redir;
 
-	fd = -2;
+	fd_input = -2;
+	fd_output = -2;
+	is_success = 1;
 	while (redirs)
 	{
 		redir = (t_redir *)redirs->data;
-		if (!ft_strcmp(type, "input") && !ft_strcmp(redir->type, "<"))
-			fd = open_file(redir, fd, O_RDONLY, 0);
-		else if (!ft_strcmp(type, "output") && !ft_strcmp(redir->type, ">"))
-			fd = open_file(redir, fd, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-		else if (!ft_strcmp(type, "output") && !ft_strcmp(redir->type, ">>"))
-			fd = open_file(redir, fd, O_WRONLY | O_CREAT | O_APPEND, 0666);
-		if (fd == -1)
-			return (-1);
+		printf("\033[0;34m📌 Here in %s line %d\n\033[0m", __FILE__, __LINE__);
+		if (!ft_strcmp(redir->type, "<"))
+			fd_input = open_file(redir, fd_input, O_RDONLY, 0);
+		else if (!ft_strcmp(redir->type, ">"))
+			fd_output = open_file(redir, fd_output, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+		else if (!ft_strcmp(redir->type, ">>"))
+			fd_output = open_file(redir, fd_output, O_WRONLY | O_CREAT | O_APPEND, 0666);
+		if (fd_input == -1 || fd_output == -1)
+		{
+			is_success = 0;
+			break ;
+		}
 		redirs = redirs->next;
 	}
-	return (fd);
+	return (is_success);
 }
 
 /*
@@ -198,13 +191,13 @@ int	open_file(t_redir *redir, int prev_fd, int flags, mode_t permissions)
 		write_gen_func_err_message(file_name, strerror(errno));
 		g_msh.exit_status = errno;
 	}
-	// else
-	// {
-	// 	if (!ft_strcmp(redir->type, "<"))
-	// 		dup2(new_fd, STDIN_FILENO);
-	// 	else if (!ft_strcmp(redir->type, ">") || !ft_strcmp(redir->type, ">"))
-	// 		dup2(new_fd, STDOUT_FILENO);
-	// 	close(new_fd);
-	// }
+	else
+	{
+		if (!ft_strcmp(redir->type, "<"))
+			dup2(new_fd, STDIN_FILENO);
+		else if (!ft_strcmp(redir->type, ">") || !ft_strcmp(redir->type, ">>"))
+			dup2(new_fd, STDOUT_FILENO);
+		close(new_fd);
+	}
 	return (new_fd);
 }

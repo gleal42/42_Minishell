@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/13 16:48:00 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/14 10:56:26 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/14 11:45:58 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,18 @@ void	save_last_token(t_cmd_table *cmd_table)
 	while (cmds->next != 0)
 		cmds = cmds->next;
 	tokens = ((t_cmd *)(cmds->data))->tokens;
-	while (tokens->next != 0)
-		tokens = tokens->next;
-	exec_path = convert_to_path(((t_token *)(tokens->data))->str);
+	if (tokens)
+	{
+		while (tokens->next != 0)
+			tokens = tokens->next;
+		exec_path = convert_to_path(((t_token *)(tokens->data))->str);
+	}
+	else
+	{
+		exec_path = ft_strdup("");
+		if (!exec_path)
+			quit_program(EXIT_FAILURE);
+	}
 	update_environment_var("_", exec_path, g_msh.dup_envp);
 	free(exec_path);
 }

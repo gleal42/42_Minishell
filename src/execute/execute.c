@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 18:40:32 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/14 04:16:46 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/14 11:35:20 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,9 @@ void	exec_cmd(t_cmd *cmd, int nb_cmds, int **pipes, int process_index)
 	replace_envs(&cmd->tokens, cmd->redirs);
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
+	printf("\033[0;34m📌 Here in %s line %d\n\033[0m", __FILE__, __LINE__);
 	set_redirs_pipes(cmd->redirs, nb_cmds, pipes, process_index);
+	printf("\033[0;34m📌 Here in %s line %d\n\033[0m", __FILE__, __LINE__);
 	if (g_msh.exit_status == EXIT_SUCCESS && cmd->tokens != 0)
 	{
 		if (is_builtin(cmd->tokens))
