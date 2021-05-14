@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 16:04:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/14 12:18:26 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/14 12:24:02 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,24 +126,24 @@ int	has_redirs(t_list *redirs, char *type)
 
 int	open_all_files(t_list *redirs)
 {
-	int		fd_input;
-	int		fd_output;
+	int		fd_i;
+	int		fd_o;
 	int		is_success;
 	t_redir	*redir;
 
-	fd_input = -2;
-	fd_output = -2;
+	fd_i = -2;
+	fd_o = -2;
 	is_success = 1;
 	while (redirs)
 	{
 		redir = (t_redir *)redirs->data;
 		if (!ft_strcmp(redir->type, "<"))
-			fd_input = open_file(redir, fd_input, O_RDONLY, 0);
+			fd_i = open_file(redir, fd_i, O_RDONLY, 0);
 		else if (!ft_strcmp(redir->type, ">"))
-			fd_output = open_file(redir, fd_output, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+			fd_o = open_file(redir, fd_o, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 		else if (!ft_strcmp(redir->type, ">>"))
-			fd_output = open_file(redir, fd_output, O_WRONLY | O_CREAT | O_APPEND, 0666);
-		if (fd_input == -1 || fd_output == -1)
+			fd_o = open_file(redir, fd_o, O_WRONLY | O_CREAT | O_APPEND, 0666);
+		if (fd_i == -1 || fd_o == -1)
 		{
 			is_success = 0;
 			break ;
