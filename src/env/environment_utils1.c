@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment_utils1.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 15:17:53 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/14 02:46:18 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/14 10:50:04 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 /*
 ** Function goes through the environment variable string linked list and looks
-for a match with the potential variable
-** @param:	- [char *] Potential variable that we are testing.
+** for a match with the potential variable
+** @param:	- [char *] potential variable that we are testing
 **			- [t_list *] environment variable string linked list
 ** @return:	[int] 1 if true
 ** Line-by-line comments:
@@ -44,7 +44,7 @@ int	is_env_var(char *potential_var, t_list *env)
 
 /*
 ** Auxiliary function to extract the potential variable from a string with
-dollar sign before a word.
+** dollar sign before a word
 ** @param:	- [char *] string from which we will extract the var name
 ** @return:	[char *] var name
 */
@@ -68,10 +68,12 @@ char	*get_var_name(char *str)
 
 /*
 ** Auxiliary function to find the iterator in which a particular substring
-exist in a string (alternative to strnstr)
+** exist in a string (alternative to strnstr)
 ** @param:	- [char *] string to be searched
 **			- [char *] substring to be found
-** @return:	[int] substring position as iterator (negative value if non_existent)
+**			- [size_t] len max to look for
+** @return:	[int] substring position as iterator (negative value if
+**				  non_existent)
 */
 
 int	ft_strnstr_iterator(char *haystack, char *needle, size_t len)
@@ -100,12 +102,14 @@ int	ft_strnstr_iterator(char *haystack, char *needle, size_t len)
 **			- [char *] substring that will be replaced
 **			- [char *] substring that will replace
 **			- [char *] iterator that indicated place in original string where
-substitution should take place
+**					   substitution should take place
 ** @return:	[char *] string after substitution
 */
 
-char	*replace_midstring(char *original, char *old_substr,
-char *new_substr, int replace_i)
+char	*replace_midstring(char *original,
+							char *old_substr,
+							char *new_substr,
+							int replace_i)
 {
 	char	*final;
 	int		len;
@@ -133,11 +137,11 @@ char *new_substr, int replace_i)
 
 /*
 ** Auxiliary function in which we join the home path with the rest of the string
-**	example ~/Desktop is now Users/gleal/Desktop
-** @param:	- [char **] pointer of function to be updated
-**				(pointer of pointer to be freed)
-**			- [char **] pointer of function to be updated
-**				(pointer of pointer to be freed)
+** example ~/Desktop is now Users/gleal/Desktop
+** @param:	- [char **] pointer of function to be updated (pointer of pointer
+**						to be freed)
+**			- [char **] pointer of function to be updated (pointer of pointer
+**						to be freed)
 */
 
 void	tilde_join(char **str, char **home_path)

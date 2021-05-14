@@ -3,25 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/26 14:19:39 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/03 19:48:32by gleal            ###   ########.fr       */
+/*   Created: 2021/05/14 10:31:58 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/05/14 10:32:59 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_env.h"
 
 /*
-** prints environment variable string linked lists one by one
+** Prints environment variable string linked lists one by one
 ** @param:	- [t_list *] environment variable string linked list
 ** @return:	[int] exit status 
+** Line-by-line comments:
+** @3		We want the _ env variable to be /usr/bin/env when the user calls
+**			env
 */
 
 int	ft_env(t_list *env)
 {
 	char	*env_str;
 
+	save_last_token(g_msh.curr_cmd_table);
 	while (env)
 	{
 		env_str = (char *)env->data;
@@ -29,5 +33,5 @@ int	ft_env(t_list *env)
 			printf("%s\n", env_str);
 		env = env->next;
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }

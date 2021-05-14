@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 20:16:20 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/13 16:03:18 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/14 10:31:39 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_echo.h"
 
 /*
-** ft_echo (prints args to standard output separated by spaces)
+** Prints args to standard output separated by spaces
 ** @param:	- [t_list *] arguments/tokens
-** @return:	[int] exit_status (always success for now)
+** @return:	[int] exit_status
 ** Line-by-line comments:
-** @12-18	there can be multiple flag arguments, but as soon as we get a non
-flag argument then flag time is over.
+** @12-18	There can be multiple flag arguments, but as soon as we get a non
+**			flag argument then flag time is over
 */
 
 int	ft_echo(t_list *tokens)
@@ -45,7 +45,7 @@ int	ft_echo(t_list *tokens)
 	}
 	if (line_break)
 		ft_putchar_fd('\n', 1);
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 /*

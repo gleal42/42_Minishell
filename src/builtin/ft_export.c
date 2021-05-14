@@ -3,32 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/03 19:10:37 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/04 19:26:42y gleal            ###   ########.fr       */
+/*   Created: 2021/05/14 10:29:13 by dds               #+#    #+#             */
+/*   Updated: 2021/05/14 10:40:24 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_export.h"
 
 /*
-** - if no arguments print all environment variables
-** (including unnassigned ones(e.g. VAR instead of VAR=10))
-** - if there are arguments each argument is a potential
-** environment variable to be added to the environment
-** variable linked list
+** - If no arguments print all environment variables (including unnassigned
+** ones(e.g. VAR instead of VAR=10))
+** - If there are arguments each argument is a potential environment variable
+** to be added to the environment variable linked list
 ** @param:	- [t_list *] list of tokens in a command
 **			- [t_list **] pointer to envp linked list
 ** @return:	[int] exit status
 ** Line-by-line comments:
-** @16-17	in case the variable already exists we
-** 			just need to update it in the list 
-			and only if it is assigned:
-			(e.g. If in envp ENVVAR=5
-			export ENVVAR has no effect)
-** @20		if the variable doesn't exist we create
-**			a new node in the envp linked list
+** @16-17	In case the variable already exists we just need to update it in 
+**			the list and only if it is assigned: (e.g. If in envp ENVVAR=5
+**			export ENVVAR has no effect)
+** @20		If the variable doesn't exist we create a new node in the envp
+**			linked list
 */
 
 int	ft_export(t_list *tokens, t_list **env)
@@ -44,7 +41,7 @@ int	ft_export(t_list *tokens, t_list **env)
 		{
 			token_str = ((t_token *)tokens->data)->str;
 			if (!has_valid_identifier_export(token_str))
-				return (1);
+				return (EXIT_FAILURE);
 			var = get_var_name(token_str);
 			if (is_env_var(var, *env))
 			{
@@ -57,15 +54,15 @@ int	ft_export(t_list *tokens, t_list **env)
 			tokens = tokens->next;
 		}
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 /*
 ** Prints all the environment variables with the proper formatting
 ** @param:	- [t_list **] pointer to envp linked list
 ** Line-by-line comments:
-** @8-14	if variable is assigned (has equal sign) then we need
-**			to add double quotes
+** @8-14	If variable is assigned (has equal sign) then we need to add double
+**			quotes
 */
 
 void	print_all_exported_vars(t_list *env)

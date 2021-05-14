@@ -3,26 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 09:10:48 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/13 01:37:34 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/14 10:36:04 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin_utils.h"
 
 /*
-** Update the PWD and OLDPWD environment variables based the current 
-and previous working directories
+** Update the PWD and OLDPWD environment variables based the current and
+** previous working directories
 ** @param:	- [char *] previous working directory
 **			- [t_list *] environment variable string linked list
 ** @return:	[int] signs success or failure of the function
 ** Line-by-line comments:
-** @3	allowed function that fills buffer with null terminated string of 
-** 		current working directory;
-** @5-6 updates current working directory and previous directory
-** 		environment variables
+** @3		Allowed function that fills buffer with null terminated string of
+** 			current working directory
+** @5-6 	Updates current working directory and previous directory
+**			environment variables
 */
 
 int	update_directories(char *old_dir, t_list **env)
@@ -30,18 +30,17 @@ int	update_directories(char *old_dir, t_list **env)
 	char	new_dir[1024];
 
 	if (getcwd(new_dir, 1024) == NULL)
-		return (1);
+		return (EXIT_FAILURE);
 	update_environment_var("PWD", new_dir, *env);
 	update_environment_var("OLDPWD", old_dir, *env);
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 /*
 ** Joins the variable name with a equal sign followed by the value
-** @param:	- [char **] pointer to environment variable string to be
-**			updated
+** @param:	- [char **] pointer to environment variable string to be updated
 **			- [char *] name of variable
-**			- [char *] updated value string;
+**			- [char *] updated value string
 ** @return:	[char *] updated string to be addded to linked list
 */
 
@@ -64,17 +63,14 @@ char	*replace_env_value(char **env_ptr, char	*var_name, char *new_value)
 }
 
 /*
-** Auxiliary function that updated the environment variable string
-with a value we define
+** Auxiliary function that updated the environment variable string with a
+** value we define
 ** @param:	- [char *] variable to look for in the env var linked list
 **			- [char *] new value that will replace the current string
-			- [t_list *] environment variable string linked list
-** @return: [int]	indicates if the substitution took place;
-** Line-by-line comments:
-** @line-line	comment
+**			- [t_list *] environment variable string linked list
 */
 
-int	update_environment_var(char *var, char *new_value, t_list *env)
+void	update_environment_var(char *var, char *new_value, t_list *env)
 {
 	int		i;
 	char	*cur_env;
@@ -86,23 +82,19 @@ int	update_environment_var(char *var, char *new_value, t_list *env)
 		while (var[i] && cur_env[i] && (var[i] == cur_env[i]))
 			i++;
 		if (!var[i] && (cur_env[i] == '=' || cur_env[i] == '\0' ))
-		{
 			env->data = replace_env_value(&cur_env, var, new_value);
-			return (0);
-		}
 		env = env->next;
 	}
-	return (0);
 }
 
 /*
 ** Identifies if token has invalid characters for the export function
 ** and prints an error message in case it does
 ** @param:	- [char *] export following tokens (arguments)
-** @return:	[int] 1 if true 0 if false.
+** @return:	[int] 1 if true 0 if false
 ** Line-by-line comments:
-** @5		error message array will be filled in case of invalid token
-** @9		prints char array to stderror
+** @5		Error message array will be filled in case of invalid token
+** @9		Prints char array to stderror
 */
 
 int	has_valid_identifier_export(char *token_str)
@@ -128,10 +120,9 @@ int	has_valid_identifier_export(char *token_str)
 **			- [char *] array of chars to be printed in stderror
 ** @return:	[int] 1 if true 0 if false
 ** Line-by-line comments:
-** @3		preventing against empty/null variables
-** @4		preventing against quotes and single quotes 
-** 			(also, backslashes are not part of minishell
-**			so it wouldn't be possible anyway)
+** @3		Preventing against empty/null variables
+** @4		Preventing against quotes and single quotes (also, backslashes are
+**			not part of the project so it wouldn't be possible anyway)
 */
 
 int	is_token_valid_export(char *token_str, char *err_message)

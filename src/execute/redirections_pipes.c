@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 16:04:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/13 23:24:30 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/14 11:20:41 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,6 @@ int	**init_pipes(int nb_cmds)
 **			- [int] index of the current process
 ** @return:	[type] return_value
 ** Line-by-line comments:
-** @4		We want to handle stdin first because we can try to open an invalid
-**			file and we need to exit without creating potential files with >/>>
 ** @4&15	Order of if / else if important because priority of the redirections
 ** @6		We'll receive the file descriptor of the file where the program
 **			will read from. In case, there are more than one input redirection,
@@ -88,7 +86,6 @@ void	set_redirs_pipes(t_list *redirs,
 {
 	int		fd;
 
-	fd = 0;
 	if (has_redirs(redirs, "<"))
 	{
 		fd = open_all_files(redirs, "input");
@@ -99,7 +96,6 @@ void	set_redirs_pipes(t_list *redirs,
 	}
 	else if (process_index != 0)
 		dup2(pipes[process_index - 1][0], STDIN_FILENO);
-	fd = 0;
 	if (has_redirs(redirs, ">") || has_redirs(redirs, ">>"))
 	{
 		fd = open_all_files(redirs, "output");
@@ -202,5 +198,13 @@ int	open_file(t_redir *redir, int prev_fd, int flags, mode_t permissions)
 		write_gen_func_err_message(file_name, strerror(errno));
 		g_msh.exit_status = errno;
 	}
+	// else
+	// {
+	// 	if (!ft_strcmp(redir->type, "<"))
+	// 		dup2(new_fd, STDIN_FILENO);
+	// 	else if (!ft_strcmp(redir->type, ">") || !ft_strcmp(redir->type, ">"))
+	// 		dup2(new_fd, STDOUT_FILENO);
+	// 	close(new_fd);
+	// }
 	return (new_fd);
 }

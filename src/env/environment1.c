@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   environment.c                                      :+:      :+:    :+:   */
+/*   environment1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/24 14:57:24 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/01 21:11:42y gleal            ###   ########.fr       */
+/*   Created: 2021/05/14 10:52:40 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/05/14 10:54:27 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,16 @@
 /*
 ** Goes through token and redirections list and replaces environment variables
 ** by the respective values in case there are special characters:
-** - '$' followed by an environment variable - value in env var global variable.
-** - '~' - HOME directory.
-** - '$?' - last exit status.
-(except for single quotes delimiter).
-** @param:	- [t_list *] list of token strings that will be analyzed.
-**			- [t_list *] list of redirections strings that will be analyzed.
+** - '$' followed by an environment variable - value in env var global variable
+** - '~' - HOME directory
+** - '$?' - last exit status
+** (except for single quotes delimiter)
+** @param:	- [t_list *] list of token strings that will be analyzed
+**			- [t_list *] list of redirections strings that will be analyzed
 ** Line-by-line comments:
-** @6-7		go through each token and replace it in case
-			there is a dollar sign ($)
-** @12-13	go through each redirection and replace it in case
-			there is a dollar sign ($)
+** @6-7		Go through each token and replace it in case there is a dollar sign
+** @12-13	Go through each redirection and replace it in case there is a
+**			dollar sign ($)
 */
 
 void	replace_envs(t_list **tokens, t_list *redirs)
@@ -47,15 +46,15 @@ void	replace_envs(t_list **tokens, t_list *redirs)
 }
 
 /*
-** Replaces token in case of environment variables and special characters.
+** Replaces token in case of environment variables and special characters
 ** @param:	- [t_token] struct with token strings and delimiter
 ** Line-by-line comments:
-** @6-8		tilde expansion only occurs if tilde is first character and 
+** @6-8		Tilde expansion only occurs if tilde is first character and
 ** 			is either the only character or followed by a forward slash
 ** @9		these expansions don't occur if tokens are inbetween single
-** 			quotes 
-** @12		special params only refers to the $? case (other special
-**			case expansions are not included).
+** 			quotes
+** @12		Special params only refers to the $? case (other special
+**			case expansions are not included)
 */
 
 void	replace_env_single_token(t_token *token)
@@ -115,8 +114,6 @@ void	replace_vars_with_values(char **str)
 ** - only character in token or followed by forward slash
 ** - token not between single quotes (they prevent expansions)
 ** @param:	- [t_token *] struct with token strings and delimiter information
-** Line-by-line comments:
-** @line-line	comment
 */
 
 void	replace_tilde_with_home(char **str)
@@ -135,12 +132,12 @@ void	replace_tilde_with_home(char **str)
 
 /*
 ** Used at the moment simply to replace $? for the exit status of the previous
-function
+** function
 ** @param:	- [char **] pointer to token string in linked list
 **			- [int] exit status from last function executed
 ** Line-by-line comments:
-** @5	function that finds the place where we will replace the substring
-** 		(iterator as opposed to string pointer);
+** @5		Function that finds the place where we will replace the substring
+** 			(iterator as opposed to string pointer)
 */
 
 void	replace_special_params(char **str)

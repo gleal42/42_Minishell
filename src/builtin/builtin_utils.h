@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 09:11:21 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/12 09:16:11 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/14 10:36:16 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 */
 
 int		update_directories(char *old_dir, t_list **env);
-int		update_environment_var(char *var, char *new_value, t_list *env);
+void	update_environment_var(char *var, char *new_value, t_list *env);
 char	*replace_env_value(char **env_ptr,
 			char *var_name,
 			char *new_value);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment_utils.h                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 14:59:16 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/14 02:33:21 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/14 10:46:42 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "main.h"
 
 /*
-** File environment_utils.c
+** File environment_utils1.c
 */
 
 int		is_env_var(char *potential_var, t_list *env);
@@ -34,14 +34,7 @@ void	tilde_join(char **str, char **home_path);
 
 char	*get_value_name(char *str);
 int		is_token_empty(void *data);
-void	replace_string(char *str, char **env_ptr);
 void	unset_oldpwd(void);
-char	*get_path_dir(char *path);
-
-/*
-** File environment_utils2.c
-*/
-
-int		is_in_path_env(char *last_cmd_str);
+void	replace_string(char *str, char **env_ptr);
 
 #endif

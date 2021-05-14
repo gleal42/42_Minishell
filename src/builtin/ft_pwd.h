@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 09:04:54 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/12 09:06:47 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/14 10:41:42 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,6 @@
 
 # include "main.h"
 
-int		ft_pwd(void);
+int	ft_pwd(void);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 09:03:43 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/12 09:04:03 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/14 10:34:08 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,6 @@
 
 # include "main.h"
 
-int		ft_env(t_list *env);
+int	ft_env(t_list *env);
 
 #endif

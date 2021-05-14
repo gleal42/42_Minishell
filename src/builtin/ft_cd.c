@@ -3,29 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/26 14:59:48 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/05 22:10:33by gleal            ###   ########.fr       */
+/*   Created: 2021/05/14 10:30:51 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/05/14 11:04:04 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_cd.h"
 
 /*
-** change directories, first it saves the 
-current directory to update OLDPWD env var
-then based on the arguments it wll change to
-different places
+** Change directories, first it saves the current directory to update OLDPWD
+** env var then based on the arguments it wll change to different places
 ** @param:	- [t_list *] tokens in current command (different arguments)
 **			- [t_list **] environment variable linked list
-** @return:	[int] exit status(1 if unsuccessful)
+** @return:	[int] exit status (1 if unsuccessful)
 ** Line-by-line comments:
-** @5			get current directory for OLDPWD	
-** @10-11		change to home in case of no args
-** @15-16		change to old_pwd in case of hyphen
-** @17-18		change to any other absolute or relative path
-** @19-23		error message in case of failure
+** @5		Get current directory for OLDPWD
+** @10-11	Change to home in case of no args
+** @15-16	Change to old_pwd in case of hyphen
+** @17-18	Change to any other absolute or relative path
+** @19-23	Error message in case of failure
 */
 
 int	ft_cd(t_list *tokens, t_list **env)
@@ -51,22 +49,22 @@ int	ft_cd(t_list *tokens, t_list **env)
 		else
 		{
 			write_gen_err_message(strerror(errno));
-			status = 1;
+			status = EXIT_FAILURE;
 		}
 	}
 	return (status);
 }
 
 /*
-** changes directory to home
+** Changes directory to home
 ** @param:	- [char *] directory before changing (for future OLDPWD)
 **			- [t_list *] environment variable linked list pointer
-** @return:	[int] exit status (to be implemented)
+** @return:	[int] exit status
 ** Line-by-line comments:
-** @5		function changes directory and returns 0 on success 
-** @6		function will update the environment variable linked list 
-**				with the new working directory values
-** @7-11	error message in case of failure
+** @5		Function changes directory and returns 0 on success 
+** @6		Function will update the environment variable linked list with the
+**			new working directory values
+** @7-11	Error message in case of failure
 */
 
 int	change_dir_home(char *cur_pwd, t_list **env)
@@ -80,7 +78,7 @@ int	change_dir_home(char *cur_pwd, t_list **env)
 	else
 	{
 		write_gen_err_message(strerror(errno));
-		status = 1;
+		status = EXIT_FAILURE;
 	}
 	free(home);
 	home = 0;
@@ -88,17 +86,17 @@ int	change_dir_home(char *cur_pwd, t_list **env)
 }
 
 /*
-** changes directory to the old directory
+** Changes directory to the old directory
 ** @param:	- [char *] directory before changing (for future OLDPWD)
 **			- [t_list *] environment variable linked list pointer
-** @return:	[int] exit status (to be implemented)
+** @return:	[int] exit status
 ** Line-by-line comments:
-** @13		function will update the environment variable linked list 
-** 				with the new working directory values
-** @14-18	error message in case of failure
+** @13		Function will update the environment variable linked list with the
+**			new working directory values
+** @14-18	Error message in case of failure
 */
 
-int	change_to_old_dir(char	*cur_pwd, t_list **env)
+int	change_to_old_dir(char *cur_pwd, t_list **env)
 {
 	char	*old_dir;
 	int		status;
@@ -116,7 +114,7 @@ int	change_to_old_dir(char	*cur_pwd, t_list **env)
 		else
 		{
 			write_gen_err_message(strerror(errno));
-			status = 1;
+			status = EXIT_FAILURE;
 		}
 		free(old_dir);
 		old_dir = 0;

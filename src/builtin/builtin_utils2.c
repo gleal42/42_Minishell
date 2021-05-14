@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 17:33:11 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/13 01:41:11 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/14 10:31:17 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin_utils.h"
 
 /*
-** checks for invalid input specific to the unset function
+** Checks for invalid input specific to the unset function
 ** @param:	- [char *] argument/input to be analyzed
 **			- [type] param_value
 ** @return:	[int] true/false
 ** Line-by-line comments:
-** @5-10	in input is invalid we write an error message
+** @5-10	If input is invalid we write an error message
 */
 
 int	has_valid_identifier_unset(char *token_str)
@@ -39,14 +39,13 @@ int	has_valid_identifier_unset(char *token_str)
 }
 
 /*
-** checks various types if invalid input
+** Checks various types if invalid input
 ** @param:	- [char *] token_str
-**			- [char *] pointer to array of chars
-** 			where we will write the message
+**			- [char *] pointer to array of chars where we will write the message
 ** @return:	[int] true/false
 ** Line-by-line comments:
-** @6		preventing against "unset $ENVVAR" command
-** 			(the correct formatting is unset ENVVAR)
+** @6		Preventing against "unset $ENVVAR" command (the correct formatting
+**			is unset ENVVAR)
 */
 
 int	is_token_valid_unset(char *token_str, char *err_message)
@@ -69,12 +68,12 @@ int	is_token_valid_unset(char *token_str, char *err_message)
 }
 
 /*
-** given the node number to delete it applies the correct lst_del function
-(del_first, del_last or del_middle)
+** Given the node number to delete it applies the correct lst_del function
+** (del_first, del_last or del_middle)
 ** @param:	- [t_list *] linked list head pointer
 **			- [int] index of node to be deleted (starts at node 0)
 ** Line-by-line comments:
-** @7-8	protecting against node numbers above the lst size
+** @7-8		Protecting against node numbers above the lst size
 */
 
 void	ft_lstdel_node_nbr(t_list **lst, int node_nbr, void (*del)(void*))
@@ -93,9 +92,9 @@ void	ft_lstdel_node_nbr(t_list **lst, int node_nbr, void (*del)(void*))
 }
 
 /*
-** Deletes a node that is neither the first or last in the linked list
-(if you're not sure if it can be the first or
-last then I suggest using the ft_lstdel_node_nbr)
+** Deletes a node that is neither the first or last in the linked list (if
+** you're not sure if it can be the first or last then I suggest using the
+** ft_lstdel_node_nbr)
 ** @param:	- [t_list *] linked list pointer
 **			- [int] linked list number that will be deleted
 **			- [void (*f)(void*)] pointer to delete function
