@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/02 17:37:13 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/12 18:15:15 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/15 18:47:32 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,37 +44,6 @@ int	has_char_at_end(const char *input, char c, char *err_message)
 	else
 		check = 0;
 	free(cpy);
-	return (check);
-}
-
-/*
-** Checks if the input is trying to use a specific bash feature that isn't
-** implemented
-** @param:	- [const char *] the unchanged line entered in stdin
-**			- [char *] tested string that has non-supported feature like "&&"
-**			- [char *] empty string with 100 chars of space where to write the
-**                     error message
-** @return:	[int] true or false
-** Line-by-line comments:
-** @3		ft_strstr_quotes behaves like strstr but it doesn't looks for
-** 			the tested string between quotes (single or double). So if
-**			ft_strstr_quotes returns the address of where it found test, it
-**			means that the input has a non-supported bash feature
-*/
-
-int	has_non_supported(const char *input, char *test, char *err_message)
-{
-	int	check;
-
-	if (ft_strstr_quotes((char *)input, test) != 0)
-	{
-		check = 1;
-		ft_strcpy(err_message, "\"");
-		ft_strcat(err_message, test);
-		ft_strcat(err_message, "\" not supported");
-	}
-	else
-		check = 0;
 	return (check);
 }
 
@@ -161,4 +130,77 @@ int	has_spaces_between_char(const char *input, char c, char *err_message)
 			i++;
 	}
 	return (0);
+}
+
+/*
+** Checks if the input is trying to use a specific bash feature that isn't
+** implemented
+** @param:	- [const char *] the unchanged line entered in stdin
+**			- [char *] tested string that has non-supported feature like "&&"
+**			- [char *] empty string with 100 chars of space where to write the
+**                     error message
+** @return:	[int] true or false
+** Line-by-line comments:
+** @3		ft_strstr_quotes behaves like strstr but it doesn't looks for
+** 			the tested string between quotes (single or double). So if
+**			ft_strstr_quotes returns the address of where it found test, it
+**			means that the input has a non-supported bash feature
+*/
+
+int	has_non_supported(const char *input, char *test, char *err_message)
+{
+	int		check;
+
+	if (ft_strstr_quotes((char *)input, test) != 0)
+	{
+		check = 1;
+		ft_strcpy(err_message, "\"");
+		ft_strcat(err_message, test);
+		ft_strcat(err_message, "\" not supported");
+	}
+	else
+		check = 0;
+	return (check);
+}
+
+/*
+** Checks if the input is trying to use a specific bash feature that isn't
+** implemented
+** @param:	- [const char *] the unchanged line entered in stdin
+**			- [char *] tested string that has non-supported feature like "&&"
+**			- [char *] empty string with 100 chars of space where to write the
+**                     error message
+** @return:	[int] true or false
+** Line-by-line comments:
+** @3		ft_strstr_quotes behaves like strstr but it doesn't looks for
+** 			the tested string between quotes (single or double). So if
+**			ft_strstr_quotes returns the address of where it found test, it
+**			means that the input has a non-supported bash feature
+*/
+
+int	has_non_supported_separate(const char *input, char *test, char *err_message)
+{
+	int		check;
+	char	*tmp;
+
+	check = 0;
+	tmp = (char *)input;
+	while (tmp)
+	{
+		tmp = ft_strstr_quotes(tmp, test);
+		if (tmp != 0 && *(tmp + 1) != *test)
+		{
+			check = 1;
+			break ;
+		}
+		else if (tmp != 0 && *(tmp + 1) == *test)
+			tmp += 2;
+	}
+	if (check)
+	{
+		ft_strcpy(err_message, "\"");
+		ft_strcat(err_message, test);
+		ft_strcat(err_message, "\" not supported");
+	}
+	return (check);
 }

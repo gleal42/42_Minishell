@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment_utils2.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 22:04:11 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/14 16:26:01 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/15 17:33:18 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*get_value_name(char *str)
 	i = 0;
 	if (str[i] == '$')
 		i++;
-	while (str[i] && !is_delimiter(str[i]) && str[i] != '$'
+	while (str[i] && !is_token_delimiter(str[i]) && str[i] != '$'
 		&& str[i] != '=')
 		i++;
 	i++;

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 10:27:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/05 15:17:26 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/15 18:18:45 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,19 @@
 ** File parse_utils1.c
 */
 
-int		is_delimiter(char c);
-char	get_delimiter(const char *input, int *curr_pos);
+char	get_token_delimiter(const char *input, int *curr_pos);
 char	*ft_strstr_quotes(char *str, char *to_find);
 void	skip_quotes(char *str, int *i);
 void	skip_spaces(const char *input, int *curr_pos);
+void	delete_quotes(char *str);
 
 /*
 ** File parse_utils2.c
 */
 
-void	delete_backslashes(t_token *token);
-void	delete_quotes(char *str);
+int		is_cmd_table_delimiter(const char *str);
+int		is_cmd_delimiter(char c);
+int		is_token_delimiter(char c);
+char	*get_cmd_table_delimiter(const char *input, int *curr_pos);
 
 #endif

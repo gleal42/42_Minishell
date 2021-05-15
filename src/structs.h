@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/15 14:23:50 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/15 17:38:35 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,16 @@ typedef struct s_ast
 ** Potential values:
 ** - delimiter = "\0" (last command table)
 ** - delimiter = ";" (consecutive execution of the next cmd table)
+** - delimiter = "||" (execution of the next cmd table only if the previous has
+** a falsy exit_status)
+** - delimiter = "&&"" (execution of the next cmd table only if the previous has
+** a truthy exit_status)
 */
 
 typedef struct s_cmd_table
 {
 	t_list			*cmds;
-	char			delimiter[2];
+	char			*delimiter;
 }				t_cmd_table;
 
 /*
