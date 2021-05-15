@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 10:52:40 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/14 10:54:27 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/15 15:18:24 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,14 @@ void	replace_env_single_token(t_token *token)
 
 /*
 ** Finds dollar signs in tokens and replaces the following with the correct
-value
-** @param:	- [char *]Tokens (which can be strings with spaces when using
-**			double quotes) 
+** value
+** @param:	- [char *] Tokens (which can be strings with spaces when using
+**					   double quotes) 
 ** Line-by-line comments:
-** @13	replaces the token string with another with the respective value;
+** @13		Replaces the token string with another with the respective value
+** @20-21	replace_midstring() can be emptying the str so that there is only
+**			a NULL character as the only character. If we don't check before
+**			incrementing, we risk doing a segfault
 */
 
 void	replace_vars_with_values(char **str)
@@ -104,7 +107,8 @@ void	replace_vars_with_values(char **str)
 			if (value)
 				free(value);
 		}
-		i++;
+		if (str[0][i])
+			i++;
 	}
 }
 
