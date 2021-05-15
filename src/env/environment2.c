@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 17:21:45 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/14 10:56:05 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/15 14:13:20 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,4 +169,5 @@ void	replace_underscore_env(char **str)
 		*str = final;
 		replace_spot = ft_strnstr_iterator(*str, "$_", ft_strlen(*str));
 	}
+	free(last_exec_cmd);
 }

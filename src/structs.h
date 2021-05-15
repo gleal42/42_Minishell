@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/13 16:45:10 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/15 14:23:50 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ typedef struct s_redir
 ** [char *backspace] value that the terminal will return when pressing backspace
 ** [char *del_line] capability that allows to delete the content of the line
 ** where the cursor currently is positioned
+** [char *set_cursor_begin] sets the cursor to the beginning of the current line
 */
 
 typedef struct s_termcaps
@@ -130,6 +131,7 @@ typedef struct s_termcaps
 	char			*down_arrow;
 	char			*backspace;
 	char			*del_line;
+	char			*set_cursor_begin;
 }				t_termcaps;
 
 /*

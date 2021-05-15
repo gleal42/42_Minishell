@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 18:55:52 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/12 16:49:08 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/15 13:55:31 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ void	init_termcaps(t_termcaps *termcaps)
 **			so we need to manually set the value
 ** @13		Capability that allows to delete the content of the line where the
 ** 			cursor currently is positioned 
+** @14		Capability that allows to delete the content of the line where the
+** 			cursor currently is positioned 
 */
 
 int	has_capabilities(t_termcaps *termcaps)
@@ -75,9 +77,11 @@ int	has_capabilities(t_termcaps *termcaps)
 	else
 		termcaps->backspace = ft_strdup("\x7f");
 	termcaps->del_line = tgetstr("dl", &termcaps->buffer);
+	termcaps->set_cursor_begin = tgetstr("cr", &termcaps->buffer);
 	if (!termcaps->keys_on || !termcaps->keys_off
 		|| !termcaps->up_arrow || !termcaps->down_arrow
-		|| !termcaps->backspace || !termcaps->del_line)
+		|| !termcaps->backspace || !termcaps->del_line
+		|| !termcaps->set_cursor_begin)
 		check = 0;
 	else
 		check = 1;

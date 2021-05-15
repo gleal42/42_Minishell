@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 15:23:20 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/13 09:40:22 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/15 14:25:00 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,8 @@ int	is_up_down_arrow(char *buf, t_termcaps *termcaps)
 ** @10-14	Case: up arrow + more than one node in list
 ** @15-19	Case: down arrow + more than one node in list
 ** @20		Delete the current line from STDOUT
-** @24		While we are writting the new input, we change the value of *i
+** @21		Set cursor at the beginning of current line
+** @25		While we are writting the new input, we change the value of *i
 **			so that the next char input while be set after the input just wrote
 */
 
@@ -156,6 +157,7 @@ void	parse_input_history(t_dlist **input_history,
 		input = (*input_history)->data;
 	}
 	tputs(termcaps->del_line, 1, ft_putint);
+	tputs(termcaps->set_cursor_begin, 1, ft_putint);
 	write_prompt();
 	ft_bzero(buf, BUFSIZ);
 	ft_strcpy(buf, input);
@@ -196,18 +198,20 @@ int	has_history(t_dlist *input_history, t_termcaps *termcaps, char *buf)
 ** @3-7		We are deleting both the last char input and the backspace ANSI code
 ** 			Extended ASCII characters take 2 bytes
 ** @8		Delete the current line from STDOUT
+** @9		Set cursor at the beginning of current line
 */
 
 void	delete_single_char(t_termcaps *termcaps, char *buf, int *i)
 {
 	int	nb_char_to_delete;
 
-	if (ft_isascii(buf[*i - 1]))
+	if (*i == 0 || ft_isascii(buf[*i - 1]))
 		nb_char_to_delete = 1;
 	else
 		nb_char_to_delete = 2;
-	ft_bzero(&buf[*i - nb_char_to_delete], BUFSIZ - *i + 2);
+	ft_bzero(&buf[*i - nb_char_to_delete], BUFSIZ - *i + nb_char_to_delete);
 	tputs(termcaps->del_line, 1, ft_putint);
+	tputs(termcaps->set_cursor_begin, 1, ft_putint);
 	write_prompt();
 	*i = write(STDOUT_FILENO, buf, ft_strlen(buf));
 }
