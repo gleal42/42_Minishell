@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 10:37:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/14 18:44:37 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/15 01:21:12 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_ast	*get_ast(const char *input)
 	curr_pos = 0;
 	while (input[curr_pos])
 	{
-		skip_spaces(input, curr_pos);
+		skip_spaces(input, &curr_pos);
 		cmd_table = ft_lstnew((void *)get_cmd_table(input, &curr_pos));
 		if (!cmd_table)
 			quit_program(EXIT_FAILURE);
@@ -167,13 +167,13 @@ t_token	*get_token(const char *input, int *curr_pos)
 	token = ft_calloc(1, sizeof(t_token));
 	if (!token)
 		quit_program(EXIT_FAILURE);
-	token->delimiter = get_delimiter(input, &curr_pos);
+	token->delimiter = get_delimiter(input, curr_pos);
 	saved_pos = *curr_pos;
 	while (input[*curr_pos])
 	{
-		if (token->delimiter != ' ' && input[*curr_pos] == token->delimiter)
+		if (token->delimiter == ' ' && is_delimiter(input[*curr_pos]))
 			break ;
-		else if (is_delimiter(input[*curr_pos]))
+		else if (input[*curr_pos] == token->delimiter)
 			break ;
 		(*curr_pos)++;
 	}
