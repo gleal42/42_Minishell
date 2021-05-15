@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 08:34:51 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/15 18:19:23 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/15 18:54:49 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ int	is_cmd_table_delimiter(const char *str)
 
 	if (*str == ';')
 		check = 1;
-	else if (!ft_strcmp((char *)str, "||"))
+	else if (!ft_strncmp((char *)str, "||", 2))
 		check = 1;
-	else if (!ft_strcmp((char *)str, "&&"))
+	else if (!ft_strncmp((char *)str, "&&", 2))
 		check = 1;
 	else
 		check = 0;
@@ -89,9 +89,9 @@ char	*get_cmd_table_delimiter(const char *input, int *curr_pos)
 		delimiter = ft_strdup("");
 	else if (input[*curr_pos] == ';')
 		delimiter = ft_strdup(";");
-	else if (!ft_strcmp((char *)&input[*curr_pos], "||"))
+	else if (!ft_strncmp((char *)&input[*curr_pos], "||", 2))
 		delimiter = ft_strdup("||");
-	else if (!ft_strcmp((char *)&input[*curr_pos], "&&"))
+	else if (!ft_strncmp((char *)&input[*curr_pos], "&&", 2))
 		delimiter = ft_strdup("&&");
 	if (!delimiter)
 		quit_program(EXIT_FAILURE);

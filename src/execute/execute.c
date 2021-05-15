@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 18:40:32 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/14 18:29:37 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/15 19:02:25 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@
 
 void	exec_ast(t_ast *ast)
 {
-	t_list		*cmd_table;
+	t_list	*cmd_table;
+	char	*delimiter;
 
 	cmd_table = ast->cmd_tables;
 	while (cmd_table)
@@ -38,6 +39,11 @@ void	exec_ast(t_ast *ast)
 		g_msh.curr_cmd_table = cmd_table->data;
 		exec_cmd_table(g_msh.curr_cmd_table);
 		save_last_token(g_msh.curr_cmd_table);
+		delimiter = g_msh.curr_cmd_table->delimiter;
+		if (!ft_strcmp(delimiter, "&&") && g_msh.exit_status != EXIT_SUCCESS)
+			break ;
+		if (!ft_strcmp(delimiter, "||") && g_msh.exit_status == EXIT_SUCCESS)
+			break ;
 		cmd_table = cmd_table->next;
 	}
 }
