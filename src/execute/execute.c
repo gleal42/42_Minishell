@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 18:40:32 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/15 19:02:25 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/15 20:09:01 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	exec_ast(t_ast *ast)
 	cmd_table = ast->cmd_tables;
 	while (cmd_table)
 	{
-		g_msh.nb_forks = 0;
 		g_msh.curr_cmd_table = cmd_table->data;
 		exec_cmd_table(g_msh.curr_cmd_table);
 		save_last_token(g_msh.curr_cmd_table);
@@ -87,7 +86,6 @@ void	exec_cmd_table(t_cmd_table *cmd_table)
 		i++;
 	}
 	close_all_pipes(pipes, nb_cmds);
-	exec_parent();
 	free_arr((void **)pipes);
 }
 
@@ -162,8 +160,7 @@ void	exec_builtin(t_list *tokens, t_list **env)
 		g_msh.exit_status = ft_echo(tokens->next);
 	else if ((ft_strcmp(program_name, "env") == 0) && ft_lstsize(tokens) == 1)
 		g_msh.exit_status = ft_env(*env);
-	else if (ft_strcmp(program_name, "cd") == 0
-		&& ft_lstsize(g_msh.curr_cmd_table->cmds) == 1)
+	else if (ft_strcmp(program_name, "cd") == 0)
 		g_msh.exit_status = ft_cd(tokens->next, env);
 	else if (ft_strcmp(program_name, "pwd") == 0)
 		g_msh.exit_status = ft_pwd();
@@ -200,12 +197,13 @@ void	exec_program(t_list *lst_tokens, int nb_cmds, int **pipes)
 
 	tokens = convert_list_to_arr_tokens(lst_tokens);
 	envp = convert_list_to_arr_envp(g_msh.dup_envp);
-	g_msh.nb_forks++;
 	pid = fork();
 	if (pid < 0)
 		quit_program(EXIT_FAILURE);
 	else if (pid == 0)
 		exec_child(tokens, envp, nb_cmds, pipes);
+	else if (pid > 0)
+		exec_parent();
 	free(tokens);
 	free(envp);
 }

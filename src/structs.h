@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/15 17:38:35 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/15 20:12:20 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,9 +147,6 @@ typedef struct s_termcaps
 ** [t_termcaps] struct with the settings of the termical and a few capabilities
 ** [t_list *] the duplicate of environment variables. Each node is a string
 ** [int exit_status] exit_status of the last simple command that ran
-** [int nb_forks] each time a child process is created this var is incremented.
-** It allows to properly wait on all processes to finish before moving on but
-** still implementing asynchronous processes
 ** [t_cmd_table *curr_cmd_table] points to the cmd_table being currently
 ** executed. This is useful for when the exit program name is used alongside
 ** other simple commands we don't have to exit, otherwise we do
@@ -162,7 +159,6 @@ typedef struct s_msh
 	t_termcaps		termcaps;
 	t_list			*dup_envp;
 	int				exit_status;
-	int				nb_forks;
 	t_cmd_table		*curr_cmd_table;
 }				t_msh;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fork_exec_wait.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 09:25:18 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/14 04:16:38 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/15 20:00:49 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,9 @@ void	exec_child(char **tokens, char **envp, int nb_cmds, int **pipes)
 /*
 ** Waits for all the child processes to be finished and sets the exit status
 ** Line-by-line comments:
-** @6		wait() sets the exit information related to the child process it
+** @4		wait() sets the exit information related to the child process it
 **			just reaped
-** @8-11	The child process can have exited (not necessarily successfully)
+** @6-9		The child process can have exited (not necessarily successfully)
 **			or have been forced to finish by a signal (like ctrl-C). Depending
 **			on which, the macros help us set the exit_status
 */
@@ -78,15 +78,11 @@ void	exec_parent(void)
 	int	exit_info;
 
 	exit_info = 0;
-	while (g_msh.nb_forks > 0)
-	{
-		wait(&exit_info);
-		g_msh.nb_forks--;
-		if (WIFEXITED(exit_info))
-			g_msh.exit_status = WEXITSTATUS(exit_info);
-		else if (WIFSIGNALED(exit_info))
-			g_msh.exit_status = WTERMSIG(exit_info);
-	}
+	wait(&exit_info);
+	if (WIFEXITED(exit_info))
+		g_msh.exit_status = WEXITSTATUS(exit_info);
+	else if (WIFSIGNALED(exit_info))
+		g_msh.exit_status = WTERMSIG(exit_info);
 }
 
 /*

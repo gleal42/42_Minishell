@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 21:35:14 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/15 18:24:43 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/15 19:18:14 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		turn_on_canonical_mode(&g_msh.termcaps);
 		g_msh.ast = get_ast((const char *)input->data);
-		print_ast(g_msh.ast);
+		// print_ast(g_msh.ast);
 		exec_ast(g_msh.ast);
 		free_ast(g_msh.ast);
 		g_msh.ast = 0;
