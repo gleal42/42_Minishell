@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/02 17:37:13 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/15 18:47:32 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/15 20:34:27 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	has_char_at_end(const char *input, char c, char *err_message)
 **                     error message
 ** @return:	[int] true or false
 ** Line-by-line comments:
-** @3		ft_strstr_all returns a string with all the referenced characters
+** @4		ft_strstr_all returns a string with all the referenced characters
 **			trimmed
 ** @7		ft_strstr_quotes behaves like strstr but it doesn't looks for
 ** 			the tested string between quotes (single or double). So if
@@ -165,20 +165,25 @@ int	has_non_supported(const char *input, char *test, char *err_message)
 
 /*
 ** Checks if the input is trying to use a specific bash feature that isn't
-** implemented
+** implemented. Different from has_non_supported() because it checks if the
+** the tested string is present separeted from a same character.
+** For instance, "echo && test" is valid but "echo & test" isn't
 ** @param:	- [const char *] the unchanged line entered in stdin
 **			- [char *] tested string that has non-supported feature like "&&"
 **			- [char *] empty string with 100 chars of space where to write the
 **                     error message
 ** @return:	[int] true or false
 ** Line-by-line comments:
-** @3		ft_strstr_quotes behaves like strstr but it doesn't looks for
+** @8		ft_strstr_quotes behaves like strstr but it doesn't looks for
 ** 			the tested string between quotes (single or double). So if
 **			ft_strstr_quotes returns the address of where it found test, it
 **			means that the input has a non-supported bash feature
+** @14-15	If we found one occurence of the tested string but it's repeated
+**			we need to finish parsing the string to see if there are more
+**			occurences
 */
 
-int	has_non_supported_separate(const char *input, char *test, char *err_message)
+int	has_non_supported_one(const char *input, char *test, char *err_message)
 {
 	int		check;
 	char	*tmp;

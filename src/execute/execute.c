@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 18:40:32 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/15 20:09:01 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/15 20:23:04 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,14 @@
 ** Executes all the command tables extracted by get_ast() from the user input
 ** @param:	- [t_ast *] struct with a list of cmd_table (t_cmd_table *) as nodes
 ** Line-by-line comments:
-** @6		Each time a child process is created this var is incremented. It
-**			allows to properly wait on all processes to finish before moving on
-**			but still implementing asynchronous processes
 ** @7		Edge case: if the "exit" program name is used alongside others
 **			simple commands we don't have to execute it. If it's the only simple
 **			simple command, we do.
 **			The way we implemented the execution, the exec_cmd() only has access
 **			to the simple command it's executing. So we set a pointer to the
 **			current cmd_table in our global variable struct
+** @9		Each time a cmd_table is executed, we need to set the env _ to the
+**			last token of the cmd_table
 */
 
 void	exec_ast(t_ast *ast)
@@ -59,13 +58,8 @@ void	exec_ast(t_ast *ast)
 **			We allocate a 2D array where each subarray will have 2 ints:
 **			- [0] reading end of the pipe
 **			- [1] writing end of the pipe
-** @15		Each child process closed all the pipes, now the parent needs to do	
+** @16		Each child process closed all the pipes, now the parent needs to do	
 **			it one last time
-** @16		All simple commands are executed asynchronously, so we'll only be
-** 			executing the parent process once we looped through the list.
-**			The parent process basically:
-**			- Reaps the children processes
-**			- Sets the exit_status of the last simple command executed
 */
 
 void	exec_cmd_table(t_cmd_table *cmd_table)
@@ -179,13 +173,13 @@ void	exec_builtin(t_list *tokens, t_list **env)
 **			- [int **] 2D array of ints. Each subarray is a pipe
 ** Line-by-line comments:
 ** @5-6		execve() requires NULL terminated array of string
-** @7		Increment nb_forks to keep track of how many child processes where
-**			created so that we can wait() for everyone of them before displaying
-**			prompt
-** @8		Fork() returns twice, a 1st time inside child process with pid == 0
+** @7		Fork() returns twice, a 1st time inside child process with pid == 0
 **			and a 2nd time inside parent process with pid = process ID of child
 **			so a value above 0
-** @13-14	Although they are array of strings, we only need to free the
+** @13		The parent process basically:
+**			- Reaps the children processes
+**			- Sets the exit_status of the last simple command executed
+** @14-15	Although they are array of strings, we only need to free the
 **			pointers because the individuals strings are still being used
 */
 

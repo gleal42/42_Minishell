@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 10:30:51 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/15 20:09:19 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/15 20:22:06 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,6 @@ int	ft_cd(t_list *tokens, t_list **env)
 			status = EXIT_FAILURE;
 		}
 	}
-	// if (status == EXIT_SUCCESS && ft_lstsize(g_msh.curr_cmd_table->cmds) == 1)
-	// 	revert back
 	return (status);
 }
 
