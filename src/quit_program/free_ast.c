@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/30 10:23:00 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/12 16:57:06 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/15 18:23:21 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	free_ast(t_ast *ast)
 void	free_cmd_table(void *cmd_table)
 {
 	ft_lstclear(&((t_cmd_table *)cmd_table)->cmds, free_cmd);
+	free(((t_cmd_table *)cmd_table)->delimiter);
 	free(cmd_table);
 }
 

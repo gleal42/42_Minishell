@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_validation.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 11:06:35 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/03 15:37:37 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/15 20:27:24 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@ int	has_char_at_beginning(const char *input, char c, char *error_message);
 */
 
 int	has_char_at_end(const char *input, char c, char *error_message);
-int	has_non_supported(const char *input, char *test, char *error_message);
 int	has_forbidden_sequence(const char *input, char *test, char *error_message);
 int	has_spaces_between_char(const char *input, char c, char *error_message);
+int	has_non_supported(const char *input, char *test, char *error_message);
+int	has_non_supported_one(const char *input, char *test, char *err_message);
 
 #endif

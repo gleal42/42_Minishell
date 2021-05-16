@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 10:37:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/15 15:27:08 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/15 18:05:24 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,22 +70,17 @@ t_cmd_table	*get_cmd_table(const char *input, int *curr_pos)
 	cmd_table = ft_calloc(1, sizeof(t_cmd_table));
 	if (!cmd_table)
 		quit_program(EXIT_FAILURE);
-	while (input[*curr_pos])
+	while (input[*curr_pos] && !is_cmd_table_delimiter(&input[*curr_pos]))
 	{
 		skip_spaces(input, curr_pos);
 		cmd = ft_lstnew((void *)get_cmd(input, curr_pos));
 		if (!cmd)
 			quit_program(EXIT_FAILURE);
 		ft_lstadd_back(&cmd_table->cmds, cmd);
-		if (input[*curr_pos] == '|')
+		if (input[*curr_pos] == '|' && input[*curr_pos + 1] != '|')
 			(*curr_pos)++;
-		else if (input[*curr_pos] == ';')
-		{
-			*cmd_table->delimiter = ';';
-			(*curr_pos)++;
-			break ;
-		}
 	}
+	cmd_table->delimiter = get_cmd_table_delimiter(input, curr_pos);
 	return (cmd_table);
 }
 
@@ -111,8 +106,7 @@ t_cmd	*get_cmd(const char *input, int *curr_pos)
 	cmd = ft_calloc(1, sizeof(t_cmd));
 	if (!cmd)
 		quit_program(EXIT_FAILURE);
-	while (input[*curr_pos] && input[*curr_pos] != ';'
-		&& input[*curr_pos] != '|')
+	while (input[*curr_pos] && !is_cmd_delimiter(input[*curr_pos]))
 	{
 		if (input[*curr_pos] != '>' && input[*curr_pos] != '<')
 		{
@@ -140,12 +134,12 @@ t_cmd	*get_cmd(const char *input, int *curr_pos)
 ** @return:	[t_token *] a struct with a str and a char delimiter
 ** Line-by-line comments:
 ** @7		The delimiter can be a space, single or double quotes.
-**			get_delimiter() increments curr_pos if a quotes is found so that
+**			get_token_delimiter() increments curr_pos if a quotes is found so that
 **			the token starts after the quotes
 ** @8		We need to save the beginning of the token so that we can extract
 **			the string once we have found the end of the token
 ** @11-12	The token is a string of words because a quote has been found
-**			by get_delimiter(). So we parse while we haven't found it's matching
+**			by get_token_delimiter(). So we parse while we haven't found it's matching
 **			quote (either single or double)
 ** @13-14	The token is a word and will be finished when we find a delimiter
 **			(' ', ';', '|', '<' or '>')
@@ -167,11 +161,11 @@ t_token	*get_token(const char *input, int *curr_pos)
 	token = ft_calloc(1, sizeof(t_token));
 	if (!token)
 		quit_program(EXIT_FAILURE);
-	token->delimiter = get_delimiter(input, curr_pos);
+	token->delimiter = get_token_delimiter(input, curr_pos);
 	saved_pos = *curr_pos;
 	while (input[*curr_pos])
 	{
-		if (token->delimiter == ' ' && is_delimiter(input[*curr_pos]))
+		if (token->delimiter == ' ' && is_token_delimiter(input[*curr_pos]))
 			break ;
 		else if (input[*curr_pos] == token->delimiter)
 			break ;

@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 09:25:18 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/16 01:16:27 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/16 02:04:54 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,16 @@
 **			- we already changed the stdout and stdin inside set_redirs_pipes()
 **			- all pipes opened in parent process are also considered open in
 **			child BUT closing them in child doesn't close them in parent
-** @7		We need to add the PATH of the executable
+** @11		We need to add the PATH of the executable
 **			If valid executable:
 **			- "ls" -> "/bin/ls"
 **			- "go" -> "/usr/local/go/bin/go"
 **			If invalid executable, the program name is just duplicated
-** @9		If execve call is successful, the following lines are never executed
+** @12		If execve call is successful, the following lines are never executed
 **			because the child process will kill itself when finished
-** @10-11	We have to write "command not found" unless it's exit because if
+** @13-14	We have to write "command not found" unless it's exit because if
 **			a exit command reached here, it means it wasn't a valid exit use
-** @15		130 error code for specifically when command not found
+** @19		130 error code for specifically when command not found
 */
 
 void	exec_child(char **tokens, char **envp, int nb_cmds, int **pipes)
@@ -65,11 +65,11 @@ void	exec_child(char **tokens, char **envp, int nb_cmds, int **pipes)
 }
 
 /*
-** Waits for all the child processes to be finished and sets the exit status
+** Waits for the child processes to be finished and sets the exit status
 ** Line-by-line comments:
-** @6		wait() sets the exit information related to the child process it
+** @4		wait() sets the exit information related to the child process it
 **			just reaped
-** @8-11	The child process can have exited (not necessarily successfully)
+** @5-8		The child process can have exited (not necessarily successfully)
 **			or have been forced to finish by a signal (like ctrl-C). Depending
 **			on which, the macros help us set the exit_status
 */
@@ -79,15 +79,11 @@ void	exec_parent(void)
 	int	exit_info;
 
 	exit_info = 0;
-	while (g_msh.nb_forks > 0)
-	{
-		wait(&exit_info);
-		g_msh.nb_forks--;
-		if (WIFEXITED(exit_info))
-			g_msh.exit_status = WEXITSTATUS(exit_info);
-		else if (WIFSIGNALED(exit_info))
-			g_msh.exit_status = WTERMSIG(exit_info);
-	}
+	wait(&exit_info);
+	if (WIFEXITED(exit_info))
+		g_msh.exit_status = WEXITSTATUS(exit_info);
+	else if (WIFSIGNALED(exit_info))
+		g_msh.exit_status = WTERMSIG(exit_info);
 }
 
 /*
