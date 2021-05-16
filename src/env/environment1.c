@@ -79,19 +79,9 @@ void	replace_env_single_token(char **token)
 		delete_quotes((char *)tmp->data);
 		tmp = tmp->next;
 	}
-	ft_lst_print_s(split_token);
+	free(*token);
+	*token = join_split_token(split_token);
 	ft_lstclear(&split_token, free);
-
-
-	// delimiter = 0;
-	// if (delimiter == ' ' && token[0][0] == '~'
-	// 	&& (token[0][1] == '\0' || token[0][1] == '/'))
-	// 	replace_tilde_with_home(token);
-	// if (delimiter != '\'')
-	// {
-	// 	replace_vars_with_values(token);
-	// 	replace_status_env(token, g_msh.exit_status);
-	// }
 }
 
 /*

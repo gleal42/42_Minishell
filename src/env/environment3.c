@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/16 22:01:55 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/16 23:00:39 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/16 23:29:35 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,34 @@ t_list	*get_split_token(char *token)
 		ft_lstadd_back(&split_token, new_node);
 	}
 	return (split_token);
+}
+
+char	*join_split_token(t_list *split_token)
+{
+	char	*token;
+	int		new_token_size;
+
+	new_token_size = get_new_token_size(split_token);
+	token = ft_calloc(new_token_size + 1, sizeof(char));
+	if (!token)
+		quit_program(EXIT_FAILURE);
+	while (split_token)
+	{
+		ft_strcat(token, (char *)split_token->data);
+		split_token = split_token->next;
+	}
+	return (token);
+}
+
+int	get_new_token_size(t_list *split_token)
+{
+	int	size;
+
+	size = 0;
+	while (split_token)
+	{
+		size += ft_strlen((const char *)split_token->data);
+		split_token = split_token->next;
+	}
+	return (size);
 }

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 14:59:16 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/16 22:03:12 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/16 23:30:12 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ int		is_path_executable(char *exec_file);
 */
 
 t_list	*get_split_token(char *token);
+char	*join_split_token(t_list *split_token);
+int		get_new_token_size(t_list *split_token);
 
 /*
 ** File save_last_token.c
