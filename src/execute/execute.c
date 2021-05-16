@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 18:40:32 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/16 13:43:54 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/16 18:43:48 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ void	exec_builtin(t_list *tokens, t_list **env)
 {
 	char	*program_name;
 
-	program_name = ((t_token *)tokens->data)->str;
+	program_name = tokens->data;
 	if (ft_strcmp(program_name, "exit") == 0)
 		g_msh.exit_status = ft_exit(tokens->next);
 	else if (ft_strcmp(program_name, "echo") == 0)

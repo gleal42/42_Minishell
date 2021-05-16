@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 10:27:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/15 18:18:45 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/16 18:35:12 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 char	get_token_delimiter(const char *input, int *curr_pos);
 char	*ft_strstr_quotes(char *str, char *to_find);
-void	skip_quotes(char *str, int *i);
+void	skip_quotes(const char *str, int *i);
 void	skip_spaces(const char *input, int *curr_pos);
 void	delete_quotes(char *str);
 

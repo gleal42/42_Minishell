@@ -30,17 +30,19 @@
 void	replace_envs(t_list **tokens, t_list *redirs)
 {
 	t_list	*token;
+	t_redir	*redir;
 
 	token = *tokens;
 	while (token)
 	{
-		replace_env_single_token(token->data);
+		replace_env_single_token((char **)&token->data);
 		token = token->next;
 	}
-	ft_lstclear_if(tokens, is_token_empty, free_token);
+	// ft_lstclear_if(tokens, is_token_empty, free_token);
 	while (redirs)
 	{
-		replace_env_single_token(((t_redir *)redirs->data)->direction);
+		redir = redirs->data;
+		replace_env_single_token(&redir->direction);
 		redirs = redirs->next;
 	}
 }
@@ -56,20 +58,18 @@ void	replace_envs(t_list **tokens, t_list *redirs)
 ** @12		replacing $? special parameter with exit status of last cmd
 */
 
-void	replace_env_single_token(t_token *token)
+void	replace_env_single_token(char **token)
 {
-	char	**str;
 	char	delimiter;
 
-	str = &token->str;
-	delimiter = token->delimiter;
-	if (delimiter == ' ' && str[0][0] == '~'
-		&& (str[0][1] == '\0' || str[0][1] == '/'))
-		replace_tilde_with_home(str);
+	delimiter = 0;
+	if (delimiter == ' ' && token[0][0] == '~'
+		&& (token[0][1] == '\0' || token[0][1] == '/'))
+		replace_tilde_with_home(token);
 	if (delimiter != '\'')
 	{
-		replace_vars_with_values(str);
-		replace_status_env(str, g_msh.exit_status);
+		replace_vars_with_values(token);
+		replace_status_env(token, g_msh.exit_status);
 	}
 }
 

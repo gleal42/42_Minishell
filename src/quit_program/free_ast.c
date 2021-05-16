@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/30 10:23:00 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/15 18:23:21 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/16 18:46:27 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,13 @@ void	free_cmd_table(void *cmd_table)
 
 void	free_cmd(void *cmd)
 {
-	ft_lstclear(&((t_cmd *)cmd)->tokens, free_token);
+	ft_lstclear(&((t_cmd *)cmd)->tokens, free);
 	ft_lstclear(&((t_cmd *)cmd)->redirs, free_redir);
 	free(cmd);
 }
 
 void	free_redir(void *redir)
 {
-	free_token(((t_redir *)redir)->direction);
+	free(((t_redir *)redir)->direction);
 	free(redir);
-}
-
-void	free_token(void *token)
-{
-	free(((t_token *)token)->str);
-	free(token);
 }

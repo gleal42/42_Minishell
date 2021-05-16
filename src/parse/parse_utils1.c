@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 10:26:41 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/15 17:36:06 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/16 18:34:58 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char	*ft_strstr_quotes(char *str, char *to_find)
 /*
 ** Parses a string until the index i no longer points to a character inside
 ** quotes (single or double)
-** @param:	- [char *] string to parse
+** @param:	- [const char *] string to parse
 **			- [int *] index of the string. We have the reference because
 **					  we need to update its value for the function caller
 ** Line-by-line comments:
@@ -96,7 +96,7 @@ char	*ft_strstr_quotes(char *str, char *to_find)
 **			it will break because there is a space
 */
 
-void	skip_quotes(char *str, int *i)
+void	skip_quotes(const char *str, int *i)
 {
 	int		has_double_quotes_open;
 	int		has_single_quotes_open;

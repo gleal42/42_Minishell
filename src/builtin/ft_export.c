@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 10:29:13 by dds               #+#    #+#             */
-/*   Updated: 2021/05/14 15:45:56 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/16 18:47:20 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	ft_export(t_list *tokens, t_list **env)
 	{
 		while (tokens)
 		{
-			token_str = ((t_token *)tokens->data)->str;
+			token_str = tokens->data;
 			if (!has_valid_identifier_export(token_str))
 				return (EXIT_FAILURE);
 			var = get_var_name(token_str);

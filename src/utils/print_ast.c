@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/15 15:33:59 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/15 15:34:30 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/16 18:42:56 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,13 @@ void	print_cmd(t_cmd *cmd)
 	}
 }
 
-void	print_token(t_token *token, int i)
+void	print_token(char *token, int i)
 {
-	printf("token n°%d: str: \"%s\"", i, token->str);
-	printf(" & delimiter: \"%c\"\n", token->delimiter);
+	printf("token n°%d: str: \"%s\"\n", i, token);
 }
 
 void	print_redir(t_redir *redir)
 {
-	printf("direction: \"%s\"\n", ((t_token *)redir->direction)->str);
+	printf("direction: \"%s\"\n", redir->direction);
 	printf("type: \"%s\"\n", redir->type);
 }

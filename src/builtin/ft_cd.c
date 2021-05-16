@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 10:30:51 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/16 13:33:23 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/16 18:46:59 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	ft_cd(t_list *tokens, t_list **env)
 	}
 	else
 	{
-		arg = ((t_token *)tokens->data)->str;
+		arg = tokens->data;
 		if (!ft_strcmp(arg, "-"))
 			status = change_to_old_dir(pwd, env);
 		else if (chdir(arg) == EXIT_SUCCESS)

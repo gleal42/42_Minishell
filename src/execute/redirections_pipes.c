@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 16:04:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/16 13:26:51 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/16 18:44:06 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,7 @@ int	open_file(t_redir *redir, int prev_fd, int flags, mode_t permissions)
 
 	if (prev_fd != -2)
 		close(prev_fd);
-	file_name = redir->direction->str;
+	file_name = redir->direction;
 	new_fd = open(file_name, flags, permissions);
 	if (new_fd == -1)
 	{

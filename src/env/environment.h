@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 14:59:16 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/15 22:20:40 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/16 18:41:48 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 */
 
 void	replace_envs(t_list **tokens, t_list *redirs);
-void	replace_env_single_token(t_token *token);
+void	replace_env_single_token(char **token);
 void	replace_vars_with_values(char **str);
 void	replace_tilde_with_home(char **str);
 char	*getlastexecname(char *env_var);

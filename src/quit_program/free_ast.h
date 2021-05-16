@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/30 09:47:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/12 16:52:51 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/16 18:46:35 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,5 @@ void	free_ast(t_ast *ast);
 void	free_cmd_table(void *cmd_table);
 void	free_cmd(void *cmd);
 void	free_redir(void *redir);
-void	free_token(void *token);
 
 #endif
