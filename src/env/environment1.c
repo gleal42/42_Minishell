@@ -60,6 +60,9 @@ void	replace_envs(t_list **tokens, t_list *redirs)
 
 void	replace_env_single_token(char **token)
 {
+	t_list	*split_token;
+
+	split_token = get_split_token(*token);
 	char	delimiter;
 
 	delimiter = 0;
@@ -71,6 +74,7 @@ void	replace_env_single_token(char **token)
 		replace_vars_with_values(token);
 		replace_status_env(token, g_msh.exit_status);
 	}
+	(void)split_token;
 }
 
 /*

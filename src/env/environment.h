@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 14:59:16 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/16 18:41:48 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/16 22:03:12 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,12 @@ void	duplicate_env(t_list **dup_envp, char **envp);
 void	remove_env_value(char	*key);
 void	replace_status_env(char **str, int	last_status);
 int		is_path_executable(char *exec_file);
+
+/*
+** File environment3.c
+*/
+
+t_list	*get_split_token(char *token);
 
 /*
 ** File save_last_token.c

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 10:37:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/16 18:33:35 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/16 22:37:10 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,7 @@ char	*get_token(const char *input, int *curr_pos)
 	{
 		if (input[*curr_pos] == '"' || input[*curr_pos] == '\'')
 			skip_quotes(input, curr_pos);
-		if (input[*curr_pos])
+		else if (input[*curr_pos])
 			(*curr_pos)++;
 	}
 	token = ft_substr(input, saved_pos, *curr_pos - saved_pos);

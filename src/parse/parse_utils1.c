@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 10:26:41 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/16 18:34:58 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/16 22:33:39 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,9 +109,9 @@ void	skip_quotes(const char *str, int *i)
 			has_double_quotes_open = !has_double_quotes_open;
 		else if (str[*i] == '\'' && has_double_quotes_open == 0)
 			has_single_quotes_open = !has_single_quotes_open;
-		else if (!has_double_quotes_open && !has_single_quotes_open)
-			break ;
 		(*i)++;
+		if (!has_double_quotes_open && !has_single_quotes_open)
+			break ;
 	}
 }
 
