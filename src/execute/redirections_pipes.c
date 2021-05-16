@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 16:04:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/14 12:24:02 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/16 13:26:51 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,7 @@ int	open_file(t_redir *redir, int prev_fd, int flags, mode_t permissions)
 	new_fd = open(file_name, flags, permissions);
 	if (new_fd == -1)
 	{
-		write_gen_func_err_message(file_name, strerror(errno));
+		write_msh_exec_error(file_name, strerror(errno));
 		g_msh.exit_status = errno;
 	}
 	else

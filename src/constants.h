@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:48:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/16 13:04:40 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/16 13:52:54 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define CONSTANTS_H
 
 # ifdef unix
-#  define IS_UNIX 1
+#  define IS_LINUX 1
 #  define MAX_PATH 4096
 # else
 #  define MAX_PATH 1024
@@ -38,6 +38,6 @@
 
 # define EXIT_CMD_NOT_FOUND 127
 # define EXIT_CMD_INTERRUPTED 130
-# define EXIT_GENERAL_ERROR 255
+# define EXIT_GENERAL_ERROR 2
 
 #endif

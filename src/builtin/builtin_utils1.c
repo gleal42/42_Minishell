@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 09:10:48 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/16 01:26:50 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/16 13:26:34 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	has_valid_identifier_export(char *token_str)
 	{
 		check = 0;
 		errno = ENOEXEC;
-		write_gen_err_message(err_message);
+		write_msh_error(err_message);
 	}
 	else
 		check = 1;

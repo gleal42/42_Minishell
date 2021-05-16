@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 10:41:56 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/14 10:41:59 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/16 14:06:58 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,32 +16,40 @@
 ** Recreating the exit function based on different arguments. Mimics bash
 ** @param:	- [t_list *] a list of all the arguments used with the exit cmd
 ** Line-by-line comments:
-** @4-5		Case: no arguments so the exit status sent is the one of the last
+** @3-4		exit doesn't have to exit if there are more than one simple command
+**			in cmd_table but it still has to do thorough error handling
+** @5-6		Case: no arguments so the exit status sent is the one of the last
 **			executed simple command (e.g. cd asjoafsj; exit; echo $? STDOUT: 1)
-** @7-8		Case: first arg is a number but there are more than one arg. Doesn't
+** @10-11	Case: first arg is a number but there are more than one arg. Doesn't
 **			exit. Sends error message and returns EXIT_FAILURE
-** @9-15	Case: non-numeric argument. Exits with error message
-** @16-17	Case: arg is a number and only one arg. Exits with arg as exit code
+** @12-19	Case: non-numeric argument. Exits with error message
+** @20-21	Case: arg is a number and only one arg. Exits with arg as exit code
 */
 
-int	ft_exit(t_list *exit_arguments)
+int	ft_exit(t_list *args)
 {
-	char	*first_argument;
+	char	*arg;
 
-	ft_putstr_fd("exit\n", STDERR_FILENO);
-	if (exit_arguments == 0)
+	if (has_only_one_cmd())
+		ft_putstr_fd("exit\n", STDERR_FILENO);
+	if (args == 0 && has_only_one_cmd())
 		quit_program(g_msh.exit_status);
-	first_argument = ((t_token *)exit_arguments->data)->str;
-	if (ft_strisnumber(first_argument) && exit_arguments->next != 0)
-		write_gen_err_message("exit: too many arguments");
-	else if (!ft_strisnumber(first_argument))
+	else if (args == 0 && !has_only_one_cmd())
+		return (EXIT_SUCCESS);
+	arg = ((t_token *)args->data)->str;
+	if (ft_strisnumber(arg) && args->next != 0)
+		write_msh_exec_error("exit" , "too many arguments");
+	else if (!ft_strisnumber(arg))
 	{
-		ft_putstr_fd("msh: exit: ", STDERR_FILENO);
-		ft_putstr_fd(first_argument, STDERR_FILENO);
-		ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
-		quit_program(EXIT_GENERAL_ERROR);
+		write_msh_exec_arg_error("exit", arg, "numeric argument required");
+		if (has_only_one_cmd())
+			quit_program(EXIT_GENERAL_ERROR);
+		else
+			return (EXIT_GENERAL_ERROR);
 	}
-	else if (ft_strisnumber(first_argument) && exit_arguments->next == 0)
-		quit_program(ft_atoi(first_argument));
+	else if (ft_strisnumber(arg) && args->next == 0 && has_only_one_cmd())
+		quit_program(ft_atoi(arg));
+	else if (ft_strisnumber(arg) && args->next == 0 && !has_only_one_cmd())
+		return (ft_atoi(arg));
 	return (EXIT_FAILURE);
 }

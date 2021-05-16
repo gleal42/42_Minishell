@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fork_exec_wait.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 09:25:18 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/16 02:04:54 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/16 13:27:43 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	exec_child(char **tokens, char **envp, int nb_cmds, int **pipes)
 		exec_path = get_absolute_path(tokens[0]);
 	execve(exec_path, tokens, envp);
 	if (errno == ENOENT && ft_strcmp(tokens[0], "exit") != 0)
-		write_func_err_message(tokens[0], "command not found");
+		write_exec_error(tokens[0], "command not found");
 	free(exec_path);
 	free(tokens);
 	free(envp);

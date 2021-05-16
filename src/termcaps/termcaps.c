@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 18:55:52 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/15 13:55:31 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/16 13:09:41 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	has_capabilities(t_termcaps *termcaps)
 	termcaps->keys_off = tgetstr("ke", &termcaps->buffer);
 	termcaps->up_arrow = tgetstr("ku", &termcaps->buffer);
 	termcaps->down_arrow = tgetstr("kd", &termcaps->buffer);
-	if (IS_UNIX)
+	if (IS_LINUX)
 		termcaps->backspace = tgetstr("kb", &termcaps->buffer);
 	else
 		termcaps->backspace = ft_strdup("\x7f");

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 11:06:43 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/15 20:27:26 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/16 13:26:34 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	is_input_valid(const char *input)
 	{
 		check = 0;
 		errno = ENOEXEC;
-		write_gen_err_message(err_message);
+		write_msh_error(err_message);
 	}
 	else
 		check = 1;

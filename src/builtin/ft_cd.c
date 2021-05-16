@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 10:30:51 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/16 13:05:08 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/16 13:33:23 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,24 +34,27 @@ int	ft_cd(t_list *tokens, t_list **env)
 
 	if (getcwd(pwd, MAX_PATH) == NULL)
 	{
-		write_gen_err_message(strerror(errno));
-		return (EXIT_FAILURE);
+		write_msh_error(strerror(errno));
+		return (errno);
 	}
-	printf("Pwd: \"%s\"\n", pwd);
-	printf("MAX_PATH: \"%d\"\n", MAX_PATH);
 	if (tokens == 0)
 		status = change_dir_home(pwd, env);
+	else if (tokens->next != 0)
+	{
+		write_msh_exec_error("cd", "too many arguments");
+		status = EXIT_FAILURE;
+	}
 	else
 	{
 		arg = ((t_token *)tokens->data)->str;
-		if (arg[0] == '-' && arg[1] == '\0')
+		if (!ft_strcmp(arg, "-"))
 			status = change_to_old_dir(pwd, env);
-		else if (chdir(arg) == 0)
+		else if (chdir(arg) == EXIT_SUCCESS)
 			status = update_directories(pwd, env);
 		else
 		{
-			write_gen_err_message(strerror(errno));
-			status = EXIT_FAILURE;
+			write_msh_exec_arg_error("cd", arg, strerror(errno));
+			status = errno;
 		}
 	}
 	return (status);
@@ -79,8 +82,8 @@ int	change_dir_home(char *cur_pwd, t_list **env)
 		status = update_directories(cur_pwd, env);
 	else
 	{
-		write_gen_err_message(strerror(errno));
-		status = EXIT_FAILURE;
+		write_msh_error(strerror(errno));
+		status = errno;
 	}
 	free(home);
 	home = 0;
@@ -106,8 +109,8 @@ int	change_to_old_dir(char *cur_pwd, t_list **env)
 	old_dir = ft_getenv("OLDPWD");
 	if (!old_dir)
 	{
-		printf("OLDPWD not set\n");
-		status = 1;
+		write_msh_exec_error("cd", "OLDPWD not set");
+		status = EXIT_FAILURE;
 	}
 	else
 	{
@@ -118,8 +121,8 @@ int	change_to_old_dir(char *cur_pwd, t_list **env)
 		}
 		else
 		{
-			write_gen_err_message(strerror(errno));
-			status = EXIT_FAILURE;
+			write_msh_error(strerror(errno));
+			status = errno;
 		}
 		free(old_dir);
 		old_dir = 0;

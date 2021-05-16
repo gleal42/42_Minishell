@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 17:33:11 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/14 10:31:17 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/16 14:00:42 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	has_valid_identifier_unset(char *token_str)
 	{
 		check = 0;
 		errno = ENOEXEC;
-		write_gen_err_message(err_message);
+		write_msh_error(err_message);
 	}
 	else
 		check = 1;
@@ -117,4 +117,22 @@ void	ft_lstdel_middle(t_list **lst, int node_nbr, void (*del)(void*))
 	tmp->next = to_delete->next;
 	del(to_delete->data);
 	free(to_delete);
+}
+
+/*
+** Checks if there only one simple command in the command table currently being
+** executed. Some programs can only be executed if they are the only simple
+** command in the the current command table
+** @return:	[int] true or false
+*/
+
+int	has_only_one_cmd(void)
+{
+	int	check;
+
+	if (ft_lstsize(g_msh.curr_cmd_table->cmds) == 1)
+		check = 1;
+	else
+		check = 0;
+	return (check);
 }

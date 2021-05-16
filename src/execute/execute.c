@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 18:40:32 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/16 02:05:10 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/16 13:43:54 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,9 +137,7 @@ void	exec_cmd(t_cmd *cmd, int nb_cmds, int **pipes, int process_index)
 **						 simple command
 **			- [t_list **] pointer to environment variable linked list
 ** Line-by-line comments:
-** @4-6		We exit only if there is only one simple command in the current
-**			command table
-** @9-10	We were only asked to deal with env with no arguments
+** @8-9		We were only asked to deal with env with no arguments
 */
 
 void	exec_builtin(t_list *tokens, t_list **env)
@@ -147,8 +145,7 @@ void	exec_builtin(t_list *tokens, t_list **env)
 	char	*program_name;
 
 	program_name = ((t_token *)tokens->data)->str;
-	if (ft_strcmp(program_name, "exit") == 0
-		&& ft_lstsize(g_msh.curr_cmd_table->cmds) == 1)
+	if (ft_strcmp(program_name, "exit") == 0)
 		g_msh.exit_status = ft_exit(tokens->next);
 	else if (ft_strcmp(program_name, "echo") == 0)
 		g_msh.exit_status = ft_echo(tokens->next);
