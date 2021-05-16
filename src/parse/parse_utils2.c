@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 08:34:51 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/15 18:54:49 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/16 13:08:45 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ char	*get_cmd_table_delimiter(const char *input, int *curr_pos)
 {
 	char	*delimiter;
 
+	delimiter = 0;
 	if (input[*curr_pos] == '\0')
 		delimiter = ft_strdup("");
 	else if (input[*curr_pos] == ';')
