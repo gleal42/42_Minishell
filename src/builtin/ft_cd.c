@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 10:30:51 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/14 11:04:04 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/16 00:17:31 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	change_dir_home(char *cur_pwd, t_list **env)
 ** Line-by-line comments:
 ** @13		Function will update the environment variable linked list with the
 **			new working directory values
-** @14-18	Error message in case of failure
+** @17-21	Error message in case of failure
 */
 
 int	change_to_old_dir(char *cur_pwd, t_list **env)
@@ -110,7 +110,10 @@ int	change_to_old_dir(char *cur_pwd, t_list **env)
 	else
 	{
 		if (chdir(old_dir) == 0)
+		{
+			printf("%s\n", old_dir);
 			status = update_directories(cur_pwd, env);
+		}
 		else
 		{
 			write_gen_err_message(strerror(errno));

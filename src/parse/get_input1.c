@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_input1.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 15:23:20 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/15 14:25:00 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/16 01:57:25 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,10 @@
 ** @19-20	When user presses ctrl-d, End of Transmission (ASCII code 4) is sent
 **			to the buffer. The expected behaviour is to write "exit" and to exit
 **			the shell
-** @21-22	We know that only one character has been read so we can safely write
+** @21-22	When user presses ctrl-b without any characters in stdin we need to 
+			prevent bug where ctrl-b gets recognized as character and tries to
+			write to STDOUT
+** @23-24	We know that only one character has been read so we can safely write
 **			it to STDOUT while incrementing i so that next character is read
 **			after the one just written
 */
@@ -81,6 +84,8 @@ char	*get_input(t_dlist *input_history, t_termcaps *termcaps)
 			reset_cmd_line(buf, &i, &input_history);
 		else if (buf[i] == CTRL_D)
 			exit_program(buf, i);
+		else if (buf[i] == CTRL_B)
+			continue;
 		else
 			i += write(STDOUT_FILENO, &buf[i], nb_char_read);
 	}

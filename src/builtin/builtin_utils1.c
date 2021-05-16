@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 09:10:48 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/14 10:36:04 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/16 01:26:50 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ int	is_token_valid_export(char *token_str, char *err_message)
 	int		check;
 
 	if ((token_str[0] == '=')
+		|| ft_isdigit(token_str[0])
 		|| ft_strchr(token_str, '\'')
 		|| ft_strchr(token_str, '"'))
 	{

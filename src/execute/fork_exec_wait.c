@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 09:25:18 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/14 04:16:38 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/16 01:16:27 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	exec_child(char **tokens, char **envp, int nb_cmds, int **pipes)
 {
 	char	*exec_path;
 
+	signal(SIGINT, SIG_DFL);
 	close_all_pipes(pipes, nb_cmds);
 	if (has_relative_path(tokens[0]) || has_absolute_path(tokens[0]))
 	{

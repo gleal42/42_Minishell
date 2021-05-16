@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 10:52:40 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/15 15:18:24 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/15 19:28:06 gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,11 @@ void	replace_envs(t_list **tokens, t_list *redirs)
 ** Replaces token in case of environment variables and special characters
 ** @param:	- [t_token] struct with token strings and delimiter
 ** Line-by-line comments:
-** @6-8		Tilde expansion only occurs if tilde is first character and
+** @6-8		tilde expansion only occurs if tilde is first character and
 ** 			is either the only character or followed by a forward slash
 ** @9		these expansions don't occur if tokens are inbetween single
 ** 			quotes
-** @12		Special params only refers to the $? case (other special
-**			case expansions are not included)
+** @12		replacing $? special parameter with exit status of last cmd
 */
 
 void	replace_env_single_token(t_token *token)
@@ -70,7 +69,7 @@ void	replace_env_single_token(t_token *token)
 	if (delimiter != '\'')
 	{
 		replace_vars_with_values(str);
-		replace_special_params(str);
+		replace_status_env(str, g_msh.exit_status);
 	}
 }
 
@@ -80,8 +79,10 @@ void	replace_env_single_token(t_token *token)
 ** @param:	- [char *] Tokens (which can be strings with spaces when using
 **					   double quotes) 
 ** Line-by-line comments:
-** @13		Replaces the token string with another with the respective value
-** @20-21	replace_midstring() can be emptying the str so that there is only
+** @14		in case of executables, we don't display the whole path
+			(e.g. /bin/ls becomes ls)
+** @15		replaces the token string with another with the respective value
+** @16		replace_midstring() can be emptying the str so that there is only
 **			a NULL character as the only character. If we don't check before
 **			incrementing, we risk doing a segfault
 */
@@ -96,10 +97,13 @@ void	replace_vars_with_values(char **str)
 	i = 0;
 	while (str[0][i])
 	{
-		if (str[0][i] == '$' && (str[0][i + 1] != '?' && str[0][i + 1] != '_'))
+		if (str[0][i] == '$' && str[0][i + 1] != '?')
 		{
 			var = get_var_name(&str[0][i]);
-			value = ft_getenv(var + 1);
+			if (ft_strcmp(var, "$_") == 0)
+				value = getlastexecname(var + 1);
+			else
+				value = ft_getenv(var + 1);
 			final = replace_midstring(*str, var, value, i);
 			free(*str);
 			*str = final;
@@ -107,7 +111,7 @@ void	replace_vars_with_values(char **str)
 			if (value)
 				free(value);
 		}
-		if (str[0][i])
+		else if (str[0][i])
 			i++;
 	}
 }
@@ -135,17 +139,30 @@ void	replace_tilde_with_home(char **str)
 }
 
 /*
-** Used at the moment simply to replace $? for the exit status of the previous
-** function
-** @param:	- [char **] pointer to token string in linked list
-**			- [int] exit status from last function executed
+** In case the file refers to an executable from the path files it will be
+** replaced by their file names
+** @param:	- [char *] "$_"
+** @return:	[char *] value to replace $_
 ** Line-by-line comments:
-** @5		Function that finds the place where we will replace the substring
-** 			(iterator as opposed to string pointer)
+** @6	checks if underscore value is an absolute path to a file executable
+** @7	replace full path of executable with its name
 */
 
-void	replace_special_params(char **str)
+char	*getlastexecname(char *underscore)
 {
-	replace_status_env(str, g_msh.exit_status);
-	replace_underscore_env(str);
+	char	*value;
+	char	*temp;
+
+	value = ft_getenv(underscore);
+	if (is_path_executable(value))
+	{
+		temp = ft_strdup(ft_strrchr(value, '/') + 1);
+		if (temp == 0)
+			quit_program(EXIT_FAILURE);
+		free(value);
+		value = temp;
+		return (value);
+	}
+	else
+		return (value);
 }

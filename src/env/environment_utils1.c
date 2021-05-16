@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment_utils1.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 15:17:53 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/14 10:50:04 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/16 01:52:50 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ int	ft_strnstr_iterator(char *haystack, char *needle, size_t len)
 **			- [char *] iterator that indicated place in original string where
 **					   substitution should take place
 ** @return:	[char *] string after substitution
+** Line-by-line comments:
+** @17	ensure only 1 substitution (when new_substr was empty it was getting bugs)
 */
 
 char	*replace_midstring(char *original,
@@ -127,8 +129,9 @@ char	*replace_midstring(char *original,
 			while (new_substr && *new_substr)
 				final[i++] = *(new_substr++);
 			original += ft_strlen(old_substr);
+			replace_i = -2;
 		}
-		else
+		if (*original)
 			final[i++] = *(original++);
 	}
 	final[i] = '\0';

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 17:21:45 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/15 14:13:20 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/15 19:27:09by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,31 +143,22 @@ void	replace_status_env(char **str, int	last_status)
 }
 
 /*
-** Replaces token containing substr "$?" for the typed token
-** @param:	- [char **] pointer to string where substitution will take place
+** checks if it refers to absolute path, and if it is a file (not directory)
+** @param:	- [char *] path saved in $_ variable
+** @return:	[int] 1 if path is a file
 ** Line-by-line comments:
-** @12-18	replace all occurences of $_
+** @4-5		stat is success both for directories and files so we need to
+** add the S_ISREGularfile macro to make sure.
 */
 
-void	replace_underscore_env(char **str)
+int	is_path_executable(char *exec_file)
 {
-	int		replace_spot;
-	char	*final;
-	char	*to_print;
-	char	*last_exec_cmd;
+	struct stat	statbuf;
 
-	last_exec_cmd = ft_getenv("_");
-	if (has_absolute_path(last_exec_cmd))
-		to_print = ft_strrchr(last_exec_cmd, '/') + 1;
+	if (has_absolute_path(exec_file)
+		&& (stat(exec_file, &statbuf) == EXIT_SUCCESS
+			|| S_ISREG(statbuf.st_mode)))
+		return (1);
 	else
-		to_print = last_exec_cmd;
-	replace_spot = ft_strnstr_iterator(*str, "$_", ft_strlen(*str));
-	while (replace_spot != -1)
-	{
-		final = replace_midstring(*str, "$_", to_print, replace_spot);
-		free(*str);
-		*str = final;
-		replace_spot = ft_strnstr_iterator(*str, "$_", ft_strlen(*str));
-	}
-	free(last_exec_cmd);
+		return (0);
 }
