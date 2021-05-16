@@ -61,20 +61,37 @@ void	replace_envs(t_list **tokens, t_list *redirs)
 void	replace_env_single_token(char **token)
 {
 	t_list	*split_token;
+	t_list	*tmp;
+	char	*token_piece;
 
 	split_token = get_split_token(*token);
-	char	delimiter;
-
-	delimiter = 0;
-	if (delimiter == ' ' && token[0][0] == '~'
-		&& (token[0][1] == '\0' || token[0][1] == '/'))
-		replace_tilde_with_home(token);
-	if (delimiter != '\'')
+	tmp = split_token;
+	while (tmp)
 	{
-		replace_vars_with_values(token);
-		replace_status_env(token, g_msh.exit_status);
+		token_piece = tmp->data;
+		if (!ft_strcmp(token_piece, "~") || !ft_strcmp(token_piece, "~/"))
+			replace_tilde_with_home((char **)&tmp->data);
+		else if (*token_piece != '\'')
+		{
+			replace_vars_with_values((char **)&tmp->data);
+			replace_status_env((char **)&tmp->data, g_msh.exit_status);
+		}
+		delete_quotes((char *)tmp->data);
+		tmp = tmp->next;
 	}
-	(void)split_token;
+	ft_lst_print_s(split_token);
+	ft_lstclear(&split_token, free);
+
+
+	// delimiter = 0;
+	// if (delimiter == ' ' && token[0][0] == '~'
+	// 	&& (token[0][1] == '\0' || token[0][1] == '/'))
+	// 	replace_tilde_with_home(token);
+	// if (delimiter != '\'')
+	// {
+	// 	replace_vars_with_values(token);
+	// 	replace_status_env(token, g_msh.exit_status);
+	// }
 }
 
 /*

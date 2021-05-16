@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/16 22:01:55 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/16 22:21:23 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/16 23:00:39 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,3 @@ t_list	*get_split_token(char *token)
 	}
 	return (split_token);
 }
-
