@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_input1.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 15:23:20 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/16 01:57:25 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/16 12:44:36 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,16 +48,16 @@
 **			characters was stored
 **			Because of bit encoding (I think), extended ASCII characters
 **			(e.g. é, @) take 2 bytes instead of 1
+** 			When user presses ctrl-b without any characters in stdin we need to
+			prevent bug where ctrl-b gets recognized as character and tries to
+			write to STDOUT
 ** @17-18	When user presses ctrl-c, End of Text (ASCII code 3) is sent to
 **			buffer. The expected behaviour is to write "^C" to stdout and reset
 **			the command line
 ** @19-20	When user presses ctrl-d, End of Transmission (ASCII code 4) is sent
 **			to the buffer. The expected behaviour is to write "exit" and to exit
 **			the shell
-** @21-22	When user presses ctrl-b without any characters in stdin we need to 
-			prevent bug where ctrl-b gets recognized as character and tries to
-			write to STDOUT
-** @23-24	We know that only one character has been read so we can safely write
+** @21-22	We know that only one character has been read so we can safely write
 **			it to STDOUT while incrementing i so that next character is read
 **			after the one just written
 */
@@ -78,14 +78,12 @@ char	*get_input(t_dlist *input_history, t_termcaps *termcaps)
 			parse_input_history(&input_history, termcaps, buf, &i);
 		else if (!ft_strcmp(&buf[i], termcaps->backspace))
 			delete_single_char(termcaps, buf, &i);
-		else if (nb_char_read > 2)
+		else if (nb_char_read > 2 || buf[i] == CTRL_B)
 			ft_bzero(&buf[i], BUFSIZ - i);
 		else if (buf[i] == CTRL_C)
 			reset_cmd_line(buf, &i, &input_history);
 		else if (buf[i] == CTRL_D)
 			exit_program(buf, i);
-		else if (buf[i] == CTRL_B)
-			continue;
 		else
 			i += write(STDOUT_FILENO, &buf[i], nb_char_read);
 	}
