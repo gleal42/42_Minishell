@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 10:30:51 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/16 02:05:48 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/16 13:05:08 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,16 @@
 int	ft_cd(t_list *tokens, t_list **env)
 {
 	char	*arg;
-	char	pwd[1024];
+	char	pwd[MAX_PATH];
 	int		status;
 
-	if (getcwd(pwd, 1024) == NULL)
+	if (getcwd(pwd, MAX_PATH) == NULL)
 	{
 		write_gen_err_message(strerror(errno));
 		return (EXIT_FAILURE);
 	}
+	printf("Pwd: \"%s\"\n", pwd);
+	printf("MAX_PATH: \"%d\"\n", MAX_PATH);
 	if (tokens == 0)
 		status = change_dir_home(pwd, env);
 	else

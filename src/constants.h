@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   constants.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:48:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/16 00:36:55 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/16 13:04:40 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,12 @@
 
 # ifdef unix
 #  define IS_UNIX 1
+#  define MAX_PATH 4096
 # else
+#  define MAX_PATH 1024
 #  define IS_UNIX 0
 # endif
+
 
 # define GREEN "\033[0;32m"
 # define RED "\033[0;31m"
