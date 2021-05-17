@@ -38,7 +38,7 @@ void	replace_envs(t_list **tokens, t_list *redirs)
 		replace_env_single_token((char **)&token->data);
 		token = token->next;
 	}
-	// ft_lstclear_if(tokens, is_token_empty, free_token);
+	ft_lstclear_if(tokens, is_token_empty, free);
 	while (redirs)
 	{
 		redir = redirs->data;
@@ -90,7 +90,7 @@ void	replace_env_single_token(char **token)
 ** @param:	- [char *] Tokens (which can be strings with spaces when using
 **					   double quotes) 
 ** Line-by-line comments:
-** @14		in case of executables, we don't display the whole path
+** @13		in case of executables, we don't display the whole path
 			(e.g. /bin/ls becomes ls)
 ** @15		replaces the token string with another with the respective value
 ** @16		replace_midstring() can be emptying the str so that there is only
@@ -119,6 +119,7 @@ void	replace_vars_with_values(char **str)
 			free(*str);
 			*str = final;
 			free(var);
+			i += ft_strlen(value) - 1;
 			if (value)
 				free(value);
 		}
