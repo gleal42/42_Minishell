@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 11:06:43 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/16 13:26:34 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/17 18:32:12 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,10 +141,9 @@ int	has_quotes_open(const char *input, char *err_message)
 	has_squotes_open = 0;
 	while (*input)
 	{
-		if (*input == '"' && *(input - 1) != '\\' && has_squotes_open == 0)
+		if (*input == '"' && has_squotes_open == 0)
 			has_dquotes_open = !has_dquotes_open;
-		else if (*input == '\'' && *(input - 1) != '\\'
-			&& has_dquotes_open == 0)
+		else if (*input == '\'' && has_dquotes_open == 0)
 			has_squotes_open = !has_squotes_open;
 		input++;
 	}

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 09:25:18 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/17 12:12:34 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/17 18:15:34 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,18 @@ void	exec_child(char **tokens, char **envp, int nb_cmds, int **pipes)
 	else
 		exec_path = get_absolute_path(tokens[0]);
 	execve(exec_path, tokens, envp);
-	if (errno == ENOENT && ft_strcmp(tokens[0], "exit") != 0)
+	if (errno == EACCES)
+		write_msh_exec_error(tokens[0], "Permission denied");
+	else if (errno == ENOENT && ft_strcmp(tokens[0], "exit") != 0)
 		write_exec_error(tokens[0], "command not found");
 	free(exec_path);
 	free(tokens);
 	free(envp);
-	if (errno == ENOENT)
+	if (errno == EACCES)
+		exit(EXIT_CMD_INTERRUPTED);
+	else if (errno == ENOENT)
 		exit(EXIT_CMD_NOT_FOUND);
-	else
-		exit(errno);
+	exit(errno);
 }
 
 /*

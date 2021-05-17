@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 10:29:13 by dds               #+#    #+#             */
-/*   Updated: 2021/05/17 11:49:49 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/17 18:02:27 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,25 +67,29 @@ int	ft_export(t_list *tokens, t_list **env)
 
 void	print_all_exported_vars(t_list *env)
 {
+	t_list	*sorted_env;
+	t_list	*tmp;
 	char	*env_str;
 	int		i;
 
-	while (env)
+	sorted_env = get_sorted_env(env);
+	tmp = sorted_env;
+	while (tmp)
 	{
-		i = -1;
-		env_str = (char *)env->data;
+		i = 0;
+		env_str = (char *)tmp->data;
 		if (ft_strchr(env_str, '='))
 		{
-			ft_putstr_fd("declare -x ", 1);
-			while (env_str[++i] && env_str[(i - 1)] != '=')
-				ft_putchar_fd(env_str[i], 1);
-			printf("\"%s\"\n", &env_str[i]);
+			ft_putstr_fd("declare -x ", STDOUT_FILENO);
+			while (env_str[i] != '=')
+				ft_putchar_fd(env_str[i++], STDOUT_FILENO);
+			printf("=\"%s\"\n", &env_str[++i]);
 		}
 		else
 			printf("declare -x %s\n", env_str);
-		env = env->next;
+		tmp = tmp->next;
 	}
-	return ;
+	ft_lstclear(&sorted_env, ft_lstdel_int);
 }
 
 void	update_env_var_with_token(char *token_str, char *var, t_list *env)
@@ -109,4 +113,15 @@ void	create_environment_var(char *token_str, t_list **env)
 	if (new_var == 0)
 		quit_program(EXIT_FAILURE);
 	ft_lstadd_front(env, new_var);
+}
+
+t_list	*get_sorted_env(t_list *env)
+{
+	t_list	*sorted_env;
+
+	sorted_env = ft_lstdup(env);
+	if (!sorted_env)
+		quit_program(EXIT_FAILURE);
+	ft_lst_sort_str(&sorted_env, ft_strcmp);
+	return (sorted_env);
 }
