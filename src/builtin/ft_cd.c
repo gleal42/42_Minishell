@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 10:30:51 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/17 11:49:07 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/17 15:47:56 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,19 +123,17 @@ int	change_dir_home(char *cur_pwd, t_list **env)
 
 	home = ft_getenv("HOME");
 	if (home == 0 || *home == '\0')
-	{
-		write_msh_exec_error("cd", "HOME not set");
-		status = EXIT_FAILURE;
-	}
+		status = EXIT_SUCCESS;
 	else
 	{
 		if (chdir(home) == 0)
 			status = update_directories(cur_pwd, env);
 		else
 			status = other_invalid_error("cd", errno, home);
-		free(home);
-		home = 0;
+		home = EXIT_SUCCESS;
 	}
+	if (home)
+		free(home);
 	return (status);
 }
 
@@ -170,8 +168,8 @@ int	change_to_old_dir(char *cur_pwd, t_list **env)
 		}
 		else
 			status = other_invalid_error("cd", errno, old_dir);
-		free(old_dir);
-		old_dir = 0;
 	}
+	if (old_dir)
+		free(old_dir);
 	return (status);
 }

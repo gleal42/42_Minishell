@@ -31,10 +31,7 @@ int	cd_env_error_check(char *env)
 
 	arg = ft_getenv(env);
 	if (arg == 0 || *arg == '\0')
-	{
-		write_msh_exec_arg_error_nocolon("cd", env, " not set");
-		status = EXIT_FAILURE;
-	}
+		status = EXIT_SUCCESS;
 	else
 	{
 		if (!has_x_permission(arg))

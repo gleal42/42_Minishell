@@ -43,7 +43,7 @@ char	*ft_getenv(char *key)
 		}
 		envp = envp->next;
 	}
-	return (0);
+	return (NULL);
 }
 
 /*
