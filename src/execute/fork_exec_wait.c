@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 09:25:18 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/17 18:13:36 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/17 18:15:34 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,7 @@ void	exec_child(char **tokens, char **envp, int nb_cmds, int **pipes)
 		exit(EXIT_CMD_INTERRUPTED);
 	else if (errno == ENOENT)
 		exit(EXIT_CMD_NOT_FOUND);
-	else
-		exit(errno);
+	exit(errno);
 }
 
 /*
