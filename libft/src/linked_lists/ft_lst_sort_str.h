@@ -1,24 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_export.h                                        :+:      :+:    :+:   */
+/*   ft_lst_sort_str.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/12 09:06:00 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/17 16:54:00 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/04/11 15:52:06 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/05/17 17:45:06 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_EXPORT_H
-# define FT_EXPORT_H
+#ifndef FT_LST_SORT_STR_H
+# define FT_LST_SORT_STR_H
 
-# include "main.h"
+# include "libft.h"
 
-int		ft_export(t_list *tokens, t_list **env);
-void	print_all_exported_vars(t_list *env);
-void	update_env_var_with_token(char *token_str, char *var, t_list *env);
-void	create_environment_var(char *token_str, t_list **env);
-t_list	*get_sorted_env(t_list *env);
+static void		split_list(t_list *head,
+					t_list **first_half,
+					t_list **second_half);
+static t_list	*merge_sort(t_list *a, t_list *b, int (*op)(char *, char *));
 
 #endif
