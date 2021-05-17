@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment_utils2.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 22:04:11 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/17 08:08:50 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/17 18:56:18 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,4 +91,34 @@ void	replace_string(char *src, char **dest)
 	free(*dest);
 	*dest = 0;
 	*dest = temp;
+}
+
+/*
+** Updates SHLVL environment variable everytime we call ./minishell inside
+** another ./minishell
+** Line-by-line comments:
+** @4-5		in case variable is unset we create it and set it to 1
+** @7-17	in case variable is set we increment 1 everytime we call 
+**			./minishell
+*/ 
+
+void	increase_shlvl(void)
+{
+	char *cur_lvl;
+	int	lvl_nbr;
+
+	if (is_env_var("SHLVL", g_msh.dup_envp) == 0)
+		create_environment_var("SHLVL=1", &g_msh.dup_envp);
+	else
+	{
+		cur_lvl = ft_getenv("SHLVL");
+		lvl_nbr = ft_atoi(cur_lvl);
+		lvl_nbr++;
+		free(cur_lvl);
+		cur_lvl = ft_itoa(lvl_nbr);
+		if (cur_lvl == 0)
+			quit_program(EXIT_FAILURE);
+		update_environment_var("SHLVL", cur_lvl, g_msh.dup_envp);
+		free(cur_lvl);
+	}
 }

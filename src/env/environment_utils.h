@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment_utils.h                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 14:59:16 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/17 08:07:42 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/17 18:31:18 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,6 @@ char	*get_value_name(char *str);
 int		is_token_empty(void *data);
 void	unset_oldpwd(void);
 void	replace_string(char *str, char **env_ptr);
+void	increase_shlvl(void);
 
 #endif
