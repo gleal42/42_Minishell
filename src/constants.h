@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:48:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/17 09:18:01 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/17 09:52:10 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 #  define MAX_PATH 1024
 #  define IS_LINUX 0
 # endif
-
 
 # define GREEN "\033[0;32m"
 # define RED "\033[0;31m"

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 09:25:18 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/16 13:27:43 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/17 09:49:36 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,12 @@ void	exec_child(char **tokens, char **envp, int nb_cmds, int **pipes)
 **			on which, the macros help us set the exit_status
 */
 
-void	exec_parent(void)
+void	exec_parent(int nb_cmds, int **pipes, int process_index)
 {
 	int	exit_info;
 
+	if (process_index == nb_cmds - 1)
+		close_all_pipes(pipes, nb_cmds);
 	exit_info = 0;
 	wait(&exit_info);
 	if (WIFEXITED(exit_info))

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/13 16:48:00 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/17 08:57:11 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/17 09:47:58 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,8 @@ void	save_last_token(t_cmd_table *cmd_table)
 
 	last_simple_cmd = ft_lst_get_data_last_node(cmd_table->cmds);
 	last_token = ft_lst_get_data_last_node(last_simple_cmd->tokens);
-	printf("Last_token: \"%s\"\n", last_token);
 	if (last_token && has_only_one_cmd())
-	{
 		exec_path = convert_to_path(last_token);
-		printf("Exec_path: \"%s\"\n", exec_path);
-	}
 	else
 	{
 		exec_path = ft_strdup("");
