@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 09:25:18 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/17 18:15:34 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/17 20:08:27 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,25 +68,24 @@ void	exec_child(char **tokens, char **envp, int nb_cmds, int **pipes)
 }
 
 /*
-** Waits for the child processes to be finished and sets the exit status
+** Waits for all the child processes to be finished and sets the exit status
 ** Line-by-line comments:
-** @4		wait() sets the exit information related to the child process it
+** @6		wait() sets the exit information related to the child process it
 **			just reaped
-** @5-8		The child process can have exited (not necessarily successfully)
+** @8-11	The child process can have exited (not necessarily successfully)
 **			or have been forced to finish by a signal (like ctrl-C). Depending
 **			on which, the macros help us set the exit_status
 */
 
-void	exec_parent(int nb_cmds, int **pipes, int process_index)
+void	exec_parent(void)
 {
 	int	exit_info;
 
-	if (process_index == nb_cmds - 1)
-		close_all_pipes(pipes, nb_cmds);
-	if (!g_msh.is_curr_cmd_builtin)
+	exit_info = 0;
+	while (g_msh.nb_forks > 0)
 	{
-		exit_info = 0;
 		wait(&exit_info);
+		g_msh.nb_forks--;
 		if (WIFEXITED(exit_info))
 			g_msh.exit_status = WEXITSTATUS(exit_info);
 		else if (WIFSIGNALED(exit_info))
