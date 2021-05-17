@@ -6,11 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 10:29:13 by dds               #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2021/05/16 21:50:38 by gleal            ###   ########.fr       */
-=======
-/*   Updated: 2021/05/16 18:47:20 by dda-silv         ###   ########.fr       */
->>>>>>> fix/get_token
+/*   Updated: 2021/05/17 11:49:49 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +37,7 @@ int	ft_export(t_list *tokens, t_list **env)
 		print_all_exported_vars(*env);
 	while (tokens)
 	{
-		token_str = ((t_token *)tokens->data)->str;
+		token_str = tokens->data;
 		if (!has_valid_identifier_export(token_str))
 			return (EXIT_FAILURE);
 		if (has_only_one_cmd())

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 09:25:18 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/17 09:49:36 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/17 12:12:34 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,15 @@ void	exec_parent(int nb_cmds, int **pipes, int process_index)
 
 	if (process_index == nb_cmds - 1)
 		close_all_pipes(pipes, nb_cmds);
-	exit_info = 0;
-	wait(&exit_info);
-	if (WIFEXITED(exit_info))
-		g_msh.exit_status = WEXITSTATUS(exit_info);
-	else if (WIFSIGNALED(exit_info))
-		g_msh.exit_status = WTERMSIG(exit_info);
+	if (!g_msh.is_curr_cmd_builtin)
+	{
+		exit_info = 0;
+		wait(&exit_info);
+		if (WIFEXITED(exit_info))
+			g_msh.exit_status = WEXITSTATUS(exit_info);
+		else if (WIFSIGNALED(exit_info))
+			g_msh.exit_status = WTERMSIG(exit_info);
+	}
 }
 
 /*

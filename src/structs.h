@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/16 18:38:20 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/17 12:11:47 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,7 @@ typedef struct s_msh
 	t_list			*dup_envp;
 	int				exit_status;
 	t_cmd_table		*curr_cmd_table;
+	int				is_curr_cmd_builtin;
 }				t_msh;
 
 #endif

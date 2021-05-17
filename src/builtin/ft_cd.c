@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 10:30:51 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/17 11:47:30 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/17 11:49:07 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	only_cd_errors(t_list *tokens)
 		status = multiple_args_error("cd");
 	else
 	{
-		arg = ((t_token *)(tokens->data))->str;
+		arg = tokens->data;
 		if (ft_strcmp(arg, "-") == 0)
 			status = cd_env_error_check("OLDPWD");
 		else

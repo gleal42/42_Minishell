@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 18:40:32 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/17 11:47:30 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/17 12:13:36 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,9 +124,15 @@ void	exec_cmd(t_cmd *cmd, int nb_cmds, int **pipes, int process_index)
 	if (g_msh.exit_status == EXIT_SUCCESS && cmd->tokens != 0)
 	{
 		if (is_builtin(cmd->tokens))
+		{
+			g_msh.is_curr_cmd_builtin = 1;
 			exec_builtin(cmd->tokens, &g_msh.dup_envp);
+		}
 		else
+		{
+			g_msh.is_curr_cmd_builtin = 0;
 			exec_program(cmd->tokens, nb_cmds, pipes);
+		}
 	}
 	dup2(saved_stdin, STDIN_FILENO);
 	dup2(saved_stdout, STDOUT_FILENO);
