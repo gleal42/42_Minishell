@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:48:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/16 13:52:54 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/17 09:18:01 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #  define MAX_PATH 4096
 # else
 #  define MAX_PATH 1024
-#  define IS_UNIX 0
+#  define IS_LINUX 0
 # endif
 
 
