@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 15:17:53 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/16 23:17:24 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/17 15:20:58 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*get_var_name(char *str)
 	if (str[i] == '$')
 		i++;
 	while (str[i] && !is_token_delimiter(str[i]) && str[i] != '$'
-		&& str[i] != '=' && !is_quote(str[i]))
+		&& str[i] != '=' && !is_quote(str[i]) && str[i] != '/')
 		i++;
 	var = ft_substr(str, 0, i);
 	if (!var)

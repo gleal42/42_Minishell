@@ -69,7 +69,7 @@ void	replace_env_single_token(char **token)
 	while (tmp)
 	{
 		token_piece = tmp->data;
-		if (!ft_strcmp(token_piece, "~") || !ft_strcmp(token_piece, "~/"))
+		if (!ft_strcmp(token_piece, "~") || !ft_strncmp(token_piece, "~/", 2))
 			replace_tilde_with_home((char **)&tmp->data);
 		else if (*token_piece != '\'')
 		{
