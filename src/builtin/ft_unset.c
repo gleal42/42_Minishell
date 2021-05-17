@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 10:42:08 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/14 10:44:13 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/17 03:48:03 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 ** @return:	[int] exit status
 ** Line-by-line comments:
 ** @6		Checking for invalid input and writing error message
-** @8-9		First checking if environment variable exists and deleting it in
+** @10-11	First checking if environment variable exists and deleting it in
 **			case it does
 */
 
@@ -32,8 +32,11 @@ int	ft_unset(t_list *tokens, t_list **env)
 		token_str = ((t_token *)tokens->data)->str;
 		if (!has_valid_identifier_unset(token_str))
 			return (EXIT_FAILURE);
-		if (is_env_var(token_str, *env))
-			delete_env_var(token_str, env);
+		if (has_only_one_cmd())
+		{	
+			if (is_env_var(token_str, *env))
+				delete_env_var(token_str, env);
+		}
 		tokens = tokens->next;
 	}
 	return (EXIT_SUCCESS);

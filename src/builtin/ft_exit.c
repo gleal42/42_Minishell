@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 10:41:56 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/16 14:06:58 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/17 00:29:36 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	ft_exit(t_list *args)
 		return (EXIT_SUCCESS);
 	arg = ((t_token *)args->data)->str;
 	if (ft_strisnumber(arg) && args->next != 0)
-		write_msh_exec_error("exit" , "too many arguments");
+		write_msh_exec_error("exit", "too many arguments");
 	else if (!ft_strisnumber(arg))
 	{
 		write_msh_exec_arg_error("exit", arg, "numeric argument required");

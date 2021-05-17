@@ -157,7 +157,7 @@ int	is_path_executable(char *exec_file)
 
 	if (has_absolute_path(exec_file)
 		&& (stat(exec_file, &statbuf) == EXIT_SUCCESS
-				|| S_ISREG(statbuf.st_mode)))
+			|| S_ISREG(statbuf.st_mode)))
 		return (1);
 	else
 		return (0);
