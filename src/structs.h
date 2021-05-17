@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/17 20:07:24 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/17 20:26:29 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,10 @@ typedef struct s_cmd_table
 {
 	t_list			*cmds;
 	char			*delimiter;
+	int				nb_cmds;
+	int				**pipes;
+	pid_t			*pids;
+	int				return_value;
 }				t_cmd_table;
 
 /*
@@ -66,6 +70,7 @@ typedef struct s_cmd
 {
 	t_list		*tokens;
 	t_list		*redirs;
+	int			index;
 }				t_cmd;
 
 /*

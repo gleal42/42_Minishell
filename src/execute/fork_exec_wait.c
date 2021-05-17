@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 09:25:18 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/17 20:08:27 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/17 20:28:54 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,4 +113,14 @@ void	close_all_pipes(int **pipes, int nb_cmds)
 		close(pipes[i][1]);
 		i++;
 	}
+}
+
+pid_t	*init_pids(int nb_cmds)
+{
+	pid_t	*pids;
+
+	pids = ft_calloc(nb_cmds, sizeof(pid_t));
+	if (!pids)
+		ft_exit(EXIT_FAILURE);
+	return (pids);
 }

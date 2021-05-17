@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 18:40:32 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/17 20:07:45 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/17 20:29:28 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,18 +79,21 @@ void	exec_cmd_table(t_cmd_table *cmd_table)
 	int		i;
 
 	cmds = cmd_table->cmds;
-	nb_cmds = ft_lstsize(cmds);
-	pipes = init_pipes(nb_cmds);
+	cmd_table->nb_cmds = ft_lstsize(cmds);
+	cmd_table->pids = init_pids(nb_cmds);
+	cmd_table->pipes = init_pipes(nb_cmds);
 	i = 0;
 	while (i < nb_cmds)
 	{
-		exec_cmd(cmds->data, nb_cmds, pipes, i);
+		exec_cmd(cmds->data, cmd_table, i);
 		cmds = cmds->next;
 		i++;
 	}
 	close_all_pipes(pipes, nb_cmds);
 	exec_parent();
 	free_arr((void **)pipes);
+	if (cmd_table->return_value != -1)
+		g_msh.exit_status = cmd_table->return_value;
 }
 
 /*
@@ -131,7 +134,7 @@ void	exec_cmd(t_cmd *cmd, int nb_cmds, int **pipes, int process_index)
 	if (g_msh.exit_status == EXIT_SUCCESS && cmd->tokens != 0)
 	{
 		if (is_builtin(cmd->tokens))
-			exec_builtin(cmd->tokens, &g_msh.dup_envp);
+			exec_builtin(cmd->tokens, &g_msh.dup_envp, nb_cmds, process_index);
 		else
 			exec_program(cmd->tokens, nb_cmds, pipes);
 	}
@@ -150,7 +153,7 @@ void	exec_cmd(t_cmd *cmd, int nb_cmds, int **pipes, int process_index)
 ** @8-9		We were only asked to deal with env with no arguments
 */
 
-void	exec_builtin(t_list *tokens, t_list **env)
+void	exec_builtin(t_list *tokens, t_list **env, int nb_cmds, int process_index)
 {
 	char	*program_name;
 
@@ -169,6 +172,10 @@ void	exec_builtin(t_list *tokens, t_list **env)
 		g_msh.exit_status = ft_export(tokens->next, env);
 	else if (ft_strcmp(program_name, "unset") == 0)
 		g_msh.exit_status = ft_unset(tokens->next, env);
+	if (process_index == nb_cmds - 1)
+		g_msh.curr_cmd_table->return_value = g_msh.exit_status;
+	else 
+		g_msh.curr_cmd_table->return_value = -1;
 }
 
 /*
