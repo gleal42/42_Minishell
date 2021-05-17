@@ -38,7 +38,8 @@ void	replace_envs(t_list **tokens, t_list *redirs)
 		replace_env_single_token((char **)&token->data);
 		token = token->next;
 	}
-	ft_lstclear_if(tokens, is_token_empty, free);
+	if (ft_lstsize(*tokens) != 1 && (char)*((char *)(*tokens)->data) != '\0')
+		ft_lstclear_if(tokens, is_token_empty, free);
 	while (redirs)
 	{
 		redir = redirs->data;
@@ -108,7 +109,7 @@ void	replace_vars_with_values(char **str)
 	i = 0;
 	while (str[0][i])
 	{
-		if (str[0][i] == '$' && str[0][i + 1] != '?')
+		if (str[0][i] == '$' && str[0][i + 1] != '?' && str[0][i + 1] != '\0')
 		{
 			var = get_var_name(&str[0][i]);
 			if (ft_strcmp(var, "$_") == 0)
