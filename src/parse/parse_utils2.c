@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 08:34:51 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/16 13:08:45 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/17 19:00:21 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	is_token_delimiter(char c)
 {
 	int	check;
 
-	if (c == ' ')
+	if (ft_strchr(WHITE_SPACE, c) != 0)
 		check = 1;
 	else if (c == ';')
 		check = 1;
