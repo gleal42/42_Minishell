@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/16 22:01:55 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/16 23:29:35 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/17 11:23:11 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,10 @@ t_list	*get_split_token(char *token)
 	while (token[curr_pos])
 	{
 		saved_pos = curr_pos;
-		if (token[curr_pos] == '"' || token[curr_pos] == '\'')
+		if (is_quote(token[curr_pos]))
 			skip_quotes((const char *)token, &curr_pos);
 		else
-		{
-			while (token[curr_pos]
-				&& token[curr_pos] != '"' && token[curr_pos] != '\'')
-				curr_pos++;
-		}
+			skip_letters((const char *)token, &curr_pos);
 		token_piece = ft_substr(token, saved_pos, curr_pos - saved_pos);
 		if (!token_piece)
 			quit_program(EXIT_FAILURE);

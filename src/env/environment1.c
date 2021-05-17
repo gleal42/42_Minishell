@@ -119,12 +119,11 @@ void	replace_vars_with_values(char **str)
 			free(*str);
 			*str = final;
 			free(var);
-			i += ft_strlen(value);
+			i += ft_strlen(value) - 1;
 			if (value)
 				free(value);
 		}
-		else if (str[0][i])
-			i++;
+		i++;
 	}
 }
 
