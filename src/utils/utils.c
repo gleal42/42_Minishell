@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_ast.h                                         :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/30 09:47:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/16 18:46:35 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/05/16 22:59:21 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/05/16 23:00:22 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FREE_AST_H
-# define FREE_AST_H
+#include "utils.h"
 
-# include "main.h"
+int	is_quote(char c)
+{
+	int	check;
 
-void	free_ast(t_ast *ast);
-void	free_cmd_table(void *cmd_table);
-void	free_cmd(void *cmd);
-void	free_redir(void *redir);
-
-#endif
+	if (c == '"' || c == '\'')
+		check = 1;
+	else
+		check = 0;
+	return (check);
+}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 18:40:32 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/16 20:50:27 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/17 11:47:30 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,11 @@ void	exec_ast(t_ast *ast)
 **			We allocate a 2D array where each subarray will have 2 ints:
 **			- [0] reading end of the pipe
 **			- [1] writing end of the pipe
-** @16		Each child process closed all the pipes, now the parent needs to do	
-**			it one last time
+** @13		The parent process basically:
+**			- (If last cmd) Close all pipes. Each child process closed all the
+**			pipes, now the parent needs to do it one last time
+**			- Reaps the children processes
+**			- Sets the exit_status of the last simple command executed
 */
 
 void	exec_cmd_table(t_cmd_table *cmd_table)
@@ -76,10 +79,10 @@ void	exec_cmd_table(t_cmd_table *cmd_table)
 	while (i < nb_cmds)
 	{
 		exec_cmd(cmds->data, nb_cmds, pipes, i);
+		exec_parent(nb_cmds, pipes, i);
 		cmds = cmds->next;
 		i++;
 	}
-	close_all_pipes(pipes, nb_cmds);
 	free_arr((void **)pipes);
 }
 
@@ -144,7 +147,7 @@ void	exec_builtin(t_list *tokens, t_list **env)
 {
 	char	*program_name;
 
-	program_name = ((t_token *)tokens->data)->str;
+	program_name = tokens->data;
 	if (ft_strcmp(program_name, "exit") == 0)
 		g_msh.exit_status = ft_exit(tokens->next);
 	else if (ft_strcmp(program_name, "echo") == 0)
@@ -173,10 +176,7 @@ void	exec_builtin(t_list *tokens, t_list **env)
 ** @7		Fork() returns twice, a 1st time inside child process with pid == 0
 **			and a 2nd time inside parent process with pid = process ID of child
 **			so a value above 0
-** @13		The parent process basically:
-**			- Reaps the children processes
-**			- Sets the exit_status of the last simple command executed
-** @14-15	Although they are array of strings, we only need to free the
+** @12-13	Although they are array of strings, we only need to free the
 **			pointers because the individuals strings are still being used
 */
 
@@ -193,8 +193,6 @@ void	exec_program(t_list *lst_tokens, int nb_cmds, int **pipes)
 		quit_program(EXIT_FAILURE);
 	else if (pid == 0)
 		exec_child(tokens, envp, nb_cmds, pipes);
-	else if (pid > 0)
-		exec_parent();
 	free(tokens);
 	free(envp);
 }

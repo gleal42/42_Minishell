@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 10:30:51 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/17 03:35:04 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/17 11:47:30 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	execute_cd(t_list *tokens, t_list **env, char *pwd)
 		status = multiple_args_error("cd");
 	else
 	{
-		arg = ((t_token *)tokens->data)->str;
+		arg = tokens->data;
 		if (!ft_strcmp(arg, "-"))
 			status = change_to_old_dir(pwd, env);
 		else if (chdir(arg) == EXIT_SUCCESS)

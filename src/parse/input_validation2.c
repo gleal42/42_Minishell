@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/02 17:37:13 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/15 20:34:27 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/16 18:35:41 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int	has_spaces_between_char(const char *input, char c, char *err_message)
 	while (input[i])
 	{
 		if (input[i] == '"' || input[i] == '\'')
-			skip_quotes((char *)input, &i);
+			skip_quotes(input, &i);
 		if (input[i] == c && input[i + 1] == ' ')
 		{
 			i++;

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/15 20:12:20 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/16 18:38:20 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,11 @@ typedef struct s_cmd
 ** - '\'' - token enclosed by single quotes
 */
 
-typedef struct s_token
-{
-	char		*str;
-	char		delimiter;
-}				t_token;
+// typedef struct s_token
+// {
+// 	char		*str;
+// 	char		delimiter;
+// }				t_token;
 
 /*
 ** A single redirection targeting a simple command
@@ -100,7 +100,7 @@ typedef struct s_token
 
 typedef struct s_redir
 {
-	t_token			*direction;
+	char			*direction;
 	char			type[2];
 }				t_redir;
 

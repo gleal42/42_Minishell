@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 22:04:11 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/15 17:33:18 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/17 08:08:50 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,19 +41,19 @@ char	*get_value_name(char *str)
 	return (value);
 }
 
-/*
-** After replacing $ENVVAR, it confirms token is now empty string
-** @param:	- [void *] pointer to token struct
-** @return:	[int] true if token is empty string
-*/
+// /*
+// ** After replacing $ENVVAR, it confirms token is now empty string
+// ** @param:	- [void *] pointer to token struct
+// ** @return:	[int] true if token is empty string
+// */
 
 int	is_token_empty(void *data)
 {
 	int		check;
-	t_token	*token;
+	char	*token;
 
 	token = data;
-	if (*token->str == '\0' && token->delimiter == ' ')
+	if (*token == '\0')
 		check = 1;
 	else
 		check = 0;

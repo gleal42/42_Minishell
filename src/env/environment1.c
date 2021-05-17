@@ -30,17 +30,19 @@
 void	replace_envs(t_list **tokens, t_list *redirs)
 {
 	t_list	*token;
+	t_redir	*redir;
 
 	token = *tokens;
 	while (token)
 	{
-		replace_env_single_token(token->data);
+		replace_env_single_token((char **)&token->data);
 		token = token->next;
 	}
-	ft_lstclear_if(tokens, is_token_empty, free_token);
+	ft_lstclear_if(tokens, is_token_empty, free);
 	while (redirs)
 	{
-		replace_env_single_token(((t_redir *)redirs->data)->direction);
+		redir = redirs->data;
+		replace_env_single_token(&redir->direction);
 		redirs = redirs->next;
 	}
 }
@@ -56,21 +58,30 @@ void	replace_envs(t_list **tokens, t_list *redirs)
 ** @12		replacing $? special parameter with exit status of last cmd
 */
 
-void	replace_env_single_token(t_token *token)
+void	replace_env_single_token(char **token)
 {
-	char	**str;
-	char	delimiter;
+	t_list	*split_token;
+	t_list	*tmp;
+	char	*token_piece;
 
-	str = &token->str;
-	delimiter = token->delimiter;
-	if (delimiter == ' ' && str[0][0] == '~'
-		&& (str[0][1] == '\0' || str[0][1] == '/'))
-		replace_tilde_with_home(str);
-	if (delimiter != '\'')
+	split_token = get_split_token(*token);
+	tmp = split_token;
+	while (tmp)
 	{
-		replace_vars_with_values(str);
-		replace_status_env(str, g_msh.exit_status);
+		token_piece = tmp->data;
+		if (!ft_strcmp(token_piece, "~") || !ft_strcmp(token_piece, "~/"))
+			replace_tilde_with_home((char **)&tmp->data);
+		else if (*token_piece != '\'')
+		{
+			replace_vars_with_values((char **)&tmp->data);
+			replace_status_env((char **)&tmp->data, g_msh.exit_status);
+		}
+		delete_quotes((char *)tmp->data);
+		tmp = tmp->next;
 	}
+	free(*token);
+	*token = join_split_token(split_token);
+	ft_lstclear(&split_token, free);
 }
 
 /*
@@ -79,7 +90,7 @@ void	replace_env_single_token(t_token *token)
 ** @param:	- [char *] Tokens (which can be strings with spaces when using
 **					   double quotes) 
 ** Line-by-line comments:
-** @14		in case of executables, we don't display the whole path
+** @13		in case of executables, we don't display the whole path
 			(e.g. /bin/ls becomes ls)
 ** @15		replaces the token string with another with the respective value
 ** @16		replace_midstring() can be emptying the str so that there is only
@@ -108,11 +119,11 @@ void	replace_vars_with_values(char **str)
 			free(*str);
 			*str = final;
 			free(var);
+			i += ft_strlen(value) - 1;
 			if (value)
 				free(value);
 		}
-		else if (str[0][i])
-			i++;
+		i++;
 	}
 }
 

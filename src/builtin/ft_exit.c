@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 10:41:56 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/17 00:29:36 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/17 11:47:30 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	ft_exit(t_list *args)
 		quit_program(g_msh.exit_status);
 	else if (args == 0 && !has_only_one_cmd())
 		return (EXIT_SUCCESS);
-	arg = ((t_token *)args->data)->str;
+	arg = args->data;
 	if (ft_strisnumber(arg) && args->next != 0)
 		write_msh_exec_error("exit", "too many arguments");
 	else if (!ft_strisnumber(arg))

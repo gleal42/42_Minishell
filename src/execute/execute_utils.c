@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 17:53:43 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/13 22:49:33 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/16 18:45:06 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	is_builtin(t_list *tokens)
 	int		check;
 	char	*program_name;
 
-	program_name = ((t_token *)tokens->data)->str;
+	program_name = tokens->data;
 	if (ft_strcmp(program_name, "exit") == 0)
 		check = 1;
 	else if (ft_strcmp(program_name, "echo") == 0)
@@ -83,7 +83,7 @@ char	**convert_list_to_arr_tokens(t_list *lst)
 	strs = ft_calloc(len + 1, sizeof(char *));
 	while (i < len)
 	{
-		strs[i++] = ((t_token *)lst->data)->str;
+		strs[i++] = (char *)lst->data;
 		lst = lst->next;
 	}
 	return (strs);

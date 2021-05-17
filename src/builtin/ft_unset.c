@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 10:42:08 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/17 03:48:03 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/17 11:47:30 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	ft_unset(t_list *tokens, t_list **env)
 
 	while (tokens)
 	{
-		token_str = ((t_token *)tokens->data)->str;
+		token_str = tokens->data;
 		if (!has_valid_identifier_unset(token_str))
 			return (EXIT_FAILURE);
 		if (has_only_one_cmd())

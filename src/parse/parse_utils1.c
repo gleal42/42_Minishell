@@ -6,39 +6,11 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 10:26:41 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/15 17:36:06 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/17 11:25:19 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse_utils.h"
-
-/*
-** Gets the delimiter that is enclosing the token starting at input[*curr_pos]
-** @param:	- [const char *] the unchanged line entered in stdin
-**			- [int *] the current parsing position within the input  
-** @return:	[char] delimiter. Space, single quotes or double quotes
-** Line-by-line comments:
-** @10		We need to increment once if we found quotes so that the token
-**			starts after the quote
-*/
-
-char	get_token_delimiter(const char *input, int *curr_pos)
-{
-	char	delimiter;
-
-	delimiter = 0;
-	if (input[*curr_pos] == '"' || input[*curr_pos] == '\'')
-	{
-		if (input[*curr_pos] == '"')
-			delimiter = '"';
-		else if (input[*curr_pos] == '\'')
-			delimiter = '\'';
-		*curr_pos += 1;
-	}
-	else
-		delimiter = ' ';
-	return (delimiter);
-}
 
 /*
 ** Same function as strstr but it will only look for the string to_find outside
@@ -77,7 +49,7 @@ char	*ft_strstr_quotes(char *str, char *to_find)
 /*
 ** Parses a string until the index i no longer points to a character inside
 ** quotes (single or double)
-** @param:	- [char *] string to parse
+** @param:	- [const char *] string to parse
 **			- [int *] index of the string. We have the reference because
 **					  we need to update its value for the function caller
 ** Line-by-line comments:
@@ -96,22 +68,22 @@ char	*ft_strstr_quotes(char *str, char *to_find)
 **			it will break because there is a space
 */
 
-void	skip_quotes(char *str, int *i)
+void	skip_quotes(const char *input, int *curr_pos)
 {
 	int		has_double_quotes_open;
 	int		has_single_quotes_open;
 
 	has_double_quotes_open = 0;
 	has_single_quotes_open = 0;
-	while (str[*i])
+	while (input[*curr_pos])
 	{
-		if (str[*i] == '"' && has_single_quotes_open == 0)
+		if (input[*curr_pos] == '"' && has_single_quotes_open == 0)
 			has_double_quotes_open = !has_double_quotes_open;
-		else if (str[*i] == '\'' && has_double_quotes_open == 0)
+		else if (input[*curr_pos] == '\'' && has_double_quotes_open == 0)
 			has_single_quotes_open = !has_single_quotes_open;
-		else if (!has_double_quotes_open && !has_single_quotes_open)
+		(*curr_pos)++;
+		if (!has_double_quotes_open && !has_single_quotes_open)
 			break ;
-		(*i)++;
 	}
 }
 
@@ -124,6 +96,12 @@ void	skip_quotes(char *str, int *i)
 void	skip_spaces(const char *input, int *curr_pos)
 {
 	while (input[*curr_pos] && ft_isspace(input[*curr_pos]))
+		(*curr_pos)++;
+}
+
+void	skip_letters(const char *input, int *curr_pos)
+{
+	while (input[*curr_pos] && !is_quote(input[*curr_pos]))
 		(*curr_pos)++;
 }
 
