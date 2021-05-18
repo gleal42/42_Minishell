@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 10:30:51 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/17 15:47:56 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/18 10:24:10 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,12 @@ int	change_dir_home(char *cur_pwd, t_list **env)
 	char	*home;
 
 	home = ft_getenv("HOME");
-	if (home == 0 || *home == '\0')
+	if (home == 0)
+	{
+		write_msh_exec_error("cd", "HOME not set");
+		status = EXIT_FAILURE;
+	}
+	else if (*home == '\0')
 		status = EXIT_SUCCESS;
 	else
 	{

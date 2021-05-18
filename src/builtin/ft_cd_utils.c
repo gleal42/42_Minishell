@@ -30,7 +30,12 @@ int	cd_env_error_check(char *env)
 	int		status;
 
 	arg = ft_getenv(env);
-	if (arg == 0 || *arg == '\0')
+	if (arg == 0)
+	{
+		write_msh_exec_error("cd", "HOME not set");
+		status = EXIT_FAILURE;
+	}
+	else if (*arg == '\0')
 		status = EXIT_SUCCESS;
 	else
 	{
