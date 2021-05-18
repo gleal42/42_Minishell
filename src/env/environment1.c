@@ -38,7 +38,7 @@ void	replace_envs(t_list **tokens, t_list *redirs)
 		replace_env_single_token((char **)&token->data);
 		token = token->next;
 	}
-	if (ft_lstsize(*tokens) != 1 && (char)*((char *)(*tokens)->data) != '\0')
+	if (ft_lstsize(*tokens) > 1 && (char)*((char *)(*tokens)->data) != '\0')
 		ft_lstclear_if(tokens, is_token_empty, free);
 	while (redirs)
 	{
