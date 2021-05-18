@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 10:27:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/17 10:55:41 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/18 16:15:35 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,6 @@ int		is_cmd_table_delimiter(const char *str);
 int		is_cmd_delimiter(char c);
 int		is_token_delimiter(char c);
 char	*get_cmd_table_delimiter(const char *input, int *curr_pos);
+int		is_ctrl(char c);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 15:23:20 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/16 12:44:36 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/18 16:14:55 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ char	*get_input(t_dlist *input_history, t_termcaps *termcaps)
 			parse_input_history(&input_history, termcaps, buf, &i);
 		else if (!ft_strcmp(&buf[i], termcaps->backspace))
 			delete_single_char(termcaps, buf, &i);
-		else if (nb_char_read > 2 || buf[i] == CTRL_B)
+		else if (nb_char_read > 2 || (nb_char_read == 1 && is_ctrl(buf[i])))
 			ft_bzero(&buf[i], BUFSIZ - i);
 		else if (buf[i] == CTRL_C)
 			reset_cmd_line(buf, &i, &input_history);

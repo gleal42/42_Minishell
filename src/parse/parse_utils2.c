@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 08:34:51 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/17 19:00:21 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/18 16:14:27 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,4 +98,17 @@ char	*get_cmd_table_delimiter(const char *input, int *curr_pos)
 		quit_program(EXIT_FAILURE);
 	(*curr_pos) += ft_strlen(delimiter);
 	return (delimiter);
+}
+
+int	is_ctrl(char c)
+{
+	int	check;
+
+	if (c == CTRL_C || c == CTRL_D)
+		check = 0;
+	else if ((0 <= c && c <= 31) || c == 127)
+		check = 1;
+	else
+		check = 0;
+	return (check);
 }
