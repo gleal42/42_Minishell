@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 17:33:11 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/16 14:00:42 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/18 15:07:27 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ int	is_token_valid_unset(char *token_str, char *err_message)
 	if (ft_strchr(token_str, '=')
 		|| ft_strchr(token_str, '\'')
 		|| ft_strchr(token_str, '"')
-		|| ft_strchr(token_str, '$'))
+		|| ft_strchr(token_str, '$')
+		|| ft_isdigit(*token_str))
 	{
 		check = 0;
 		ft_strcpy(err_message, "unset: `");
