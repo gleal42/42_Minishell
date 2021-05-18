@@ -74,7 +74,8 @@ void	replace_env_single_token(char **token)
 			replace_tilde_with_home((char **)&tmp->data);
 		else if (*token_piece != '\'')
 		{
-			if (*token_piece == '$' && ft_strcmp(token_piece, "$_") != 0)
+			if (*token_piece == '$' && ft_strcmp(token_piece, "$_") != 0
+				&& ft_strcmp(token_piece, "$?") != 0 && *(token_piece + 1) != 0)
 				replace_one_var((char **)&tmp->data);
 			else
 				replace_vars_with_values((char **)&tmp->data);
@@ -109,10 +110,11 @@ void	replace_vars_with_values(char **str)
 	char	*value;
 	char	*final;
 
-	i = 0;
-	while (str[0][i])
+	i = -1;
+	while (str[0][++i])
 	{
-		if (str[0][i] == '$' && str[0][i + 1] != '?' && str[0][i + 1] != '\0')
+		if (str[0][i] == '$' && !ft_strchr("? ", str[0][i + 1])
+			&& str[0][i + 1] != '\0')
 		{
 			var = get_var_name(&str[0][i]);
 			if (ft_strcmp(var, "$_") == 0)
@@ -127,7 +129,6 @@ void	replace_vars_with_values(char **str)
 			if (value)
 				free(value);
 		}
-		i++;
 	}
 }
 
