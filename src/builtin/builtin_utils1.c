@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 09:10:48 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/16 13:26:34 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/18 16:41:58 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,11 @@ int	update_directories(char *old_dir, t_list **env)
 
 	if (getcwd(new_dir, 1024) == NULL)
 		return (EXIT_FAILURE);
+	if (!is_env_var("PWD", *env))
+		create_environment_var("PWD", env);
 	update_environment_var("PWD", new_dir, *env);
+	if (!is_env_var("OLDPWD", *env))
+		create_environment_var("OLDPWD", env);
 	update_environment_var("OLDPWD", old_dir, *env);
 	return (EXIT_SUCCESS);
 }
