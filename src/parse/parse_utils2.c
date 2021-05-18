@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 08:34:51 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/18 16:14:27 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/18 16:23:02 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int	is_ctrl(char c)
 {
 	int	check;
 
-	if (c == CTRL_C || c == CTRL_D)
+	if (c == CTRL_C || c == CTRL_D || c == ENTER_KEYCAP)
 		check = 0;
 	else if ((0 <= c && c <= 31) || c == 127)
 		check = 1;

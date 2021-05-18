@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:48:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/18 15:07:37 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/18 16:23:13 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 
 # define CTRL_D 4
 # define CTRL_C 3
+# define ENTER_KEYCAP 10
 # define CTRL_B 28
 
 # define EXIT_CMD_NOT_FOUND 127
