@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 11:06:43 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/17 18:32:12 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/18 15:15:13 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,10 @@
 ** Checks if input entered in cmd line is valid while displaying error messsage
 ** @param:	- [const char *] the unchanged line entered in stdin
 ** @return:	[int] true or false
-** @5-9		Case: empty or only white space. It doesn't require an error message
-**			and expects an errno of 0
-** @14		Some testers say that the errno needs to be 2 but not very
+** @5-6		Case: empty or only white space. It doesn't require an error message
+** @11		Some testers say that the errno needs to be 2 but not very
 **			consistent across different OS. So we choose to set it to
 **			ENOEXEC (Exec format error), which value will adapt across OS
-** @17-18	If input is valid, we don't need to change errno because
-**			exec_ast() will take care of that
 */
 
 int	is_input_valid(const char *input)
@@ -32,15 +29,12 @@ int	is_input_valid(const char *input)
 
 	ft_bzero(err_message, 0);
 	if (*input == '\0' || ft_strisspace((char *)input))
-	{
 		check = 0;
-		errno = 0;
-	}
 	else if (!is_input_valid_unexpected_token(input, err_message)
 		|| !is_input_valid_not_supported(input, err_message))
 	{
 		check = 0;
-		errno = ENOEXEC;
+		g_msh.exit_status = ENOEXEC;
 		write_msh_error(err_message);
 	}
 	else

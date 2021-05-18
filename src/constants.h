@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:48:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/17 11:47:30 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/18 15:07:37 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 
 # define EXIT_CMD_NOT_FOUND 127
 # define EXIT_CMD_INTERRUPTED 130
+# define EXIT_ERROR_FORMAT 258
 # define EXIT_GENERAL_ERROR 2
 
 #endif
