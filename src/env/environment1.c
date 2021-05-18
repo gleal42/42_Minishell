@@ -86,7 +86,6 @@ void	replace_env_single_token(char **token)
 	}
 	free(*token);
 	*token = join_split_token(split_token);
-	ft_lstclear(&split_token, free);
 }
 
 /*

@@ -31,10 +31,7 @@ int	cd_env_error_check(char *env)
 
 	arg = ft_getenv(env);
 	if (arg == 0)
-	{
-		write_msh_exec_error("cd", "HOME not set");
-		status = EXIT_FAILURE;
-	}
+		status = cd_error_messsage("cd", "HOME not set");
 	else if (*arg == '\0')
 		status = EXIT_SUCCESS;
 	else
@@ -87,9 +84,9 @@ int	cd_path_error_check(char *path)
 ** @return:	[int] exit status (EXIT_FAILURE)
 */
 
-int	multiple_args_error(char *builtin)
+int	cd_error_messsage(char *builtin, char *error)
 {
-	write_msh_exec_error(builtin, "too many arguments");
+	write_msh_exec_error(builtin, error);
 	return (EXIT_FAILURE);
 }
 

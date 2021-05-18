@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 10:30:51 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/18 10:24:10 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/18 16:58:14 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	execute_cd(t_list *tokens, t_list **env, char *pwd)
 	if (tokens == 0)
 		status = change_dir_home(pwd, env);
 	else if (tokens->next != 0)
-		status = multiple_args_error("cd");
+		status = cd_error_messsage("cd", "too many arguments");
 	else
 	{
 		arg = tokens->data;
@@ -92,7 +92,7 @@ int	only_cd_errors(t_list *tokens)
 	if (tokens == 0)
 		status = cd_env_error_check("HOME");
 	else if (tokens->next != 0)
-		status = multiple_args_error("cd");
+		status = cd_error_messsage("cd", "too many arguments");
 	else
 	{
 		arg = tokens->data;

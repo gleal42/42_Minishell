@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 22:04:11 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/17 18:56:18 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/18 17:06:41 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,12 +100,12 @@ void	replace_string(char *src, char **dest)
 ** @4-5		in case variable is unset we create it and set it to 1
 ** @7-17	in case variable is set we increment 1 everytime we call 
 **			./minishell
-*/ 
+*/
 
 void	increase_shlvl(void)
 {
-	char *cur_lvl;
-	int	lvl_nbr;
+	char	*cur_lvl;
+	int		lvl_nbr;
 
 	if (is_env_var("SHLVL", g_msh.dup_envp) == 0)
 		create_environment_var("SHLVL=1", &g_msh.dup_envp);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment3.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/16 22:01:55 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/18 15:32:30 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/18 17:05:59 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ char	*join_split_token(t_list *split_token)
 		ft_strcat(token, (char *)split_token->data);
 		split_token = split_token->next;
 	}
+	ft_lstclear(&split_token, free);
 	return (token);
 }
 

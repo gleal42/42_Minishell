@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 18:40:32 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/18 10:03:37 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/18 17:07:22 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,10 @@ void	exec_cmd(t_cmd *cmd, t_cmd_table *cmd_table, int process_index)
 ** @8-9		We were only asked to deal with env with no arguments
 */
 
-void	exec_builtin(t_list *tokens, t_list **env, int nb_cmds, int process_index)
+void	exec_builtin(t_list *tokens,
+					t_list **env,
+					int nb_cmds,
+					int process_index)
 {
 	char	*program_name;
 
