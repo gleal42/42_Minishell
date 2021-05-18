@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 16:48:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/17 11:47:30 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/18 16:48:28 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@
 # include "signals.h"
 # include "write_term.h"
 # include "utils.h"
-# include "print_ast.h"
 
 t_msh	g_msh;
 
