@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/16 22:01:55 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/18 14:29:52 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/18 15:32:30 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,14 @@ void	replace_one_var(char **str)
 	char	*trimmed;
 
 	env = ft_getenv(*str + 1);
+	if (!env)
+	{
+		free(*str);
+		*str = ft_strdup("");
+		if (!*str)
+			quit_program(EXIT_FAILURE);
+		return ;
+	}
 	trimmed = ft_strtrim(env, " ");
 	if (!trimmed)
 		quit_program(EXIT_FAILURE);
