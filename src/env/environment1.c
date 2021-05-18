@@ -74,7 +74,10 @@ void	replace_env_single_token(char **token)
 			replace_tilde_with_home((char **)&tmp->data);
 		else if (*token_piece != '\'')
 		{
-			replace_vars_with_values((char **)&tmp->data);
+			if (*token_piece == '$' && ft_strcmp(token_piece, "$_") != 0)
+				replace_one_var((char **)&tmp->data);
+			else
+				replace_vars_with_values((char **)&tmp->data);
 			replace_status_env((char **)&tmp->data, g_msh.exit_status);
 		}
 		delete_quotes((char *)tmp->data);

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/16 22:01:55 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/17 11:23:11 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/18 14:29:52 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,18 @@ int	get_new_token_size(t_list *split_token)
 		split_token = split_token->next;
 	}
 	return (size);
+}
+
+void	replace_one_var(char **str)
+{
+	char	*env;
+	char	*trimmed;
+
+	env = ft_getenv(*str + 1);
+	trimmed = ft_strtrim(env, " ");
+	if (!trimmed)
+		quit_program(EXIT_FAILURE);
+	free(env);
+	free(*str);
+	*str = trimmed;
 }

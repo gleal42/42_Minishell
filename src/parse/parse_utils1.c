@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 10:26:41 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/17 11:25:19 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/18 14:35:28 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,9 @@ void	skip_spaces(const char *input, int *curr_pos)
 void	skip_letters(const char *input, int *curr_pos)
 {
 	while (input[*curr_pos] && !is_quote(input[*curr_pos]))
+		(*curr_pos)++;
+	while (input[*curr_pos] && !is_quote(input[*curr_pos]
+		&& input[*curr_pos] != '$'))
 		(*curr_pos)++;
 }
 
