@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/17 20:26:29 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/18 10:07:38 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef struct s_cmd_table
 	char			*delimiter;
 	int				nb_cmds;
 	int				**pipes;
-	pid_t			*pids;
+	t_list			*pids;
 	int				return_value;
 }				t_cmd_table;
 
@@ -72,25 +72,6 @@ typedef struct s_cmd
 	t_list		*redirs;
 	int			index;
 }				t_cmd;
-
-/*
-** A token is a series of characters that represent a program name or an
-** argument. Spaces can be part of a token if it's delimited by single or
-** double quotes
-** @fields:
-** [char *str] token. Can be an empty string if input is ""
-** [char delimiter] delimiter
-** Potential values:
-** - ' '  - spaces separate this token from the next
-** - '"'  - token enclosed by double quotes
-** - '\'' - token enclosed by single quotes
-*/
-
-// typedef struct s_token
-// {
-// 	char		*str;
-// 	char		delimiter;
-// }				t_token;
 
 /*
 ** A single redirection targeting a simple command
@@ -155,9 +136,6 @@ typedef struct s_termcaps
 ** [t_cmd_table *curr_cmd_table] points to the cmd_table being currently
 ** executed. This is useful for when the exit program name is used alongside
 ** other simple commands we don't have to exit, otherwise we do
-** [int nb_forks] each time a child process is created this var is incremented.
-** It allows to properly wait on all processes to finish before moving on but
-** still implementing asynchronous processes
 */
 
 typedef struct s_msh
@@ -168,7 +146,6 @@ typedef struct s_msh
 	t_list			*dup_envp;
 	int				exit_status;
 	t_cmd_table		*curr_cmd_table;
-	int				nb_forks;
 }				t_msh;
 
 #endif

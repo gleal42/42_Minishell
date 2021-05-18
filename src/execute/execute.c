@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 18:40:32 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/17 20:29:28 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/18 10:03:37 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	exec_ast(t_ast *ast)
 	cmd_table = ast->cmd_tables;
 	while (cmd_table)
 	{	
-		g_msh.nb_forks = 0;
 		g_msh.curr_cmd_table = cmd_table->data;
 		exec_cmd_table(g_msh.curr_cmd_table);
 		save_last_token(g_msh.curr_cmd_table);
@@ -74,24 +73,22 @@ void	exec_ast(t_ast *ast)
 void	exec_cmd_table(t_cmd_table *cmd_table)
 {
 	t_list	*cmds;
-	int		nb_cmds;
-	int		**pipes;
 	int		i;
 
+	cmd_table->return_value = -1;
 	cmds = cmd_table->cmds;
 	cmd_table->nb_cmds = ft_lstsize(cmds);
-	cmd_table->pids = init_pids(nb_cmds);
-	cmd_table->pipes = init_pipes(nb_cmds);
+	cmd_table->pipes = init_pipes(cmd_table->nb_cmds);
 	i = 0;
-	while (i < nb_cmds)
+	while (i < cmd_table->nb_cmds)
 	{
 		exec_cmd(cmds->data, cmd_table, i);
 		cmds = cmds->next;
 		i++;
 	}
-	close_all_pipes(pipes, nb_cmds);
-	exec_parent();
-	free_arr((void **)pipes);
+	close_all_pipes(cmd_table->pipes, cmd_table->nb_cmds);
+	exec_parent(&cmd_table->pids);
+	free_arr((void **)cmd_table->pipes);
 	if (cmd_table->return_value != -1)
 		g_msh.exit_status = cmd_table->return_value;
 }
@@ -122,21 +119,25 @@ void	exec_cmd_table(t_cmd_table *cmd_table)
 **			This example means we have to create 2 empty files
 */
 
-void	exec_cmd(t_cmd *cmd, int nb_cmds, int **pipes, int process_index)
+void	exec_cmd(t_cmd *cmd, t_cmd_table *cmd_table, int process_index)
 {
 	int	saved_stdin;
 	int	saved_stdout;
+	int	**pipes;
+	int	nb_cmds;
 
+	pipes = cmd_table->pipes;
+	nb_cmds = cmd_table->nb_cmds;
 	replace_envs(&cmd->tokens, cmd->redirs);
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
-	set_redirs_pipes(cmd->redirs, nb_cmds, pipes, process_index);
+	set_redirs_pipes(cmd->redirs, cmd_table, process_index);
 	if (g_msh.exit_status == EXIT_SUCCESS && cmd->tokens != 0)
 	{
 		if (is_builtin(cmd->tokens))
 			exec_builtin(cmd->tokens, &g_msh.dup_envp, nb_cmds, process_index);
 		else
-			exec_program(cmd->tokens, nb_cmds, pipes);
+			exec_program(cmd->tokens, cmd_table);
 	}
 	dup2(saved_stdin, STDIN_FILENO);
 	dup2(saved_stdout, STDOUT_FILENO);
@@ -174,8 +175,6 @@ void	exec_builtin(t_list *tokens, t_list **env, int nb_cmds, int process_index)
 		g_msh.exit_status = ft_unset(tokens->next, env);
 	if (process_index == nb_cmds - 1)
 		g_msh.curr_cmd_table->return_value = g_msh.exit_status;
-	else 
-		g_msh.curr_cmd_table->return_value = -1;
 }
 
 /*
@@ -197,20 +196,24 @@ void	exec_builtin(t_list *tokens, t_list **env, int nb_cmds, int process_index)
 **			pointers because the individuals strings are still being used
 */
 
-void	exec_program(t_list *lst_tokens, int nb_cmds, int **pipes)
+void	exec_program(t_list *lst_tokens, t_cmd_table *cmd_table)
 {
 	char	**tokens;
 	char	**envp;
-	pid_t	pid;
+	long	pid;
+	t_list	*new_node;
 
 	tokens = convert_list_to_arr_tokens(lst_tokens);
 	envp = convert_list_to_arr_envp(g_msh.dup_envp);
-	g_msh.nb_forks++;
 	pid = fork();
 	if (pid < 0)
 		quit_program(EXIT_FAILURE);
 	else if (pid == 0)
-		exec_child(tokens, envp, nb_cmds, pipes);
+		exec_child(tokens, envp, cmd_table->nb_cmds, cmd_table->pipes);
+	new_node = ft_lstnew((void *)pid);
+	if (!new_node)
+		quit_program(EXIT_FAILURE);
+	ft_lstadd_back(&cmd_table->pids, new_node);
 	free(tokens);
 	free(envp);
 }

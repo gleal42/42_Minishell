@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 16:04:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/16 18:44:06 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/18 09:44:17 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,14 @@ int	**init_pipes(int nb_cmds)
 */
 
 void	set_redirs_pipes(t_list *redirs,
-							int nb_cmds,
-							int **pipes,
-							int process_index)
+						t_cmd_table *cmd_table,
+						int process_index)
 {
+	int	**pipes;
+	int	nb_cmds;
+
+	pipes = cmd_table->pipes;
+	nb_cmds = cmd_table->nb_cmds;
 	if (!open_all_files(redirs))
 		return ;
 	if (!has_redirs(redirs, "<") && process_index != 0)

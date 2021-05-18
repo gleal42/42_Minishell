@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 09:25:18 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/17 20:28:54 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/18 10:01:09 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,19 +77,21 @@ void	exec_child(char **tokens, char **envp, int nb_cmds, int **pipes)
 **			on which, the macros help us set the exit_status
 */
 
-void	exec_parent(void)
+void	exec_parent(t_list **pids)
 {
-	int	exit_info;
+	long	pid;
+	int		exit_info;
 
 	exit_info = 0;
-	while (g_msh.nb_forks > 0)
+	while (*pids)
 	{
-		wait(&exit_info);
-		g_msh.nb_forks--;
+		pid = (long)(*pids)->data;
+		waitpid(pid, &exit_info, 0);
 		if (WIFEXITED(exit_info))
 			g_msh.exit_status = WEXITSTATUS(exit_info);
 		else if (WIFSIGNALED(exit_info))
 			g_msh.exit_status = WTERMSIG(exit_info);
+		ft_lstdel_first(pids, ft_lstdel_int);
 	}
 }
 
@@ -113,14 +115,4 @@ void	close_all_pipes(int **pipes, int nb_cmds)
 		close(pipes[i][1]);
 		i++;
 	}
-}
-
-pid_t	*init_pids(int nb_cmds)
-{
-	pid_t	*pids;
-
-	pids = ft_calloc(nb_cmds, sizeof(pid_t));
-	if (!pids)
-		ft_exit(EXIT_FAILURE);
-	return (pids);
 }
