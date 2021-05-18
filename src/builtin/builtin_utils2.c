@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 17:33:11 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/18 15:07:27 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/18 17:19:05 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,13 @@ int	is_token_valid_unset(char *token_str, char *err_message)
 {
 	int		check;
 
+	if (token_str == 0)
+		return (1);
 	if (ft_strchr(token_str, '=')
 		|| ft_strchr(token_str, '\'')
 		|| ft_strchr(token_str, '"')
 		|| ft_strchr(token_str, '$')
+		|| *token_str == '/'
 		|| ft_isdigit(*token_str))
 	{
 		check = 0;
