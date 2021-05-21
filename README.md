@@ -1,6 +1,8 @@
 # Minishell
 ### Recreate a shell with limited functionalities.
 
+![video of minishell](https://media.giphy.com/media/EPDolFQNXmDwXVzLnJ/giphy.gif)
+
 https://github.com/tokenrove/build-your-own-shell
 
 ## Resources
