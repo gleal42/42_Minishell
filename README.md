@@ -10,25 +10,23 @@ The user can then type any shell commands like echo, ls, env export, pwd and we 
 Fun fact: We can call other executables inside our minishell, including minishell itself.
 So we can type `./minishell` to enter our minishell then `./minishell` again. We will then have to exit twice to finish all our programs.
 
-<br>
-
+### **DREAM TEAM**
 This project was done in pairs, which was an amazing opportunity to learn how to better use github (I'll also add a few commands to showcase our workflow in this document):
-
 I really want to thank Dimitri for everything he taught me about commenting code, for his amazing VSCode Snippets, his patience and dedication!
 I couldn't have asked for a better team mate!
 
 #### Our work was generally split in the following way:
+<br>
 
 > **[Dimitri](https://github.com/DimitriDaSilva)** 
 > 
 > Extracting Information, Parsing, Termcaps, Executables, Pipes and Redirections
 
-<br>
-
 > **[Goncalo](https://github.com/gleal42)**
 > 
 > Environment Variables, Builtin Functions and Signal Handling
 
+___
 
 ### Main challenges
 
