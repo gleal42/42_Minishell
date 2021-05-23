@@ -123,6 +123,8 @@ Some examples of environment variables:
 - `HOME`used for `cd` (with no arguments)
 - `SHLVL` used in case we call `./minishell`
 
+___
+
 ### Other Resources
 
 Good overview
