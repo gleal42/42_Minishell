@@ -103,7 +103,8 @@ We will dwelve further into redirections in pipes in their sections.
 #### Tokens
 Finally, white spaces will be ignored used as split delimiters for our command tables input (except when they are inbetween single or double quotes). 
 
-I recommend that you check our [parse]src/parse/parse.c and [structs](src/structs.h) to better understand the processes that were conducted to convert the raw input into the aforementioned categories.
+
+I recommend that you check our [parse](src/parse/parse.c) and [structs](src/structs.h) to better understand the processes that were conducted to convert the raw input into the aforementioned categories.
 
 ___
 
