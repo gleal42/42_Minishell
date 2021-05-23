@@ -150,8 +150,6 @@ https://nickolasteixeira.medium.com/want-to-build-a-simple-shell-heres-how-you-d
 - https://medium.com/swlh/tutorial-to-code-a-simple-shell-in-c-9405b2d3533e
 - https://danishpraka.sh/2018/01/15/write-a-shell.html
 
-___
-
 ### Other Githubs
 - https://github.com/R4meau/minishell/blob/master/src/main.c
 - https://github.com/cclaude42/minishell
