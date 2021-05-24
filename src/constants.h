@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:48:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/18 16:23:13 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/24 16:39:42 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 #  define IS_LINUX 1
 #  define MAX_PATH 4096
 # else
-#  define MAX_PATH 1024
 #  define IS_LINUX 0
+#  define MAX_PATH 1024
 # endif
 
 # define GREEN "\033[0;32m"
@@ -36,9 +36,9 @@
 # define ENTER_KEYCAP 10
 # define CTRL_B 28
 
+# define EXIT_GENERAL_ERROR 2
 # define EXIT_CMD_NOT_FOUND 127
 # define EXIT_CMD_INTERRUPTED 130
 # define EXIT_ERROR_FORMAT 258
-# define EXIT_GENERAL_ERROR 2
 
 #endif

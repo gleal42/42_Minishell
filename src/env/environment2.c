@@ -51,8 +51,8 @@ char	*ft_getenv(char *key)
 ** throughout our program
 ** @param:	- [t_list **] stored in linked list for easier exporting and
 **						  unsetting (more modular memory allocation)
-**			- [char *] environment vars array of strings 
-**					  (third argument in main function)
+**			- [char **] environment vars array of strings 
+**					    (third argument in main function)
 ** Line-by-line comments:
 ** @5		Some operating systems don't have the third main argument (array of
 ** 			environment variables). In this case the exercise would have needed
@@ -121,7 +121,7 @@ void	remove_env_value(char	*key)
 **			- [int] exit status of last exec function
 */
 
-void	replace_status_env(char **str, int	last_status)
+void	replace_status_env(char **str, int last_status)
 {
 	int		replace_spot;
 	char	*status_string;
@@ -143,12 +143,12 @@ void	replace_status_env(char **str, int	last_status)
 }
 
 /*
-** checks if it refers to absolute path, and if it is a file (not directory)
+** Checks if it refers to absolute path, and if it is a file (not directory)
 ** @param:	- [char *] path saved in $_ variable
-** @return:	[int] 1 if path is a file
+** @return:	[int] 1 if path is an executable, else 0
 ** Line-by-line comments:
-** @4-5		stat is success both for directories and files so we need to
-** add the S_ISREGularfile macro to make sure.
+** @4-5		Stat is success both for directories and files so we need to add the
+**			S_ISREGularfile macro to make sure.
 */
 
 int	is_path_executable(char *exec_file)

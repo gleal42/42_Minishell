@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 18:11:26 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/14 10:41:37 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/24 17:19:34 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,14 @@
 
 /*
 ** Prints current working directory
-** @param:	- [t_list *] environment variable string linked list
 ** @return:	[int] exit status 
 */
 
 int	ft_pwd(void)
 {
-	char	pwd[1024];
+	char	pwd[MAX_PATH];
 
-	if (getcwd(pwd, 1024) == NULL)
+	if (getcwd(pwd, MAX_PATH) == NULL)
 		return (EXIT_FAILURE);
 	printf("%s\n", pwd);
 	return (EXIT_SUCCESS);

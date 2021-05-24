@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 14:59:16 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/18 14:24:48 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/24 17:51:29 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 void	replace_envs(t_list **tokens, t_list *redirs);
 void	replace_env_single_token(char **token);
 void	replace_vars_with_values(char **str);
-void	replace_tilde_with_home(char **str);
-char	*getlastexecname(char *env_var);
+void	replace_tilde_with_home(char **token);
+char	*get_last_exec_name(char *env_var);
 
 /*
 ** File environment2.c

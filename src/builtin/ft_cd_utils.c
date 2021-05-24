@@ -3,24 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/16 22:34:36 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/17 01:39:48gleal            ###   ########.fr       */
+/*   Created: 2021/05/24 17:00:38 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/05/24 17:10:29 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_cd.h"
 
 /*
-** checks if environment variable value(path) is valid, printing
-** error messages in case of failure
+** Checks if environment variable value(path) is valid, printing error messages
+** in case of failure
 ** @param:	- [char *] name of potential environment variable
 ** @return:	[int] exit status (0 if cd would have happened)
 ** Line-by-line comments:
-** @6-10	in case environment variable have no values
-** @13-14	in case user doesnt have permission to enter directory
-** @16-17	in case there is another error entering directory
+** @6-10	In case environment variable have no values
+** @13-14	In case user doesnt have permission to enter directory
+** @16-17	In case there is another error entering directory
 */
 
 int	cd_env_error_check(char *env)
@@ -52,12 +52,12 @@ int	cd_env_error_check(char *env)
 }
 
 /*
-** checks if path is valid, printing error messages in case of failure
+** Checks if path is valid, printing error messages in case of failure
 ** @param:	- [char *] relative or absolute path (argument after cd)
 ** @return:	[int] exit status (0 if cd would have happened)
 ** Line-by-line comments:
-** @4-5	in case user doesnt have permission to enter directory
-** @6-7	in case there is another error entering directory
+** @4-5		Case: user doesnt have permission to enter directory
+** @6-7		Case: there is another error entering directory
 */
 
 int	cd_path_error_check(char *path)
@@ -79,8 +79,9 @@ int	cd_path_error_check(char *path)
 }
 
 /*
-** error message for when there are too many arguments after cd
+** Writes error message and returns EXIT_FAILURE. Thanks norm ;)
 ** @param:	- [char *] name of builtin to be printed in error message
+** 			- [char *] error message itself
 ** @return:	[int] exit status (EXIT_FAILURE)
 */
 
@@ -91,7 +92,7 @@ int	cd_error_messsage(char *builtin, char *error)
 }
 
 /*
-** prints message based on errno (received as error int)
+** Writes error message based on errno and returns EXIT_FAILURE. Thanks norm ;)
 ** @param:	- [char *] name of builtin to be printed in error message
 **			- [int] errno
 **			- [char *] name of typed argument (to be displayed)
@@ -105,13 +106,13 @@ int	other_invalid_error(char *builtin, int error, char *arg)
 }
 
 /*
-** checks if we have permission to execute path (enter in case 
-of directory. Other functions have already checked its a directory
+** Checks if we have permission to execute path (enter in case of directory.
+** Other functions have already checked it's a directory
 ** @param:	- [char *] absolute or relative directory path
 ** @return:	[int] 1 if true
 ** Line-by-line comments:
-** @5	mask User execute permission is non zero in case it 
-** 		exists in the path
+** @5		Mask user execute permission is non zero in case it
+** 			exists in the path
 */
 
 int	has_x_permission(char *path)

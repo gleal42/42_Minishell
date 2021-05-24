@@ -3,19 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   environment_utils2.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 22:04:11 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/18 17:06:41 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/24 17:29:33 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "environment_utils.h"
 
 /*
-** In a string of type VAR=VALUE it extracts the VALUE
+** In a string of type VAR=VALUE, it extracts the VALUE
 ** @param:	- [char *] string to be analyzed
-**			- [type] param_value
 ** @return:	[char *] string duplicate of value
 ** Line-by-line comments:
 ** @11		One more to compensate for the equal sign
@@ -41,11 +40,11 @@ char	*get_value_name(char *str)
 	return (value);
 }
 
-// /*
-// ** After replacing $ENVVAR, it confirms token is now empty string
-// ** @param:	- [void *] pointer to token struct
-// ** @return:	[int] true if token is empty string
-// */
+/*
+** After replacing $ENVVAR, it confirms token is now empty string
+** @param:	- [void *] pointer to token struct
+** @return:	[int] true if token is empty string
+*/
 
 int	is_token_empty(void *data)
 {
