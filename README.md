@@ -114,6 +114,7 @@ ___
 > 
 >https://stackoverflow.com/questions/2085302/printing-all-environment-variables-in-c-c
 >https://man7.org/linux/man-pages/man7/environ.7.html
+>https://stackoverflow.com/questions/23608202/can-i-setenv-using-a-envp
 
 These work very similarly to Makefile Variables. They are associated to specific functions and tasks and get replaced in the moment of execution.
 
@@ -123,6 +124,28 @@ Some examples of environment variables:
 - `PWD` and `OLDPWD`updated everytime we change directories. OLDPWD is used for `cd -` to go back to previous directory.
 - `HOME`used for `cd` (with no arguments)
 - `SHLVL` used in case we call `./minishell`
+
+Environment variables will be important in our Minishell in the following ways:
+
+> If the user types:
+> 
+> `echo $PWD$USER`
+
+> The standard output should print something like:
+> 
+> `/Users/gleal42/Desktop/42_Minishellgleal42`
+
+This list of variables can be acessed in two ways:
+
+1. By adding a third argument to main `(int main (int argc, char **argv, char **envp))`
+2. By calling the environ global varialbe `extern char **environ`
+
+If we were allowed to use functions that can actually alter environment variables such as `putenv` `setenv` and `unsetenv`, the second option (using the extern global variable *environ*) would be great. But, the only function we're allowed to use related to environment variables is `getenv`, and we also have a limit on the global variables that we can use (just one), which is why we chose to duplicate this array of strings (in a linked list for easier setting and unsetting of variables).
+
+___
+
+### 4. Signals
+
 
 ___
 
