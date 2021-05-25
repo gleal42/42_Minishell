@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 10:37:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/17 10:57:28 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/25 11:23:43 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@
 ** @param:	- [const char *] the unchanged line entered in stdin
 ** @return:	[t_ast *] struct with a list of cmd_tables
 ** Line-by-line comments:
-** @10		We pass down the reference of the curr_pos to keep track of the
+** @11		We pass down the reference of the curr_pos to keep track of the
 ** 			parsing executed by every subsequent function
-** @14		In exec_ast(), we'll want to execute the cmd_table in entering order
+** @15		In exec_ast(), we'll want to execute the cmd_table in entering order
 **			so we need to add to the back each new cmd_table
 */
 
@@ -54,12 +54,11 @@ t_ast	*get_ast(const char *input)
 ** @return:	[t_cmd_table *] struct with list of simple cmds and the delimiter
 **							that seperates this cmd_table from the next
 ** Line-by-line comments:
-** @14-15	If the delimiter is '|', it means we just got a simple command
-**			and we are about to get a new one. So we increment curr_pos and we
-**			continue parsing
+** @14-15	If the next character is '|' then it means there is another simple
+**			command. But "||" would mean that the cmd_table would be over. In
+** 			the case of "||" is will be flagged by is_cmd_table_delimiter()
 **			All error handling is done before by is_input_valid() so we don't
 **			need to be on the lookout for bad syntax
-** @16-21	If the delimiter is ';', the current cmd_table is finished
 */
 
 t_cmd_table	*get_cmd_table(const char *input, int *curr_pos)
@@ -93,9 +92,9 @@ t_cmd_table	*get_cmd_table(const char *input, int *curr_pos)
 ** @return:	[t_cmd *] struct with a list of tokens and a list of redirection
 ** 					  in order of entering
 ** Line-by-line comments:
-** @7-8		Parse until simple command is finished (i.e. '\0', ';' or '|')
-** @10		If not '>' or '<', then it's a token
-** @17		If '>' or '<', then it's a redirection
+** @7		Parse until simple command is finished (i.e. '\0', ';' or '|')
+** @9		If not '>' or '<', then it's a token
+** @16		If '>' or '<', then it's a redirection
 */
 
 t_cmd	*get_cmd(const char *input, int *curr_pos)
@@ -162,28 +161,17 @@ t_redir	*get_redir(const char *input, int *curr_pos)
 /*
 ** Gets a token, which represents one argument in the cmd_line. It can
 ** either be a word or a string of words if quotes are used.
+** Example of single valid tokens:
+** - hello
+** - "$TERM"'$PATH'hello1"hel'lo2"'hel"lo3'
+** - hello1"hel'lo2"'hel"lo3'"$TERM"'$PATH'
 ** @param:	- [const char *] the unchanged line entered in stdin
 **			- [int *] the current parsing position within the input  
-** @return:	[t_token *] a struct with a str and a char delimiter
+** @return:	[char *] a str representing a single token like a program name or
+**					 program argument
 ** Line-by-line comments:
-** @7		The delimiter can be a space, single or double quotes.
-**			get_token_delimiter() increments curr_pos if a quotes is found so that
-**			the token starts after the quotes
-** @8		We need to save the beginning of the token so that we can extract
+** @4		We need to save the beginning of the token so that we can extract
 **			the string once we have found the end of the token
-** @11-12	The token is a string of words because a quote has been found
-**			by get_token_delimiter(). So we parse while we haven't found it's matching
-**			quote (either single or double)
-** @13-14	The token is a word and will be finished when we find a delimiter
-**			(' ', ';', '|', '<' or '>')
-** @20-21	We need to do one last increment of curr_pos if we were dealing with
-**			quotes, otherwise next time get_token() will be called it will
-**			process the closing quotes of this token as the opening ones of the
-**			next token
-** 22-23	If the delimiter is a space, a valid input would be:
-**			hello"wor'ld"'te"st'
-**			This input needs to represent 1 single token and be interpreted as:
-**			hellowor'ldte"st
 */
 
 char	*get_token(const char *input, int *curr_pos)

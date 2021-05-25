@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/24 16:54:06 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/25 10:21:36 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct s_ast
 ** [int nb_cmds] number of simple commands in cmds linked list]
 ** [int **pipes] 2D array of ints. Each subarray is a pipe
 ** [t_list *pids] linked list of pid. Works as a queue / FIFO data structure.
-** Each time we fork(), we add a node at the beginning. We wait on dead child
+** Each time we fork(), we add a node at the back. We wait on dead child
 ** processses as long the queue is not empty
 ** [int return_value] return value of this specific command table. We also have
 ** t_msh an exit_status field for that intent. But we need to make sure we don't

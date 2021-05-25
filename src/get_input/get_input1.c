@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 15:23:20 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/18 16:14:55 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/25 10:51:06 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,8 @@
 **			characters was stored
 **			Because of bit encoding (I think), extended ASCII characters
 **			(e.g. é, @) take 2 bytes instead of 1
-** 			When user presses ctrl-b without any characters in stdin we need to
-			prevent bug where ctrl-b gets recognized as character and tries to
-			write to STDOUT
+**			Ctrl + <letter> may cause unexpected behaviours, is_ctrl() makes
+**			the only ctrl combinaision's allowed are ctrl - c and ctrl - d
 ** @17-18	When user presses ctrl-c, End of Text (ASCII code 3) is sent to
 **			buffer. The expected behaviour is to write "^C" to stdout and reset
 **			the command line

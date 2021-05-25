@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 09:25:18 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/18 16:00:48 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/25 10:26:47 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,23 @@
 ** @param:	- [char **] NULL-terminated array of strings with the tokens
 **			- [char **] NULL-terminated array of string with the environment
 **						variables
+**			- [int] number of commands in current cmd_table
 **			- [int **] 2D array of ints. Each subarray is a pipe
-**			- [int] index of the current process
-** @return:	[type] return_value
 ** Line-by-line comments:
-** @3		We need to close all the pipes in the child process because:
+** @4		We need to close all the pipes in the child process because:
 **			- we already changed the stdout and stdin inside set_redirs_pipes()
 **			- all pipes opened in parent process are also considered open in
 **			child BUT closing them in child doesn't close them in parent
-** @11		We need to add the PATH of the executable
+** @12		We need to add the PATH of the executable
 **			If valid executable:
 **			- "ls" -> "/bin/ls"
 **			- "go" -> "/usr/local/go/bin/go"
 **			If invalid executable, the program name is just duplicated
-** @12		If execve call is successful, the following lines are never executed
+** @13		If execve call is successful, the following lines are never executed
 **			because the child process will kill itself when finished
-** @13-14	We have to write "command not found" unless it's exit because if
+** @16-17	We have to write "command not found" unless it's exit because if
 **			a exit command reached here, it means it wasn't a valid exit use
-** @19		130 error code for specifically when command not found
+** @24		127 error code for specifically when command not found
 */
 
 void	exec_child(char **tokens, char **envp, int nb_cmds, int **pipes)

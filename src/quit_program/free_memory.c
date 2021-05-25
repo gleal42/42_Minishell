@@ -1,16 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_ast.c                                         :+:      :+:    :+:   */
+/*   free_memory.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/30 10:23:00 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/16 18:46:27 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/25 11:25:40 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "free_ast.h"
+#include "free_memory.h"
+
+/*
+** Frees the memory of base struct
+** @param:	- [t_msh *] base struct of the program
+** Line-by-line comments:
+** @1-2		Both input_history and dup_envp only have strings as nodes so
+** 			passing free is enough
+** @3-4		But ast is a struct so we had to get a bit fancy
+*/
+
+void	free_msh(t_msh *msh)
+{
+	ft_dlstclear(&msh->input_history, free);
+	ft_lstclear(&msh->dup_envp, free);
+	if (msh->ast != 0)
+		free_ast(msh->ast);
+}
 
 /*
 ** Frees the Abstract Syntax Tree struct

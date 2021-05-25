@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 10:26:41 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/18 15:49:27 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/25 11:06:08 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,6 @@ char	*ft_strstr_quotes(char *str, char *to_find)
 **			We don't care about double quotes if single quotes are open because
 **			it will all be part of the token enclosed by the single quotes
 ** @10-11	Exact same logic as for the double quotes
-** @12-13	If we have the input:
-**			echo "hello world"'this is a test'
-**			it won't break after finishing the first set of double quotes
-**			But if we have the input:
-**			echo "hello world" 'this is a test'
-**			it will break because there is a space
 */
 
 void	skip_quotes(const char *input, int *curr_pos)
@@ -99,6 +93,16 @@ void	skip_spaces(const char *input, int *curr_pos)
 		(*curr_pos)++;
 }
 
+/*
+** Skips all letters. Considers $PATH in $PATH$TERM as it's own string.
+** Same for /bin in /bin/ls
+** @param:	- [const char *] the unchanged line entered in stdin
+**			- [int *] the current parsing position within the input  
+** Line-by-line comments:
+** @1-2		If first character is $ or / then we are in the case of an
+** 			environment variable or an absolute path
+*/
+
 void	skip_letters(const char *input, int *curr_pos)
 {
 	if (input[*curr_pos] == '$' || input[*curr_pos] == '/')
@@ -118,7 +122,6 @@ void	skip_letters(const char *input, int *curr_pos)
 ** $ echo hello"wor'ld"'te"st'
 ** hellowor'ldte"st
 ** @param:	- [char *] the token extracted from the input
-** @return:	[type] return_value
 ** Line-by-line comments:
 ** @8-23	We are parsing the token to look for matching quotes within the
 ** 			token. Each time we find a matching quote (either the first time

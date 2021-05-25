@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/16 22:01:55 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/24 18:08:27 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/25 10:02:08 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int	get_new_token_size(t_list *split_token)
 	size = 0;
 	while (split_token)
 	{
-		token = (const char *)split_token->data;
+		token = split_token->data;
 		size += ft_strlen(token);
 		split_token = split_token->next;
 	}
@@ -109,8 +109,8 @@ int	get_new_token_size(t_list *split_token)
 /*
 ** Replaces an environment variable when only $ENV. We need to have an edge case
 ** for this because when $ENV is used without quotes spaces are not to be
-** printed (I know, I know, one more edge case. Don't worry, it won't be the
-** last)
+** printed (I know, I know, one more edge case. Fear not, it won't be the
+** last...)
 ** @param:	- [char **] token to replace
 */
 

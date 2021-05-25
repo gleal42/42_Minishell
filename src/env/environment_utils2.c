@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 22:04:11 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/24 17:29:33 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/25 11:27:02 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	replace_string(char *src, char **dest)
 **			./minishell
 */
 
-void	increase_shlvl(void)
+void	increment_shlvl(void)
 {
 	char	*cur_lvl;
 	int		lvl_nbr;
