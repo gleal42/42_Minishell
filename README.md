@@ -33,8 +33,8 @@ ___
 1. Extracting Information
 2. Parsing - Abstract Synthax Tree
 3. Environment Variables
-4. Signals
-5. Termcaps
+4. Termcaps
+5. Signals
 6. Remaking the builtins
 7. Running other executables from our terminal
    - Library executables (e.g. cat, ls)
@@ -144,8 +144,16 @@ If we were allowed to use functions that can actually alter environment variable
 
 ___
 
-### 4. Signals
+### 5. Termcaps
 
+> **Sources**
+> 
+> https://man7.org/linux/man-pages/man3/isatty.3.html
+> https://stackoverflow.com/questions/36258224/what-is-isatty-in-c-for/36258471
+
+Termcaps stands for terminal capabilities. This 1992 Library is not easy to understand! Shout out to **[Dimitri](https://github.com/DimitriDaSilva)** for taming this monster.
+
+isatty is a function that serves as protection, checking if the standard input is pointing to our terminal (which is usually the case for 0, 1 and 2 file descriptors). This is important because we will use the STDIN fd in many termcaps functions.
 
 ___
 
