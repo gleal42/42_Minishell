@@ -153,7 +153,11 @@ ___
 
 Termcaps stands for terminal capabilities. This 1992 Library is not easy to understand! Shout out to **[Dimitri](https://github.com/DimitriDaSilva)** for taming this monster.
 
-isatty is a function that serves as protection, checking if the standard input is pointing to our terminal (which is usually the case for 0, 1 and 2 file descriptors). This is important because we will use the STDIN fd in many termcaps functions.
+As an old library, it has many and very complicated steps in order to work:
+
+First we protect the standard input:
+`if (!isatty(STDIN_FILENO))`
+isatty is a function that checks if the standard input is pointing to our terminal (which is usually the case for 0, 1 and 2 file descriptors). This is important because we will use the STDIN fd in many termcaps functions. If it is not valid it is important to identify this error as soon as possible to display the correct error message (using the appropriate errno).
 
 ___
 
