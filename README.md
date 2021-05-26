@@ -149,15 +149,43 @@ ___
 > **Sources**
 > 
 > https://man7.org/linux/man-pages/man3/isatty.3.html
+> https://www.mkssoftware.com/docs/man5/struct_termios.5.asp
 > https://stackoverflow.com/questions/36258224/what-is-isatty-in-c-for/36258471
+> https://linux.die.net/man/3/tcgetattr
+> https://linux.die.net/man/3/tgetent
+> https://man7.org/linux/man-pages/man5/termcap.5.html
 
-Termcaps stands for terminal capabilities. This 1992 Library is not easy to understand! Shout out to **[Dimitri](https://github.com/DimitriDaSilva)** for taming this monster.
+Termcaps stands for terminal capabilities. This 1992 Library is not easy to understand! Shout out to **[Dimitri](https://github.com/DimitriDaSilva)** for taming this monster. In the following summary I'm basically just bringing all of Dimitri's code comments together. 
 
 As an old library, it has many and very complicated steps in order to work:
 
-First we protect the standard input:
+1. Protect the standard input:
+
 `if (!isatty(STDIN_FILENO))`
+
 isatty is a function that checks if the standard input is pointing to our terminal (which is usually the case for 0, 1 and 2 file descriptors). This is important because we will use the STDIN fd in many termcaps functions. If it is not valid it is important to identify this error as soon as possible to display the correct error message (using the appropriate errno).
+
+2. Save terminal settings before we change them using tcgetattr.
+The settings are saved in a struct termios
+
+```
+struct termios {
+	tcflag_t c_iflag;
+	tcflag_t c_oflag;
+	tcflag_t c_cflag;
+	tcflag_t c_lflag;
+	cc_t c_cc[NCCS];
+	speed_t c_ispeed;
+	speed_t c_ospeed;
+};
+```
+
+3. Check if our terminal has all the capabilities we need in our program using tgetent for the following capabilities
+
+   1.  keys_on (recnognize arrows)
+   2.  keys_off
+
+4. Make arrow keys print their ANSII code using tputs (so that we can create specific functions to react to these).
 
 ___
 
