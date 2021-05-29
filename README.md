@@ -152,14 +152,16 @@ ___
 > https://www.mkssoftware.com/docs/man5/struct_termios.5.asp
 > https://stackoverflow.com/questions/36258224/what-is-isatty-in-c-for/36258471
 > https://linux.die.net/man/3/tcgetattr
-> https://linux.die.net/man/3/tgetent
+> ibm.com/docs/en/aix/7.2?topic=library-understanding-terminals-curses
 > https://man7.org/linux/man-pages/man5/termcap.5.html
+> https://pubs.opengroup.org/onlinepubs/7990989799/xcurses/terminfo.html
+
 
 Termcaps stands for terminal capabilities. This 1992 Library is not easy to understand! Shout out to **[Dimitri](https://github.com/DimitriDaSilva)** for taming this monster. In the following summary I'm basically just bringing all of Dimitri's code comments together. 
 
 As an old library, it has many and very complicated steps in order to work:
 
-1. Protect the standard input:
+1. Protect the standard input file descriptor:
 
 `if (!isatty(STDIN_FILENO))`
 
@@ -179,14 +181,19 @@ struct termios {
 	speed_t c_ospeed;
 };
 ```
+3. Using the tgetent function we check if there is a terminfo database (database with all terminal capabilities) for the TERM environment variable in our envp array and load the functions internally, so that the tgetstr function works.
 
-3. Check if our terminal has all the capabilities we need in our program using tgetent for the following:
+4. We use tgetstr to check and save in a struct and tputs to activate the following capabilities:
 
-   1.	
-   2. keys_on (recnognize arrows)
-   3. keys_off
+	 1. We save ks -> keys_on (Transmit numpad/arrows). We we imediately use tputs to activate this functionality to output an ANSI code when these keys are pressed.
+   2. We check and save ke -> keys_off capability that is the opposite of the previous capability so that we can activate it with (tputs) in order to quit the program correctly. Nothing happens when we turn it off but this way the terminal has exactly the same settings as when it started.
+   3. The arrows and backspace ANSII code might also change from terminal to terminal so we need to check and save the key up (ku) key down (kd) key backspace (kb) characters in order to be compared with the ones read from the standard input.
+   4. In order to reset the line we are also using the capabilities to delete the standard output (delete line "dl"). And, in case the cursor doesn't reset we use the "cr" capability to place it in the beginning of the current line. VSCode's and linux's terminals automatically reset the cursors but on the 42 MAC's it has to be done manually (we found out the hard way).
 
-4. Make arrow keys print their ANSII code using tputs (so that we can create specific functions to react to these).
+5. We change the terminal settings while reading the standard input:
+I think a great way to illustrate why we need to do this is if you use the command `cat` with no commands.
+You can write as much as you want but it will only print a copy to the standard output once you press enter.
+This is how our terminal is working in the beginning.
 
 ___
 
