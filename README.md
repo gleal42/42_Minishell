@@ -180,10 +180,11 @@ struct termios {
 };
 ```
 
-3. Check if our terminal has all the capabilities we need in our program using tgetent for the following capabilities
+3. Check if our terminal has all the capabilities we need in our program using tgetent for the following:
 
-   1.  keys_on (recnognize arrows)
-   2.  keys_off
+   1.	
+   2. keys_on (recnognize arrows)
+   3. keys_off
 
 4. Make arrow keys print their ANSII code using tputs (so that we can create specific functions to react to these).
 
