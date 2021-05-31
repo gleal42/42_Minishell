@@ -156,7 +156,10 @@ ___
 > https://man7.org/linux/man-pages/man5/termcap.5.html
 > https://pubs.opengroup.org/onlinepubs/7990989799/xcurses/terminfo.html
 > https://www.gnu.org/software/libc/manual/html_node/Canonical-or-Not.html
+> https://pubs.opengroup.org/onlinepubs/7908799/xbd/termios.html
 > https://smnd.sk/anino/programming/c/glibc-manual-0.02/library_16.html
+> https://www.gnu.org/software/libc/manual/html_node/Noncanonical-Input.html
+> https://www.ibm.com/docs/en/aix/7.2?topic=files-termiosh-file
 > https://unix.stackexchange.com/questions/137842/what-is-the-point-of-ctrl-s
 
 
