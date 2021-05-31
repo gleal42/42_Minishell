@@ -155,9 +155,12 @@ ___
 > ibm.com/docs/en/aix/7.2?topic=library-understanding-terminals-curses
 > https://man7.org/linux/man-pages/man5/termcap.5.html
 > https://pubs.opengroup.org/onlinepubs/7990989799/xcurses/terminfo.html
+> https://www.gnu.org/software/libc/manual/html_node/Canonical-or-Not.html
+> https://smnd.sk/anino/programming/c/glibc-manual-0.02/library_16.html
+> https://unix.stackexchange.com/questions/137842/what-is-the-point-of-ctrl-s
 
 
-Termcaps stands for terminal capabilities. This 1992 Library is not easy to understand! Shout out to **[Dimitri](https://github.com/DimitriDaSilva)** for taming this monster. In the following summary I'm basically just bringing all of Dimitri's code comments together. 
+Termcaps stands for terminal capabilities. This 1992 Library is not easy to understand! Shout out to **[Dimitri](https://github.com/DimitriDaSilva)** for taming this monster. In this chapter I will summarize Dimitri's code comments and the main concepts. To better understand each function please read the comments in the code. 
 
 As an old library, it has many and very complicated steps in order to work:
 
@@ -190,10 +193,35 @@ struct termios {
    3. The arrows and backspace ANSII code might also change from terminal to terminal so we need to check and save the key up (ku) key down (kd) key backspace (kb) characters in order to be compared with the ones read from the standard input.
    4. In order to reset the line we are also using the capabilities to delete the standard output (delete line "dl"). And, in case the cursor doesn't reset we use the "cr" capability to place it in the beginning of the current line. VSCode's and linux's terminals automatically reset the cursors but on the 42 MAC's it has to be done manually (we found out the hard way).
 
-5. We change the terminal settings while reading the standard input:
+5. We change the terminal settings to change the way our read loop interprets the standard input and signals:
+
 I think a great way to illustrate why we need to do this is if you use the command `cat` with no commands.
 You can write as much as you want but it will only print a copy to the standard output once you press enter.
-This is how our terminal is working in the beginning.
+This is how our terminal is working in the beginning. Input is only interpreted if the read function finds a new_line.
+However, when we press arrow up and down we want our terminal to interpret those characters, in order to navigate through our double linkedlist with the previously saved input.
+
+The way that settings are changed is through bitwise operations:
+
+| Initial settings(illustrative example) | 1 | 1 | 1 | 0 |
+| ---------------- | - | - | - | - |
+| ICANON (canonycal mode mask)| 0 | 1 | 0 | 0 |
+| ~ICANON (inverted mask)| 1 | 0 | 1 | 1 |
+| Init. Set &= ~ICANON | 1 | 0 | 1 | 0 |
+
+Summing up:
+
+~ is the BITWISE NOT operator inverts all bits
+&= works exactly like a Mask in [Digital Art](https://www.youtube.com/watch?v=sbS5oUuGbGY):
+- If mask is 0 then original value becomes 0.
+- If mask is 1 then the original value doesn't change.
+
+Okay, applying this logic we change several settings:
+
+- Turn off canonycal processing ICANON
+- Turn off local echo (we will have to write to standard output manually in order to see which characters were typed). ECHO
+- Turn off specific signals (ctrl-c (SIGINT) and ctrl-z (SIGSTOP)) ISIG
+- Turn off ^V chracter (otherwise an invisible character would be written (double enter needed). IEXTEN
+- Turn off ctrl-s and ctrl-q, which could have really negative consequences. IXON
 
 ___
 
