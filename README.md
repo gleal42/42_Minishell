@@ -34,16 +34,17 @@ ___
 2. Parsing - Abstract Synthax Tree
 3. Environment Variables
 4. Termcaps
-5. Signals
-6. Remaking the builtins
-7. Running other executables from our terminal
+5. Remaking the builtins
+6. Running other executables from our terminal
    - Library executables (e.g. cat, ls)
    - Assynchronous Vs Synchronous (Pros, cons and our hybrid approach)
+7. Signals
 8. Pipes and Redirections
    - Pipes
    - Redirection
    - Combining our executables with builtin functions
 9. Using Github Branches.
+
 ___
 
 ### 1. Extracting Information
@@ -228,15 +229,39 @@ Okay, applying this logic we change several settings:
 - Read returns after single byte `termcaps->new_term.c_cc[VMIN] = 1;`
 - Input waits 0 decisseconds before processing the read. `termcaps->new_term.c_cc[VTIME] = 0;` 
 
+We then use `tcsetattr` to apply the new settings to our terminal.
+
 6. We can now extract the input using the new settings and terminal capabilities:
 	 1. We create a `char *buf[8192]` buffer to use in the read and write functions
 	 2. We use ft_bzero to fill it with `0` to make sure that the string read is always null terminated.
-	 3. We read 1-3 bytes at time because some extended ASCII characters, which can take up more than 1 byte.
-	 4. We create different functions for each possible characters:
-	 		-  
-
-
+	 3. We read 1-2 bytes at time because some extended ASCII characters, which can take up more than 1 byte.
+	 4. We create different functions for each possible character:
+			- `delete_single_char` will replace the last character with a `\0` and write it in the STDIO.
+			- `parse_input_history` will clean current standard output and buffer, re-write the prompt and go through the double linkedlist, copy all characters of each command table to the buffer and write it in the STDIO.
+			- `reset_cmd_line` - Replicate the ctrl-c behaviour
+			- `exit_program` - Replicate the ctrl-d behaviour
+			- Protect against printing invisible characters
+			- Write all the other ASCII characters
+	 5. If we find a line break we duplicate the buffer (allocating heap memory) and return it so it can be saved in the double linked list.
+7. We reset the terminal setting to the original ones using `tcsetattr` with the termios struct we saved previously in `termcaps->old_term` in case we execute a different function that requires input (e.g. cat) in order for these to work normally.
+8. We continue with parsing and execution (parsing described before).
 ___
+
+### 7. Signals
+
+We were asked to handle the following:
+
+- CTRL-C
+- CTRL-D (which is not a signal)
+- CTRL-BACKSLASH
+
+Now that we've talked about builtins, executables and about our termcaps it will be easier to understand how these work which.
+
+The main issues that we must solve are that:
+- Ctrl-D since it's not a signal, but a character (EOF) we don't need to do anything else. We've already dealt with it on the [Extracting Information](src/parse/get_input1.c)
+- Our minishell is an executable. So if we send a SIGINT(CTRL-C) signal or SIGKILL (CTRL-\)
+After some testing it appears that if we use an executable like `cat` then the signal SIGINT will work despite the different signal_catchers in our program.
+
 
 ### Other Resources
 
