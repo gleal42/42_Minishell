@@ -224,7 +224,17 @@ Okay, applying this logic we change several settings:
 - Turn off local echo (we will have to write to standard output manually in order to see which characters were typed). ECHO
 - Turn off specific signals (ctrl-c (SIGINT) and ctrl-z (SIGSTOP)) ISIG
 - Turn off ^V chracter (otherwise an invisible character would be written (double enter needed). IEXTEN
-- Turn off ctrl-s and ctrl-q, which could have really negative consequences. IXON
+- Turn off ctrl-s and ctrl-q, which were created in the time of teleprinters to make sure that the printers had time to physically print (in a paper) the code sent by the terminal. Obviously we won't need this feature because we don't print our code. We just post it on Github. IXON
+- Read returns after single byte `termcaps->new_term.c_cc[VMIN] = 1;`
+- Input waits 0 decisseconds before processing the read. `termcaps->new_term.c_cc[VTIME] = 0;` 
+
+6. We can now extract the input using the new settings and terminal capabilities:
+	 1. We create a `char *buf[8192]` buffer to use in the read and write functions
+	 2. We use ft_bzero to fill it with `0` to make sure that the string read is always null terminated.
+	 3. We read 1-3 bytes at time because some extended ASCII characters, which can take up more than 1 byte.
+	 4. We create different functions for each possible characters:
+	 		-  
+
 
 ___
 
