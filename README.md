@@ -32,7 +32,7 @@ ___
 
 1. Extracting Information
 2. Parsing - Abstract Synthax Tree
-3. Environment Variables
+3. [Environment Variables](#environment-variables)
 4. Termcaps
 5. Remaking the builtins
 6. Running other executables from our terminal
@@ -47,7 +47,7 @@ ___
 
 ___
 
-### 1. Extracting Information
+### Extracting Information
 
 A minishell (in it's simplest form) will extract a full line (breaking the while loop when it reaches `\n`) and analyzing it.
 To follow the initial logic, just imagine we're using get_next_line, saving each line. We will see later that, in order to use the arrows to navigate history we will have to modify the get_next_line function to allow us to deploy different functions when the arrows characters are pressed. These, modifications will be described in the Termcaps section.
@@ -109,7 +109,7 @@ I recommend that you check our [parse](src/parse/parse.c) and [structs](src/stru
 
 ___
 
-### 3. Environment Variables
+### Environment Variables
 
 > **Sources**
 > 
@@ -258,7 +258,7 @@ We were asked to handle the following:
 Now that we've talked about builtins, executables and about our termcaps it will be easier to understand how these work which.
 
 The main issues that we must solve are that:
-- Ctrl-D since it's not a signal, but a character (EOF) we don't need to do anything else. We've already dealt with it on our [termcaps](https://github.com/gleal42/42_Minishell/blob/beautiful_readme/README.md#L234)
+- Ctrl-D since it's not a signal, but a character (EOF) we don't need to do anything else. We've already dealt with it on our [termcaps](# termcaps)
 - Our minishell is an executable. So if we send a SIGINT(CTRL-C) signal or SIGKILL (CTRL-\)
 After some testing it appears that if we use an executable like `cat` then the signal SIGINT will work despite the different signal_catchers in our program.
 
