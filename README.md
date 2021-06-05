@@ -264,17 +264,38 @@ Now that we've talked about builtins, executables and about our termcaps it will
 
 The main issues that we must solve are that:
 - Ctrl-D since it's not a signal, but a character (EOF) we don't need to do anything else. We've already dealt with it on our [Termcaps](#5-termcaps) section.
-- Our minishell is an executable. So if we send a SIGINT(CTRL-C) signal or SIGQUIT (CTRL-\) it will self-quit the program. In our termcaps, while we're reading in non-canonycal mode, we already stop signals from doing this. But if we were to start a cat or sleep and pressed ctrl-c/ or ctrl-\ we would exit both the cat /sleep executable as well as the minishell itself (not what we want).
+- Our minishell is an executable. So if we send a SIGINT(CTRL-C) signal or SIGQUIT (CTRL-\) it will self-quit the program. In our termcaps, while we're reading in non-canonycal mode, we already stop signals from doing this and print the correct messages in this case:
+	- Ctrl-C it will print ^C and a linebreak
+	- Ctrl-\ it will do nothing 
+
+-  But if we were to start a cat or sleep and pressed ctrl-c/ or ctrl-\ we would exit both the cat /sleep executable as well as the minishell itself (not what we want).
 - So we have to create signal catchers that will replace the "quitting" behaviour from this signals.
+These catchers are made with the `signal` function, which redirects the signals to a specific function that we can define.
+After some testing it appears that if we use an executable like `cat` then the signals SIGINT and SIGQUIT will continue to quit all the executables.
 
-These catchers are made with the `signal` function, which redirects the signal to a specific function.
+It will also print the `^C` character for Ctrl-C and not print anything for Ctrl-\) despite the different signal_catchers in our program.
 
-After some testing it appears that if we use an executable like `cat` then the signal SIGINT will quit that executable.
-This is great. 
-It also print the `^C` character for Ctrl-C and not print anything for Ctrl-\) despite the different signal_catchers in our program. 
+So the messages we will need to print are:
+- Ctrl-C just a linebreak `\n`
+- Ctrl-\ the standard message: `Quit: 3\n`
 
+**Warning**
 
-This means that we only have to worry about printing the correct message
+If you're using a waitpid synchronously (meaning that if you write `sleep 4 | sleep 5`, then the process for the second sleep will only fork once the first sleep is finished. Then the signals will not work as expected. What I suggest is that you either change it to asynchronous (how we have it) or:
+
+```
+	else if (pid == 0)
+	{
+		if (g_msh.exit_status == 3 && process_index != 0)
+		{
+			if (process_index == nb_cmds - 1)
+				printf("Quit: 3\n");
+			signal(SIGQUIT, SIG_DFL);
+			kill(0, SIGQUIT);
+		}
+```
+So basically our signal will quit or interrupt the first process. But for the remaining we will have to do it manually.
+We count the number of commands in the command table and we use a index to send the `SIGQUIT` signal the right amount of times. To send the sigquit signal without having to click the ctrl-\ we use the function `kill`. Kill is not just used to kill processes but to send all signals.
 
 
 ### Other Resources
