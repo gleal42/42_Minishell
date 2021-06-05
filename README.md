@@ -30,15 +30,15 @@ ___
 
 ### Main challenges
 
-1. Extracting Information
-2. Parsing - Abstract Synthax Tree
-3. [Environment Variables](#environment-variables)
-4. Termcaps
+1. [Extracting Information](#1-extracting-information)
+2. [Parsing - Abstract Synthax Tree](2-parsing---abstract-synthax-tree)
+3. [Environment Variables](#3-environment-variables)
+4. [Termcaps](#5-termcaps)
 5. Remaking the builtins
 6. Running other executables from our terminal
    - Library executables (e.g. cat, ls)
    - Assynchronous Vs Synchronous (Pros, cons and our hybrid approach)
-7. Signals
+7. [Signals](#7-signals)
 8. Pipes and Redirections
    - Pipes
    - Redirection
@@ -47,7 +47,7 @@ ___
 
 ___
 
-### Extracting Information
+### 1. Extracting Information
 
 A minishell (in it's simplest form) will extract a full line (breaking the while loop when it reaches `\n`) and analyzing it.
 To follow the initial logic, just imagine we're using get_next_line, saving each line. We will see later that, in order to use the arrows to navigate history we will have to modify the get_next_line function to allow us to deploy different functions when the arrows characters are pressed. These, modifications will be described in the Termcaps section.
@@ -109,7 +109,7 @@ I recommend that you check our [parse](src/parse/parse.c) and [structs](src/stru
 
 ___
 
-### Environment Variables
+### 3. Environment Variables
 
 > **Sources**
 > 
@@ -249,6 +249,11 @@ ___
 
 ### 7. Signals
 
+> **Sources**
+> 
+> https://man7.org/linux/man-pages/man2/signal.2.html
+> https://man7.org/linux/man-pages/man7/signal.7.html
+
 We were asked to handle the following:
 
 - CTRL-C
@@ -258,9 +263,18 @@ We were asked to handle the following:
 Now that we've talked about builtins, executables and about our termcaps it will be easier to understand how these work which.
 
 The main issues that we must solve are that:
-- Ctrl-D since it's not a signal, but a character (EOF) we don't need to do anything else. We've already dealt with it on our [termcaps](# termcaps)
-- Our minishell is an executable. So if we send a SIGINT(CTRL-C) signal or SIGKILL (CTRL-\)
-After some testing it appears that if we use an executable like `cat` then the signal SIGINT will work despite the different signal_catchers in our program.
+- Ctrl-D since it's not a signal, but a character (EOF) we don't need to do anything else. We've already dealt with it on our [Termcaps](#5-termcaps) section.
+- Our minishell is an executable. So if we send a SIGINT(CTRL-C) signal or SIGQUIT (CTRL-\) it will self-quit the program. In our termcaps, while we're reading in non-canonycal mode, we already stop signals from doing this. But if we were to start a cat or sleep and pressed ctrl-c/ or ctrl-\ we would exit both the cat /sleep executable as well as the minishell itself (not what we want).
+- So we have to create signal catchers that will replace the "quitting" behaviour from this signals.
+
+These catchers are made with the `signal` function, which redirects the signal to a specific function.
+
+After some testing it appears that if we use an executable like `cat` then the signal SIGINT will quit that executable.
+This is great. 
+It also print the `^C` character for Ctrl-C and not print anything for Ctrl-\) despite the different signal_catchers in our program. 
+
+
+This means that we only have to worry about printing the correct message
 
 
 ### Other Resources
