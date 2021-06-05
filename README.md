@@ -283,6 +283,8 @@ So the messages we will need to print are:
 
 If you're using a waitpid synchronously (meaning that if you write `sleep 4 | sleep 5`, then the process for the second sleep will only fork once the first sleep is finished. Then the signals will not work as expected. What I suggest is that you either change it to asynchronous (how we have it) or:
 
+
+
 ```
 	else if (pid == 0)
 	{
@@ -297,6 +299,7 @@ If you're using a waitpid synchronously (meaning that if you write `sleep 4 | sl
 So basically our signal will quit or interrupt the first process. But for the remaining we will have to do it manually.
 We count the number of commands in the command table and we use a index to send the `SIGQUIT` signal the right amount of times. To send the sigquit signal without having to click the ctrl-\ we use the function `kill`. Kill is not just used to kill processes but to send all signals.
 
+Check commit 9e39fc1337f797ac41d4312fd95c162dc8209c58 for first implementation of this previous signal code.
 
 ### Other Resources
 
