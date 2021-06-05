@@ -258,7 +258,7 @@ We were asked to handle the following:
 Now that we've talked about builtins, executables and about our termcaps it will be easier to understand how these work which.
 
 The main issues that we must solve are that:
-- Ctrl-D since it's not a signal, but a character (EOF) we don't need to do anything else. We've already dealt with it on the [Extracting Information](src/parse/get_input1.c)
+- Ctrl-D since it's not a signal, but a character (EOF) we don't need to do anything else. We've already dealt with it on our [termcaps](https://github.com/gleal42/42_Minishell/blob/beautiful_readme/README.md#L234)
 - Our minishell is an executable. So if we send a SIGINT(CTRL-C) signal or SIGKILL (CTRL-\)
 After some testing it appears that if we use an executable like `cat` then the signal SIGINT will work despite the different signal_catchers in our program.
 
