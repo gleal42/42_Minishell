@@ -33,17 +33,19 @@ ___
 1. [Extracting Information](#1-extracting-information)
 2. [Parsing - Abstract Synthax Tree](2-parsing---abstract-synthax-tree)
 3. [Environment Variables](#3-environment-variables)
-4. [Termcaps](#5-termcaps)
-5. Remaking the builtins
-6. Running other executables from our terminal
-   - Library executables (e.g. cat, ls)
-   - Assynchronous Vs Synchronous (Pros, cons and our hybrid approach)
-7. [Signals](#7-signals)
-8. Pipes and Redirections
+4. [Termcaps](#4-termcaps)
+5. [Execution](#5-execution)
+	 1. Remaking the builtins
+	 2. Running other executables from our terminal
+   		- Library executables (e.g. cat, ls)
+   3. Exit status ($?)
+   4. Assynchronous Vs Synchronous (Pros, cons and our hybrid approach)
+6. [Signals](#6-signals)
+7. Pipes and Redirections
    - Pipes
    - Redirection
    - Combining our executables with builtin functions
-9. Using Github Branches.
+8. Using Github Branches.
 
 ___
 
@@ -145,7 +147,7 @@ If we were allowed to use functions that can actually alter environment variable
 
 ___
 
-### 5. Termcaps
+### 4. Termcaps
 
 > **Sources**
 > 
@@ -247,7 +249,50 @@ We then use `tcsetattr` to apply the new settings to our terminal.
 8. We continue with parsing and execution (parsing described before).
 ___
 
-### 7. Signals
+### 5. Execution
+
+So now we're successfully extracting the text and categorizing it in different [structures](src/structs.h):
+**Command tables** are composed of commands which in turn are made of **tokens** and whose output or input can be redirected to or from files (**redirections**).
+
+As we previously mentioned, the first token of a command is used to identify the command itself and the following tokens are the arguments.
+
+In our assignement we are asked to recreate some standard library commands, while keeping the remaining commands working the same way.
+
+I'll first describe how we recreated the builtins, how we can execute `.o` files from our minishell (including the minishell itself), how we can call other library functions like `cat` `ls` or `sleep` and explain how our assynchronous approach recreates the terminal expected behaviour (including the exit status behaviour).
+
+### 5.1 Execution
+We were asked to remake the following builtins:
+
+- `echo` with option ’-n’
+- `cd` with only a relative or absolute path
+- `pwd` without any options
+- `export` without any options
+- `unset` without any options
+- `env` without any options and any arguments
+- `exit` without any options
+
+I'll just describe the main things to take into consideration and the allowed functions that we used:
+
+#### `echo` with option ’-n’
+
+It writes all the non-flag tokens to the standard input in order, separated by spaces, followed by a linebreak (`\n`)
+
+If user uses ’-n’ flag then the tokens are not followed by a linebreak.
+
+Edge Cases:
+
+```
+echo -nnnnnnn -nnnnnnn hello           baby
+hello babymsh →
+```
+```
+echo -na
+-na
+msh →
+```
+
+___
+### 6. Signals
 
 > **Sources**
 > 
