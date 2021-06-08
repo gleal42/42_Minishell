@@ -273,7 +273,7 @@ We were asked to remake the following builtins:
 
 I'll just describe the main things to take into consideration and the allowed functions that we used:
 
-#### `echo` with option ’-n’
+
 
 It writes all the non-flag tokens to the standard input in order, separated by spaces, followed by a linebreak (`\n`)
 
@@ -290,6 +290,66 @@ echo -na
 -na
 msh →
 ```
+
+```
+echo -nnnnn -na -nn
+-na -nnmsh →
+```
+As you can see, after echo, there can be multiple arguments indicating the -n flag, and only then there will come the arguments that will be printed out to the standard output. If the first argument is a valid flag then there won't be a line break printed after the arguments.
+
+#### `cd` with only a relative or absolute path
+
+>functions
+>
+>`char *getcwd(char *buf, size_t size)`
+>`int chdir(const char *path)`
+>`DIR *opendir(const char *name);`
+>`int closedir(DIR *dirp);`
+>`int stat(const char *path, struct stat *buf);`
+
+So maybe for cd we overcomplicated it a little bit and did a bit more than was asked.
+
+We considered:
+1. cd with no arguments
+2. cd with argument `-` (which changes to the previous directory)
+3. cd with relative path
+4. cd with absolute path
+
+Not only this but if our cd command is followed by a pipe `|`, then cd will not change directories BUT it will print error messages.
+
+We also considered this.
+So we could have cheated a little bit and try to use the same functions twice but in reverse but we have morals XD.
+So we had to gather the same error information and trigger the same errors without actually changing directories. 
+
+For cd with no pipes (actually changing directories)
+You just save the current directory you're in an array of characters using `getcwd(array of chars)`.
+Then you change directories using `chdir(first argument)`
+Finally, you update the environment variables `PWD` and `OLDPWD` with the previous and current directory.
+
+Now following this logic we can do 3 different things:
+
+1. cd with no arguments - retrieves the value from the environment variable `HOME` and uses it as the argument for the `chdir(char *path)` function.
+2. cd with argument `-` - retrieves the value from the environment variable `OLDPWD` and uses it as the argument for the `chdir(char *path)` function
+3. cd with any other argument - the argument will be used as the argument for the `chdir(char *path)`
+
+If the cd function is followed by a pipe:
+
+We will use the opendir function to check for errors, since it has similar validations as chdir.
+The only difference I found was that the permissions needed to open a directory are not the same as actually changing directories (I believe opening a directory is the read permission and changing directories inside is the executing permission).
+
+To check for this permission we use the function stat (path, &statbuf). It works similarly to the `tcgetattr` in the sense that it loads all information from the path given as argument into the statbuf struct. And then, to change and access the information inside, we need to use bit operations.
+In this case we just check the bits corresponsing to the execution permission of the path (`statbuf.st_mode & S_IXUSR`, which will be positive if the user has execution permission and zero if it doesn't).
+
+#### `pwd` without any options
+
+>functions
+>
+>`char *getcwd(char *buf, size_t size)`
+
+We just load the current path directory inside an array of chars using the same function we used in the cd function.
+
+#### `export` without any options
+
 
 ___
 ### 6. Signals
