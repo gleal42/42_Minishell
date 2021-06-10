@@ -35,9 +35,9 @@ ___
 3. [Environment Variables](#3-environment-variables)
 4. [Termcaps](#4-termcaps)
 5. [Execution](#5-execution)
-	 1. Remaking the builtins
-	 2. Running other executables from our terminal
-   		- Library executables (e.g. cat, ls)
+   1. Remaking the builtins
+   2. Running other executables from our terminal
+      - Library executables (e.g. cat, ls)
    3. Exit status ($?)
    4. Assynchronous Vs Synchronous (Pros, cons and our hybrid approach)
 6. [Signals](#6-signals)
@@ -518,17 +518,7 @@ When we type `sleep 5 | ls`. We are supposed to see the files in the current dir
 
 ls is executed right after sleep, not after sleep is finished.
 
-```
-if (fork() == 0)
-{
-	execve(path, argv, ennvp);
-}
-else
-{
-	waitpid()
-}
-```
-So, if we wanted to properly execute `sleep 5| ls`, in order to make sure that all executables of our command table get executed at the same time we could do (simplified code just for these executables):
+So, if we wanted to properly execute `sleep 5| ls`, in order to make sure that all executables of our command table get executed at the same time we could do (pseudo code for these executables):
 
 ```
 	pit_t pid[2];
@@ -538,26 +528,46 @@ So, if we wanted to properly execute `sleep 5| ls`, in order to make sure that a
 	{
 		pid[i] = fork();
 		if (pid == 0)
-			execve(exec_path, tokens, envp);
+			execve(exec_path, cmds->data->tokens, envp);
 		cmds = cmds->next;
 		i++;
 	}
-		i = 0;
-	if (pid > 0)
+	i = 0;
+	while (i < 2)
 	{
-		while (i < 2)
-		{
-			waitpid(pid[i])
-			i++;
-		}
+		waitpid(pid[i])
+		i++;
 	}
 ```
 
-What Dimitri came up with is an extremely clean and efficient way of making sure everything gets executed at the moment of execution.
+One important thing to note tis that we don't need to add `(if pid > 0)` because the child process ends in execve (waitpid is just collecting dead children).
+Sounds pretty dark, I know!
+
+But that's not the final implementation. Once we get to the exit status environment variable `$?`. I'll explain the genius way that Dimitri came up with in order to keep our program assynchronous (so that sleep 5 | ls) works, and synchronous (so that the correct exit status is returned).
+
+
 ___
 
 #### 5.3 Running library executables (e.g. cat, ls)
 
+If you type `echo $PATH` inside your bash you'll see something like:
+`/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin`
+
+These are a series of paths separated by colons (`:`).
+
+```
+/usr/local/bin
+/usr/bin:/bin
+/usr/sbin:/sbin
+/Library/Apple/usr/bin
+```
+In bash when you type `cat` or `ls`. The terminal will look for an executable (similar to the default `./a.out` from our programs) called `cat` inside each of the directories on the list, in the order that was provided.
+
+This is what we tried to emulate. We extract the value of the `PATH` variable from our linked list of environment variables, we run `ft_split` using `:` as a separator and then, we `ft_strjoin` the typed command `cat` to each one of the directories and see if it exists using the stat function:
+
+`if (stat(absolute_path, &statbuf) == EXIT_SUCCESS)`
+
+After we have a path to an executable, we can use execve, fork and waitpid functions in the way described before in the previous sub-chapter.
 
 ___
 
