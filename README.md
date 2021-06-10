@@ -350,6 +350,90 @@ We just load the current path directory inside an array of chars using the same 
 
 #### `export` without any options
 
+export without options can have 2 functionalities:
+
+1. If no arguments are provided it will print all assigned and unnassigned environment variables (I will show the difference in a bit).
+The printing message should follow the following pattern:
+
+**assigned environment variable 1**
+`declare -x VAR="2"`
+
+**assigned environment variable 1**
+`declare -x VAR=""`
+
+**unassigned environment variable** - export GREETING
+`declare -x VAR`
+
+Notice that the value (2) must be in-between quotes so it is important to make the distinction between
+
+Not only that but the environment variables shall be in alphabetical order (or in ASCII order in this case).
+We can achieve this with a `ft_lst_sort_str` function.
+
+2. export with multiple arguments shall follow this pattern:
+
+In this case we will need to add the arguments to the array of environment variables.
+Because we saved a duplicate in a linked list of strings we can do this simply with a `ft_lstadd_front` function.
+
+
+The input needs to follow the following pattern:
+
+1. **assigned environment variable** - `export GREETING=HELLO`
+2. **assigned environment variable** - `export GREETING=`
+3. **unassigned environment variable** - `export GREETING`
+
+You will also need to add some input validations like making sure that the environment variable doesn't have a digit, and display the correct error messages.
+
+#### `unset` without any options
+
+Similar logic to export.
+
+Input shall follow the following pattern: 
+`unset VAR`
+
+We conduct some input validation (e.g. `unset VAR=123` and `unset $VAR` are not valid).
+
+#### `env` without any options and any arguments
+
+Print all the assigned environment variables. 
+This means that if in our environment variable array we have:
+
+````
+VAR=HELLO
+OKAY=
+GREETING
+````
+
+Then `env` will print the following
+````
+VAR=HELLO
+OKAY=
+````
+(skip the unassigned GREETING environment variable).
+
+#### `exit` without any options
+
+exit with no arguments was easy to replicate.
+In this case we would only need to print `exit\n` to the program and use our `quit_program` function to exit the program with no memory leaks.
+
+But we were asked to replicate the behaviour of the special shell variable `$?`.
+This variable will save the exit status from the last executed function.
+In our case we can check this behaviour by typing:
+
+````
+bash
+bash
+
+exit 45
+echo $?
+45
+````
+By typing bash twice we would enter a bash inside our bash (bash-ception)
+By tiping `exit 45` we would set the exit status from the seconds bash to 45.
+So when we type `echo $?` we will see the value from that environment variable (`45`)
+
+But exit will behave differentely depending on the following arguments:
+
+- multiple arguments `exit 1 2`
 
 ___
 ### 6. Signals
