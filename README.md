@@ -433,7 +433,31 @@ So when we type `echo $?` we will see the value from that environment variable (
 
 But exit will behave differentely depending on the following arguments:
 
-- multiple arguments `exit 1 2`
+- if there are no arguments `exit`
+	- We will quit the program with the exit status from the last executed function.
+
+- if first argument is non-digit `exit sad` 
+	- We will need to print `numeric argument required\n` and exit with exit status 2 (EXIT_GENERAL_ERROR)
+
+- if there are multiple arguments `exit 1 2`
+	- We print error message for `too many arguments`and don't quit the program.
+
+- If there is only one numeric argument `exit 45`
+	- We will quit the program with the exit status of the argument, which is what happens in our example:
+````
+bash
+bash
+
+exit 45
+echo $?
+45
+````
+If there are multiple commands (`ls | exit 45`) then we will not quit the program but simply set the exit status global variable `g_msh.exit_status` to the same exit status as if there was only one command:
+
+- `ls | exit` - The `g_msh.exit_status` will be set to ls exit status (probably 0 EXIT_SUCCESS)
+- `ls | exit ls`- The `g_msh.exit_status` will be set to 2 (EXIT_GENERAL_ERROR)
+- `ls | exit 5`- The `g_msh.exit_status` will be set to 5 (the argument number)
+- `ls | exit 5 6`- The `g_msh.exit_status` will be set to 1 (EXIT_FAILURE)
 
 ___
 ### 6. Signals
