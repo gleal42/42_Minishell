@@ -465,18 +465,13 @@ ___
 ### 5.2 Running other executables from our terminal
 
 > **Functions**
-> 
->> `pid_t fork(void);`
->> 
->> `pid_t waitpid(pid_t pid, int *status, int options);`
->> 
->> `int execve(const char *pathname, char *const argv[], char *const envp[]);`
+>> - `pid_t fork(void);`
+>> - `pid_t waitpid(pid_t pid, int *status, int options);`
+>> - `int execve(const char *pathname, char *const argv[], char *const envp[]);`
 
 > **Sources**
-> 
->> For making the functions work: https://www.youtube.com/playlist?list=PLfqABt5AS4FkW5mOn2Tn9ZZLLDwA3kZUY
->> 
->> For deeper understanding of processes: https://www.youtube.com/watch?v=ss1-REMJ9GA&list=PL9IEJIKnBJjFNNfpY6fHjVzAwtgRYjhPw
+>> - For making the functions work: https://www.youtube.com/playlist?list=PLfqABt5AS4FkW5mOn2Tn9ZZLLDwA3kZUY
+>> - For deeper understanding of processes: https://www.youtube.com/watch?v=ss1-REMJ9GA&list=PL9IEJIKnBJjFNNfpY6fHjVzAwtgRYjhPw
 
 The function that allows us to run an executable from our program is `execve`()
 `pathname` argument is the relative or absolute path of the executable.
@@ -496,15 +491,69 @@ Okay, so hopefully you've understood what we have to fix. We have to find a way 
 
 In order to create an additional process which will execute another .o file we need to use the `fork` and `waitpid` functions.
 
-processes are identified by numbers:
+Processes are identified by numbers:
 
 2 tips:
 
 - type `ps -e` or `ps -A` to see all processes currently running on your computer
-
 - type `ps -a` while you're tweaking your functions in order to see if you're creating any dead children.
 
+So in it's simplest form, we could execute a .o file using the following code:
 
+```
+if (fork() == 0)
+{
+	execve(path, argv, ennvp);
+}
+else
+{
+	waitpid()
+}
+```
+
+However, using this formula would cause a problem. 
+The next process/ command would only start once the first one is finished.
+
+When we type `sleep 5 | ls`. We are supposed to see the files in the current directory information as soon as we type the command, and not after we wait 5 seconds.
+
+ls is executed right after sleep, not after sleep is finished.
+
+```
+if (fork() == 0)
+{
+	execve(path, argv, ennvp);
+}
+else
+{
+	waitpid()
+}
+```
+So, if we wanted to properly execute `sleep 5| ls`, in order to make sure that all executables of our command table get executed at the same time we could do (simplified code just for these executables):
+
+```
+	pit_t pid[2];
+	
+	i = 0;
+	while (i < 2)
+	{
+		pid[i] = fork();
+		if (pid == 0)
+			execve(exec_path, tokens, envp);
+		cmds = cmds->next;
+		i++;
+	}
+		i = 0;
+	if (pid > 0)
+	{
+		while (i < 2)
+		{
+			waitpid(pid[i])
+			i++;
+		}
+	}
+```
+
+What Dimitri came up with is an extremely clean and efficient way of making sure everything gets executed at the moment of execution.
 ___
 
 #### 5.3 Running library executables (e.g. cat, ls)
@@ -515,9 +564,8 @@ ___
 ### 6. Signals
 
 > **Sources**
-> 
-> https://man7.org/linux/man-pages/man2/signal.2.html
-> https://man7.org/linux/man-pages/man7/signal.7.html
+>> - https://man7.org/linux/man-pages/man2/signal.2.html
+>> - https://man7.org/linux/man-pages/man7/signal.7.html
 
 We were asked to handle the following:
 
@@ -561,6 +609,7 @@ If you're using a waitpid synchronously (meaning that if you write `sleep 4 | sl
 			kill(0, SIGQUIT);
 		}
 ```
+
 So basically our signal will quit or interrupt the first process. But for the remaining we will have to do it manually.
 We count the number of commands in the command table and we use a index to send the `SIGQUIT` signal the right amount of times. To send the sigquit signal without having to click the ctrl-\ we use the function `kill`. Kill is not just used to kill processes but to send all signals.
 
