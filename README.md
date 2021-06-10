@@ -260,7 +260,8 @@ In our assignement we are asked to recreate some standard library commands, whil
 
 I'll first describe how we recreated the builtins, how we can execute `.o` files from our minishell (including the minishell itself), how we can call other library functions like `cat` `ls` or `sleep` and explain how our assynchronous approach recreates the terminal expected behaviour (including the exit status behaviour).
 
-### 5.1 Execution
+### 5.2 Builtin functions
+
 We were asked to remake the following builtins:
 
 - `echo` with option ’-n’
@@ -460,6 +461,57 @@ If there are multiple commands (`ls | exit 45`) then we will not quit the progra
 - `ls | exit 5 6`- The `g_msh.exit_status` will be set to 1 (EXIT_FAILURE)
 
 ___
+
+### 5.2 Running other executables from our terminal
+
+> **Functions**
+> 
+>> `pid_t fork(void);`
+>> 
+>> `pid_t waitpid(pid_t pid, int *status, int options);`
+>> 
+>> `int execve(const char *pathname, char *const argv[], char *const envp[]);`
+
+> **Sources**
+> 
+>> For making the functions work: https://www.youtube.com/playlist?list=PLfqABt5AS4FkW5mOn2Tn9ZZLLDwA3kZUY
+>> 
+>> For deeper understanding of processes: https://www.youtube.com/watch?v=ss1-REMJ9GA&list=PL9IEJIKnBJjFNNfpY6fHjVzAwtgRYjhPw
+
+The function that allows us to run an executable from our program is `execve`()
+`pathname` argument is the relative or absolute path of the executable.
+`argv[]` is an array with all the arguments of the function. e.g. cat filename. argv[0] would be filename.
+`envp` is our environment variable list (which we had to turn back into array of strings).
+
+The reason why we need to use fork and waitpid is because execve doesn't create a new process to execute the new .o file.
+
+So to enter our minishell we compile the whole program:
+`./minishell`
+
+If we then run a execve executable file like the ./cub3d program we've created in previous projects then our ./minishell will be **REPLACED**, by the ./cub3d. 
+
+So when we exit the cub3d we will not go back to our minishell terminal but instead we will go back to our regular terminal (which is not the behaviour we're trying to emulate here).
+
+Okay, so hopefully you've understood what we have to fix. We have to find a way to execute other programs as an additional process, being then able to come back to our program once we're done executing the .o file.
+
+In order to create an additional process which will execute another .o file we need to use the `fork` and `waitpid` functions.
+
+processes are identified by numbers:
+
+2 tips:
+
+- type `ps -e` or `ps -A` to see all processes currently running on your computer
+
+- type `ps -a` while you're tweaking your functions in order to see if you're creating any dead children.
+
+
+___
+
+#### 5.3 Running library executables (e.g. cat, ls)
+
+
+___
+
 ### 6. Signals
 
 > **Sources**
