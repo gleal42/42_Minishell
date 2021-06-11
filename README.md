@@ -668,15 +668,17 @@ Okay so this is what is happening:
 
 **Saving exit_status in parent:**
 
-1. save sleep exit status:
+Start:
 
 | sleep pid | cd pid | 0 |
 | --------- | ------ | - |
 
-2. save cd exit status:
+1. save sleep exit status and delete process id from linked list:
 
 | cd pid | 0 |
 | ------ | - |
+
+2. save cd exit status and delete process id from linked list:
 
 | 0 |
 | - |
