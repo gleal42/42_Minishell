@@ -521,12 +521,13 @@ ls is executed right after sleep, not after sleep is finished.
 So, if we wanted to properly execute `sleep 5| ls`, in order to make sure that all executables of our command table get executed at the same time we could do (pseudo code for these executables):
 
 ```
-	pit_t pid[2];
-	
+	pit_t pid;
+	int status;
+
 	i = 0;
 	while (i < 2)
 	{
-		pid[i] = fork();
+		pid = fork();
 		if (pid == 0)
 			execve(exec_path, cmds->data->tokens, envp);
 		cmds = cmds->next;
@@ -535,16 +536,16 @@ So, if we wanted to properly execute `sleep 5| ls`, in order to make sure that a
 	i = 0;
 	while (i < 2)
 	{
-		waitpid(pid[i])
+		wait(&status);
 		i++;
 	}
 ```
 
-One important thing to note tis that we don't need to add `(if pid > 0)` because the child process ends in execve (waitpid is just collecting dead children).
+One important thing to note tis that we don't need to add `(if pid > 0)` because the child process ends in execve (wait is just collecting dead children, in the order that they get executed).
+
 Sounds pretty dark, I know!
 
 But that's not the final implementation. Once we get to the exit status environment variable `$?`. I'll explain the genius way that Dimitri came up with in order to keep our program assynchronous (so that sleep 5 | ls) works, and synchronous (so that the correct exit status is returned).
-
 
 ___
 
@@ -568,6 +569,113 @@ This is what we tried to emulate. We extract the value of the `PATH` variable fr
 `if (stat(absolute_path, &statbuf) == EXIT_SUCCESS)`
 
 After we have a path to an executable, we can use execve, fork and waitpid functions in the way described before in the previous sub-chapter.
+
+___
+
+#### 5.4 Exit status ($?)
+
+Everytime we execute a function it can return SUCCESS (0) or FAILURE (not zero), which is called `exit status`.
+
+In order to save this status we have a global variable called `g_msh.exit_status`.
+
+In our program we collect this status differently for builtins and executables:
+
+- Everytime we execute a builtin set `g_msh.exit_status` to their returned value.
+  - e.g. `g_msh.exit_status = ft_cd(nonexistent_path, env)` will set the global exit status variable to 1;
+
+- Everytime we execute an executable using `execve` we update the `g_msh.exit_status` using the MACROS:
+  - `WIFEXITED(status)` most of the time.
+  - `WEXITSTATUS(status)` in case an executable was interrupted by a signal (e.g. we press ctrl-\ after typing sleep 5)
+
+___
+
+#### 5.5 Assynchronous Vs Synchronous (Pros, cons and our hybrid approach)
+
+Okay so we've already explained why it is important for processes to work assynchronously.
+`sleep 5 | ls` will show the files in the current directory as soon as we type the command table.
+
+However there's a little problem that we need to solve.  By using `wait(&status);` we are updating the status in the order of execution of the processes.
+
+This means that even though sleep 5 started first, we know that it will be the last one to be fully executed.
+So `sleep 5 | cd nonexistent_path; echo $?` will print 0 to the standard output even though we know that `cd nonexistent_path` returns 1.
+
+So how can we solve this?
+- We need to switch wait for waitpid so that we can specify the process id we want our program to collect the dead babies from.
+- We need to save the process id numbers (pids in an array) so that we can specify that order
+
+Again, using pseudo code to illustrate what I mean:
+
+For `sleep 5 | cd nonexistent_path`
+
+```
+	pit_t pid[2];
+	
+	i = 0;
+	while (i < 2)
+	{
+		pid[i] = fork();
+		if (pid == 0)
+			execve(exec_path, cmds->data->tokens, envp);
+		cmds = cmds->next;
+		i++;
+	}
+	i = 0;
+	while (i < 2)
+	{
+		waitpid(pid[i])
+		i++;
+	}
+```
+
+Now we have another problem. We don't know how big the array is going to be. We could make an array of 1000 integers or... We make it sexy!
+
+```
+	pit_t pid_child;
+	pid_t pid_parent;
+	
+	i = 0;
+	while (i < nb_cmds)
+	{
+		pid_child = fork();
+		if (pid_child == 0)
+			execve(exec_path, cmds->data->tokens, envp);
+		new_node = ft_lstnew((void *)pid_child);
+		ft_lstadd_back(&cmd_table->pids, new_node);
+		cmds = cmds->next;
+		i++;
+	}
+	while (cmd_table->pids)
+	{
+		pid_parent = (pid_t)(*pids)->data;
+		waitpid(pid, &exit_info, 0);
+		ft_lstdel_first(pids, ft_lstdel_int);
+	}
+```
+
+Okay so this is what is happening:
+
+Creating forks:
+
+1. create and save sleep process:
+| sleep pid | 0 |
+| --------- | - |
+
+1. create and save cd process:
+| sleep pid | cd pid | 0 |
+| --------- | ------ | - |
+
+Saving exit_status in parent:
+
+1. save sleep exit status:
+| sleep pid | cd pid | 0 |
+| --------- | ------ | - |
+
+2. save cd exit status:
+| cd pid | 0 |
+| ------ | - |
+
+| 0 |
+| - |
 
 ___
 
@@ -624,6 +732,12 @@ So basically our signal will quit or interrupt the first process. But for the re
 We count the number of commands in the command table and we use a index to send the `SIGQUIT` signal the right amount of times. To send the sigquit signal without having to click the ctrl-\ we use the function `kill`. Kill is not just used to kill processes but to send all signals.
 
 Check commit 9e39fc1337f797ac41d4312fd95c162dc8209c58 for first implementation of this previous signal code.
+
+___
+
+### 7. Pipes and Redirections
+
+___
 
 ### Other Resources
 
