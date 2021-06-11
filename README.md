@@ -654,23 +654,27 @@ Now we have another problem. We don't know how big the array is going to be. We 
 
 Okay so this is what is happening:
 
-Creating forks:
+**Creating forks:**
 
 1. create and save sleep process:
+
 | sleep pid | 0 |
 | --------- | - |
 
-1. create and save cd process:
+2. create and save cd process:
+
 | sleep pid | cd pid | 0 |
 | --------- | ------ | - |
 
-Saving exit_status in parent:
+**Saving exit_status in parent:**
 
 1. save sleep exit status:
+
 | sleep pid | cd pid | 0 |
 | --------- | ------ | - |
 
 2. save cd exit status:
+
 | cd pid | 0 |
 | ------ | - |
 
