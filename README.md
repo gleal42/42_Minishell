@@ -743,6 +743,26 @@ ___
 
 ### 7. Pipes and Redirections
 
+> **Functions**
+>> - `pid_t fork(void);`
+
+> **Sources**
+>> - https://www.youtube.com/watch?v=5fnVr-zH-SE
+>> - https://www.youtube.com/watch?v=6xbLgZpOBi8
+>> - https://www.youtube.com/watch?v=NkfIUo_Qq4c
+>> - https://www.youtube.com/watch?v=VzCawLzITh0
+
+Alright, we're coming close to an end. By the end of this chapter we will have covered all the main concepts needed to do this project. It was a lot of fun.
+I also recommend looking at the sources. [Code Vault](https://code-vault.net/) has the best tutorials and he covers this topic really well! He is a life-saver.
+
+Okay if I remember [Tiago's](https://github.com/Olbrien) masterclass correctly (it has been a while but I'll do my best)the first thing we should do is keep tab of the file descriptors:
+
+| STDIN | 0 |
+| ----- | - |
+| STDOUT| 1 |
+| STDERR| 2 |
+
+I will first give a quick example....
 ___
 
 ### Other Resources
