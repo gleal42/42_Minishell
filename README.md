@@ -743,14 +743,17 @@ ___
 
 ### 7. Pipes and Redirections
 
+
+#### 7.1 Simple Redirections
+
 > **Functions**
->> - `pid_t fork(void);`
+>> - `int dup2(int oldfd, int newfd);`
+>> - `int open(const char *pathname, int flags);`
+>> - `int close(int fd);`
 
 > **Sources**
 >> - https://www.youtube.com/watch?v=5fnVr-zH-SE
->> - https://www.youtube.com/watch?v=6xbLgZpOBi8
->> - https://www.youtube.com/watch?v=NkfIUo_Qq4c
->> - https://www.youtube.com/watch?v=VzCawLzITh0
+
 
 Alright, we're coming close to an end. By the end of this chapter we will have covered all the main concepts needed to do this project. It was a lot of fun.
 I also recommend looking at the sources. [Code Vault](https://code-vault.net/) has the best tutorials and he covers this topic really well! He is a life-saver.
@@ -762,7 +765,74 @@ Okay if I remember [Tiago's](https://github.com/Olbrien) masterclass correctly (
 | STDOUT| 1 |
 | STDERR| 2 |
 
-I will first give a quick example....
+First we will need to understand the concept of redirection:
+
+Let's start with a basic example to illustrate redirection. We want `ls > file1` to work like the terminal.
+
+ls - Will print to the standard output the name of the files in the current directory.
+
+Our task here is to transfer whatever was printed to the standard output to the file.
+
+In order to do this the first step we need to take is to create a file descriptor for `file1`.
+
+````
+int new_file;
+new_file = open("file1", O_WRONLY | O_CREAT | O_TRUNC);
+````
+
+| File descriptors | file |
+| ---------------- | ---- |
+| STDIN_FILENO     |   0  |
+| STDOUT_FILENO    |   1  |
+| STDERR_FILENO    |   2  |
+| 3(just created)  | file1|
+
+Okay, now. In order to redirect the standard output to the file we will need to use the function dup2.
+
+`dup2(new_file, STDOUT_FILENO)`
+
+| File descriptors | file |
+| ---------------- | ---- |
+| STDIN_FILENO     |   0  |
+| STDOUT_FILENO    | file1|
+| STDERR_FILENO    |   2  |
+| 3(just created)  | file1|
+
+Now whatever would be printed into the standard output will instead be written inside file1.
+This means that if we were to write:
+`printf("yo yooooooo");`
+When we compiled the program the message wouldn0't be printed but instead be transferred inside file1.
+
+Now there are 2 opened file descriptors pointing to file1 (STDOUT_FILENO (1) and the new_file descriptor we opened (3)).
+Because we don't intend to use the function `write` to add new text manually to file1 we can just close the file descriptor 3.
+`close(new_file);`
+
+Alright! And that is a successful basic redirection.
+
+Now it's time to combine this idea of redirection with the idea of pipes.
+
+#### 7.1 Simple Pipes
+
+> **Functions**
+>> - `int pipe(int pipefd[2]);`
+>> - `int dup2(int oldfd, int newfd);`
+>> - `int close(int fd);`
+>> - `int dup(int oldfd);`
+
+> **Sources**
+>> - https://www.youtube.com/watch?v=6xbLgZpOBi8
+>> - https://www.youtube.com/watch?v=NkfIUo_Qq4c
+>> - https://www.youtube.com/watch?v=VzCawLzITh0
+
+
+We want this command `ls | cat` to work like the terminal.
+
+cat - Will read from a file specified in its arguments. In this case (no arguments) cat will read from the standard input and print it to the standard input.
+
+So in order to connect these 2 processes the standard output from ls will become the standard input in cat.
+
+So let's first start with the idea of redirectiion (which we will further).
+
 ___
 
 ### Other Resources
