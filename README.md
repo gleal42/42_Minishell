@@ -743,7 +743,6 @@ ___
 
 ### 7. Pipes and Redirections
 
-
 #### 7.1 Simple Redirections
 
 > **Functions**
@@ -809,9 +808,23 @@ Because we don't intend to use the function `write` to add new text manually to 
 
 Alright! And that is a successful basic redirection.
 
+Another useful notion is the redirection in the opposite way (`cat < file1`):
+
+cat - Will read from a file specified in its arguments. In this case (no arguments) cat will read from the standard input and print it to the standard input.
+By having this redirection `<` what is happening is:
+
+1. We're opening file1 with reading permissions instead of writing permissions:
+- `new_file = open("file1", O_RDONLY;`
+
+2. We make file1 file descriptor a copy of stanrdard input so that when cat tries to read from standard input it actually reads from file1.
+- `dup2(new_file, STDIN_FILENO)`
+
+3. We have the same problem where new_file has 2 file descriptors open so we need to close the old file descriptor:
+- `close(new_file);`
+
 Now it's time to combine this idea of redirection with the idea of pipes.
 
-#### 7.1 Simple Pipes
+#### 7.2 Simple Pipes
 
 > **Functions**
 >> - `int pipe(int pipefd[2]);`
@@ -827,11 +840,34 @@ Now it's time to combine this idea of redirection with the idea of pipes.
 
 We want this command `ls | cat` to work like the terminal.
 
-cat - Will read from a file specified in its arguments. In this case (no arguments) cat will read from the standard input and print it to the standard input.
+We could actually recreate this only using the information that we already have if we think about it:
 
-So in order to connect these 2 processes the standard output from ls will become the standard input in cat.
+`ls > file1`
+`cat < file1`
+`remove(file1)`
 
-So let's first start with the idea of redirectiion (which we will further).
+Okay I know that `remove` is not allowed for the project anyways... but if it was... Nobody would suspect a thing, haha.
+But of course a lot could go wrong. For instance, if we have a file already named file1 we would erase everything that was inside.
+
+So what we need is something temporary... Where we can write output at one point and use what we wrote as input for the next command.
+
+This... ladies and gentlemen is what pipes are for.
+
+So again. we start with the original file descriptors:
+
+| File descriptors | file |
+| ---------------- | ---- |
+| STDIN_FILENO     |   0  |
+| STDOUT_FILENO    |   1  |
+| STDERR_FILENO    |   2  | 
+
+Now we have a pipe to create:
+
+# (HERE)
+
+first we start with an array of 2 integers: `int fd[2];`
+Then we have to convert this array into a pipe using the pipe function:
+
 
 ___
 
