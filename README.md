@@ -863,9 +863,18 @@ So again. we start with the original file descriptors:
 
 Now we have a pipe to create:
 
-# (HERE)
+So first. The number of pipes will be the number of commands minus 1.
 
-first we start with an array of 2 integers: `int fd[2];`
+Commands:
+- ls
+- cat
+
+2 commands so 1 pipe.
+
+For each pipe we will need to create an array of 2 integers (we can allocate the memory or, in our case, for demonstration purposes we will allocate it on the stack.
+
+
+So we got our 2 int array `int fd[2];`
 Then we have to convert this array into a pipe using the pipe function:
 
 
