@@ -627,7 +627,7 @@ For `sleep 5 | cd nonexistent_path`
 	}
 ```
 
-Now we have another problem. We don't know how big the array is going to be. We could make an array of 1000 integers or... We make it sexy!
+Now we have another problem. We don't know how big the array will be. We could make an array of 1000 integers or... We make it sexy!
 
 ```
 	pit_t pid_child;
@@ -871,11 +871,59 @@ Commands:
 
 2 commands so 1 pipe.
 
-For each pipe we will need to create an array of 2 integers (we can allocate the memory or, in our case, for demonstration purposes we will allocate it on the stack.
-
+For each pipe we will need to create an array of 2 integers (we can allocate the memory or, in our case, for demonstration purposes we declare it on stack).
 
 So we got our 2 int array `int fd[2];`
-Then we have to convert this array into a pipe using the pipe function:
+
+Then we have to convert this array into a pipe using the pipe function: `pipe(fd)`.
+Now, whatever we write on fd[1] will be buffered until it is read by fd[0] or if it is closed manually (close function).
+
+Now, one thing that kind of complicates things is the fact that ls and cat are executables (we need to call fork and execve):
+
+```
+	pit_t ls;
+	pid_t cat;
+	int fd[2];
+
+	pipe(fd);
+	ls = fork();
+	if (ls == 0)
+		execve(/bin/ls, NULL, NULL);
+	cat = fork ()
+	if (cat = 0)
+		execve(/bin/cat, NULL, NULL);
+	waitpid(ls, NULL, 0);
+	waitpid(cat, NULL, 0);
+```
+
+The reason why things get complicated is because processes replicate the parent process, including the file descriptors and existing pipes:
+
+**Main Process**
+| File descriptors | file |
+| ---------------- | ---- |
+| STDIN_FILENO     |   0  |
+| STDOUT_FILENO    |   1  |
+| STDERR_FILENO    |   2  | 
+| fd[0]            |      |
+| fd[1]            |      |
+
+**ls process**
+| File descriptors | file |
+| ---------------- | ---- |
+| STDIN_FILENO     |   0  |
+| STDOUT_FILENO    |   1  |
+| STDERR_FILENO    |   2  | 
+| fd[0]            |      |
+| fd[1]            |      |
+
+**Cat Process**
+| File descriptors | file |
+| ---------------- | ---- |
+| STDIN_FILENO     |   0  |
+| STDOUT_FILENO    |   1  |
+| STDERR_FILENO    |   2  | 
+| fd[0]            |      |
+| fd[1]            |      |
 
 
 ___
