@@ -876,6 +876,7 @@ For each pipe we will need to create an array of 2 integers (we can allocate the
 So we got our 2 int array `int fd[2];`
 
 Then we have to convert this array into a pipe using the pipe function: `pipe(fd)`.
+Now the file descriptors fd[0] and fd[1] are open.
 Now, whatever we write on fd[1] will be buffered until it is read by fd[0] or if it is closed manually (close function).
 
 Now, one thing that kind of complicates things is the fact that ls and cat are executables (we need to call fork and execve):
@@ -904,8 +905,8 @@ The reason why things get complicated is because processes replicate the parent 
 | STDIN_FILENO     |   0  |
 | STDOUT_FILENO    |   1  |
 | STDERR_FILENO    |   2  | 
-| fd[0]            |      |
-| fd[1]            |      |
+| read_pipe_fd     | fd[0]|
+| write_pipe_fd    | fd[1]|
 
 **ls process**
 | File descriptors | file |
@@ -913,18 +914,235 @@ The reason why things get complicated is because processes replicate the parent 
 | STDIN_FILENO     |   0  |
 | STDOUT_FILENO    |   1  |
 | STDERR_FILENO    |   2  | 
-| fd[0]            |      |
-| fd[1]            |      |
+| read_pipe_fd     | fd[0]|
+| write_pipe_fd    | fd[1]|
 
 **Cat Process**
+| File descriptors |  file |
+| ---------------- | ----- |
+| STDIN_FILENO     |   0   |
+| STDOUT_FILENO    |   1   |
+| STDERR_FILENO    |   2   | 
+| read_pipe_fd     | fd[0] |
+| write_pipe_fd    | fd[1] |
+
+Now that we have these temporary file descriptors we can redirect the standard output from the ls executable inside the pipe (so that it can be used as input later by the cat executable):
+
+```
+...
+	if (ls == 0)
+	{
+		dup2(fd[1], STDOUT_FILENO);
+		execve(/bin/ls, NULL, NULL);
+	}
+...
+```
+
+Impact on file descriptors:
+
+**Main Process**
 | File descriptors | file |
 | ---------------- | ---- |
 | STDIN_FILENO     |   0  |
 | STDOUT_FILENO    |   1  |
 | STDERR_FILENO    |   2  | 
-| fd[0]            |      |
-| fd[1]            |      |
+| read_pipe_fd     | fd[0]|
+| write_pipe_fd    | fd[1]|
 
+**ls process**
+| File descriptors | file |
+| ---------------- | ---- |
+| STDIN_FILENO     |   0  |
+| STDOUT_FILENO    | fd[1]|
+| STDERR_FILENO    |   2  | 
+| read_pipe_fd     | fd[0]|
+| write_pipe_fd    | fd[1]|
+
+**Cat Process**
+| File descriptors |  file |
+| ---------------- | ----- |
+| STDIN_FILENO     |   0   |
+| STDOUT_FILENO    |   1   |
+| STDERR_FILENO    |   2   | 
+| read_pipe_fd     | fd[0] |
+| write_pipe_fd    | fd[1] |
+
+The reason I re-wrote all the file description tables is to show that we will have to deal with the opening and closing of fd's in all the processes (including the main process). All file descriptors that are not being used must be closed, otherwise unwanted behaviour might happen (infinity asking for standard input).
+
+So, looking at the ls process file descriptors we can see that there are 2 unnecessary file descriptors than can be closed now fd[0] and fd[1].
+
+
+```
+...
+	if (ls == 0)
+	{
+		dup2(fd[1], STDOUT_FILENO);
+		close(fd[0]);
+		close(fd[1]);
+		execve(/bin/ls, NULL, NULL);
+	}
+...
+```
+
+So the final file descriptors of the ls process will be;
+
+**ls process**
+| File descriptors | file |
+| ---------------- | ---- |
+| STDIN_FILENO     |   0  |
+| STDOUT_FILENO    | fd[1]|
+| STDERR_FILENO    |   2  |
+
+
+Perfect. Now we just need to follow the same logic for the cat process and main process.
+
+For the cat process we start with the following file descriptors opened:
+
+**Cat Process**
+| File descriptors |  file |
+| ---------------- | ----- |
+| STDIN_FILENO     |   0   |
+| STDOUT_FILENO    |   1   |
+| STDERR_FILENO    |   2   | 
+| read_pipe_fd     | fd[0] |
+| write_pipe_fd    | fd[1] |
+
+Now we want to redirect the standard output that was stored in the pipe during the ls process to the standard input of the cat process.
+
+```
+...
+	if (cat = 0)
+	{
+		dup2(fd[0], STDIN_FILENO);
+		execve(/bin/cat, NULL, NULL);
+	}
+...
+
+```
+
+**Cat Process**
+| File descriptors |  file |
+| ---------------- | ----- |
+| STDIN_FILENO     |   0   |
+| STDOUT_FILENO    | fd[0] |
+| STDERR_FILENO    |   2   | 
+| read_pipe_fd     | fd[0] |
+| write_pipe_fd    | fd[1] |
+
+Now we have the same problem as before. The pipe file descriptors are still opened and not being used so we must close them.
+
+```
+...
+	if (cat = 0)
+	{
+		dup2(fd[0], STDIN_FILENO);
+		close(fd[0])
+		close(fd[1])
+		execve(/bin/cat, NULL, NULL);
+	}
+...
+
+```
+
+After this, the final file descriptors for the cat process will be
+
+**Cat Process**
+| File descriptors |  file |
+| ---------------- | ----- |
+| STDIN_FILENO     |   0   |
+| STDOUT_FILENO    | fd[0] |
+| STDERR_FILENO    |   2   | 
+
+We're almost done. There's only one more thing we have to deal with... I think you can guess what it is...
+
+The pipe file descriptors on the main process are still opened (ugh.. file descriptors are such a mess, I know).
+
+**Main Process**
+| File descriptors | file |
+| ---------------- | ---- |
+| STDIN_FILENO     |   0  |
+| STDOUT_FILENO    |   1  |
+| STDERR_FILENO    |   2  | 
+| read_pipe_fd     | fd[0]|
+| write_pipe_fd    | fd[1]|
+
+So we will need to close them, like we did on the other 2 processes.
+
+```
+...
+	close(fd[0]);
+	close(fd[1));
+	waitpid(ls, NULL, 0);
+	waitpid(cat, NULL, 0);
+...
+```
+The final file descriptors of the main process will be:
+
+**Main Process**
+| File descriptors | file |
+| ---------------- | ---- |
+| STDIN_FILENO     |   0  |
+| STDOUT_FILENO    |   1  |
+| STDERR_FILENO    |   2  | 
+
+
+Summary:
+
+```
+	pit_t ls;
+	pid_t cat;
+	int fd[2];
+
+	pipe(fd);
+	ls = fork();
+	if (ls == 0)
+	{
+		dup2(fd[1], STDOUT_FILENO);
+		close(fd[0]);
+		close(fd[1]);
+		execve(/bin/ls, NULL, NULL);
+	}
+	cat = fork ()
+	if (cat = 0)
+	{
+		dup2(fd[0], STDIN_FILENO);
+		close(fd[0]);
+		close(fd[1]);
+		execve(/bin/cat, NULL, NULL);
+	}
+	close(fd[0]);
+	close(fd[1]);
+	waitpid(ls, NULL, 0);
+	waitpid(cat, NULL, 0);
+```
+
+File descriptors:
+
+**ls process**
+| File descriptors | file |
+| ---------------- | ---- |
+| STDIN_FILENO     |   0  |
+| STDOUT_FILENO    | fd[1]|
+| STDERR_FILENO    |   2  |
+
+**Cat Process**
+| File descriptors |  file |
+| ---------------- | ----- |
+| STDIN_FILENO     |   0   |
+| STDOUT_FILENO    | fd[0] |
+| STDERR_FILENO    |   2   | 
+
+**Main Process**
+| File descriptors | file |
+| ---------------- | ---- |
+| STDIN_FILENO     |   0  |
+| STDOUT_FILENO    |   1  |
+| STDERR_FILENO    |   2  | 
+
+Now we'll think about how these would work for more than 2 processes and create a general rule in order to apply it to our terminal:
+
+We've already mentioned one of the rules:
+1. The number of pipes will be the number of commands minus 1.
 
 ___
 
