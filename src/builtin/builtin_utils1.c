@@ -3,33 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 09:10:48 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/18 16:41:58 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/24 16:57:24 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin_utils.h"
 
 /*
-** Update the PWD and OLDPWD environment variables based the current and
+** Updates the PWD and OLDPWD environment variables based the current and
 ** previous working directories
 ** @param:	- [char *] previous working directory
-**			- [t_list *] environment variable string linked list
+**			- [t_list **] environment variable string linked list
 ** @return:	[int] signs success or failure of the function
 ** Line-by-line comments:
 ** @3		Allowed function that fills buffer with null terminated string of
 ** 			current working directory
-** @5-6 	Updates current working directory and previous directory
-**			environment variables
+** @5-6 	Updates current working directory and previous directory environment
+**			variables
 */
 
 int	update_directories(char *old_dir, t_list **env)
 {
-	char	new_dir[1024];
+	char	new_dir[MAX_PATH];
 
-	if (getcwd(new_dir, 1024) == NULL)
+	if (getcwd(new_dir, MAX_PATH) == NULL)
 		return (EXIT_FAILURE);
 	if (!is_env_var("PWD", *env))
 		create_environment_var("PWD", env);
@@ -67,8 +67,7 @@ char	*replace_env_value(char **env_ptr, char	*var_name, char *new_value)
 }
 
 /*
-** Auxiliary function that updated the environment variable string with a
-** value we define
+** Updates the environment variable string with a value we define
 ** @param:	- [char *] variable to look for in the env var linked list
 **			- [char *] new value that will replace the current string
 **			- [t_list *] environment variable string linked list
@@ -92,8 +91,8 @@ void	update_environment_var(char *var, char *new_value, t_list *env)
 }
 
 /*
-** Identifies if token has invalid characters for the export function
-** and prints an error message in case it does
+** Checks if token has invalid characters for the export function and prints an
+** error message in case it does
 ** @param:	- [char *] export following tokens (arguments)
 ** @return:	[int] 1 if true 0 if false
 ** Line-by-line comments:

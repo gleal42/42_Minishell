@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 16:48:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/18 16:48:28 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/25 11:32:34 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,14 @@
 # include "input_validation.h"
 
 # include "quit_program.h"
-# include "free_ast.h"
+# include "free_memory.h"
 
 # include "termcaps.h"
 
 # include "init_minishell.h"
 # include "signals.h"
-# include "write_term.h"
+# include "write_err_message.h"
+# include "write_prompt.h"
 # include "utils.h"
 
 t_msh	g_msh;

@@ -3,32 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_absolute_path.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 16:46:03 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/14 04:16:28 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/25 10:30:36 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_absolute_path.h"
-
-/*
-** Checks if the first token has a relative path like ./a.out or ./minishell
-** @param:	- [char *] first token of the simple command. Likely to represent
-**                     the program name
-** @return:	[int] true or false
-*/
-
-int	has_relative_path(char *first_token)
-{
-	int	check;
-
-	if (*first_token == '.')
-		check = 1;
-	else
-		check = 0;
-	return (check);
-}
 
 /*
 ** If the program name doesn't have a relative path, then the executable

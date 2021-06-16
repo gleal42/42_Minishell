@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 14:47:10 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/18 10:07:38 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/25 10:21:36 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct s_ast
 ** A command table with one or more simple commands
 ** @fields:
 ** [t_list *cmds] linked list with simple commands (t_cmd *) as nodes
-** [char delimiter[2]] Indicates what is separating this cmd table from the next
+** [char *delimiter] Indicates what is separating this cmd table from the next
 ** Potential values:
 ** - delimiter = "\0" (last command table)
 ** - delimiter = ";" (consecutive execution of the next cmd table)
@@ -39,6 +39,17 @@ typedef struct s_ast
 ** a falsy exit_status)
 ** - delimiter = "&&"" (execution of the next cmd table only if the previous has
 ** a truthy exit_status)
+** [int nb_cmds] number of simple commands in cmds linked list]
+** [int **pipes] 2D array of ints. Each subarray is a pipe
+** [t_list *pids] linked list of pid. Works as a queue / FIFO data structure.
+** Each time we fork(), we add a node at the back. We wait on dead child
+** processses as long the queue is not empty
+** [int return_value] return value of this specific command table. We also have
+** t_msh an exit_status field for that intent. But we need to make sure we don't
+** ignore return value of builtin functions (like cd), if they finish first than
+** forks like:
+** - "sleep 5 | cd wrong_folder", cd would set error because wrong direction but
+** sleep would execute correctly. So cd sets the exit_status not sleep
 */
 
 typedef struct s_cmd_table
@@ -57,8 +68,7 @@ typedef struct s_cmd_table
 ** - ls -al dir
 ** - echo "Hello, World!"
 ** @fields:
-** [t_list *tokens] linked list with all the tokens (t_token *) of the simple
-** command
+** [t_list *tokens] linked list with all the tokens of the simple command
 ** Examples: 
 ** - 1st node: "ls" / 2nd node: "-al" / 3rd node: "dir"
 ** - 1st node: "echo" / 2nd node: "Hello, World!"
@@ -70,7 +80,6 @@ typedef struct s_cmd
 {
 	t_list		*tokens;
 	t_list		*redirs;
-	int			index;
 }				t_cmd;
 
 /*

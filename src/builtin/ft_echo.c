@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 20:16:20 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/16 18:47:52 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/24 17:10:26 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@ int	ft_echo(t_list *tokens)
 		else
 		{
 			if (!flag_time)
-				ft_putchar_fd(' ', 1);
+				ft_putchar_fd(' ', STDOUT_FILENO);
 			flag_time = 0;
-			ft_putstr_fd(arg, 1);
+			ft_putstr_fd(arg, STDOUT_FILENO);
 		}
 		tokens = tokens->next;
 	}
 	if (line_break)
-		ft_putchar_fd('\n', 1);
+		ft_putchar_fd('\n', STDOUT_FILENO);
 	return (EXIT_SUCCESS);
 }
 

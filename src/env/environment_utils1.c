@@ -6,18 +6,17 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 15:17:53 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/17 15:20:58 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/24 17:28:18 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "environment_utils.h"
 
 /*
-** Function goes through the environment variable string linked list and looks
-** for a match with the potential variable
+** Checks if an environment variable name is set
 ** @param:	- [char *] potential variable that we are testing
 **			- [t_list *] environment variable string linked list
-** @return:	[int] 1 if true
+** @return:	[int] 1 if true. 0 if false
 ** Line-by-line comments:
 ** @11-13	In case the token is between double quotes it can end in a space
 */
@@ -43,8 +42,7 @@ int	is_env_var(char *potential_var, t_list *env)
 }
 
 /*
-** Auxiliary function to extract the potential variable from a string with
-** dollar sign before a word
+** Extracts the potential variable from a string with dollar sign before a word
 ** @param:	- [char *] string from which we will extract the var name
 ** @return:	[char *] var name
 */
@@ -67,8 +65,8 @@ char	*get_var_name(char *str)
 }
 
 /*
-** Auxiliary function to find the iterator in which a particular substring
-** exist in a string (alternative to strnstr)
+** Finds the iterator in which a particular substring exist in a string
+** (alternative to strnstr)
 ** @param:	- [char *] string to be searched
 **			- [char *] substring to be found
 **			- [size_t] len max to look for
@@ -101,11 +99,12 @@ int	ft_strnstr_iterator(char *haystack, char *needle, size_t len)
 ** @param:	- [char *] string before substitution
 **			- [char *] substring that will be replaced
 **			- [char *] substring that will replace
-**			- [char *] iterator that indicated place in original string where
-**					   substitution should take place
+**			- [int] iterator that indicated place in original string where
+**					substitution should take place
 ** @return:	[char *] string after substitution
 ** Line-by-line comments:
-** @17	ensure only 1 substitution (when new_substr was empty it was getting bugs)
+** @17		Ensure only 1 substitution (when new_substr was empty it was
+**			getting bugs)
 */
 
 char	*replace_midstring(char *original,
@@ -139,8 +138,8 @@ char	*replace_midstring(char *original,
 }
 
 /*
-** Auxiliary function in which we join the home path with the rest of the string
-** example ~/Desktop is now Users/gleal/Desktop
+** Joins the home path with the rest of the string.
+** Example: ~/Desktop becomes Users/gleal/Desktop
 ** @param:	- [char **] pointer of function to be updated (pointer of pointer
 **						to be freed)
 **			- [char **] pointer of function to be updated (pointer of pointer

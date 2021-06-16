@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 10:30:51 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/18 16:58:14 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/24 17:10:30 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,12 @@ int	execute_cd(t_list *tokens, t_list **env, char *pwd)
 }
 
 /*
-** prints out errors to stderror (without executing cd) in case of
+** Prints out errors to stderror (without executing cd) in case of
 ** multiple commands by using a combination of opendir and stat
 ** @param:	- [t_list *] arguments following cd command
 ** @return:	[int] function exit status
 ** Line-by-line comments:
-** @12-13	execution permission is needed to enter a directory
+** @12-13	Execution permission is needed to enter a directory
 */
 
 int	only_cd_errors(t_list *tokens)
@@ -107,7 +107,7 @@ int	only_cd_errors(t_list *tokens)
 /*
 ** Changes directory to home
 ** @param:	- [char *] directory before changing (for future OLDPWD)
-**			- [t_list *] environment variable linked list pointer
+**			- [t_list **] environment variable linked list pointer
 ** @return:	[int] exit status
 ** Line-by-line comments:
 ** @12		Function changes directory and returns 0 on success 
@@ -145,7 +145,7 @@ int	change_dir_home(char *cur_pwd, t_list **env)
 /*
 ** Changes directory to the old directory
 ** @param:	- [char *] directory before changing (for future OLDPWD)
-**			- [t_list *] environment variable linked list pointer
+**			- [t_list **] environment variable linked list pointer
 ** @return:	[int] exit status
 ** Line-by-line comments:
 ** @15		Function will update the environment variable linked list with the

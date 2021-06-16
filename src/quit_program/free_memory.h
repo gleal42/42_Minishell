@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_absolute_path.h                                :+:      :+:    :+:   */
+/*   free_memory.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/05 16:47:12 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/25 10:30:49 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/04/30 09:47:16 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/05/25 11:25:22 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_ABSOLUTE_PATH_H
-# define GET_ABSOLUTE_PATH_H
+#ifndef FREE_MEMORY_H
+# define FREE_MEMORY_H
 
 # include "main.h"
 
-char	*get_absolute_path(char *program_name);
-char	**get_path_env_split(void);
-char	*get_correct_path(char *program_name, char **path_env_split);
-void	add_slash(char ***path_env_split);
+void	free_msh(t_msh *msh);
+void	free_ast(t_ast *ast);
+void	free_cmd_table(void *cmd_table);
+void	free_cmd(void *cmd);
+void	free_redir(void *redir);
 
 #endif

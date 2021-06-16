@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 18:40:32 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/18 17:07:22 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/25 10:23:27 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,14 @@
 ** Executes all the command tables extracted by get_ast() from the user input
 ** @param:	- [t_ast *] struct with a list of cmd_table (t_cmd_table *) as nodes
 ** Line-by-line comments:
-** @7		Each time a child process is created this var is incremented. It
-**			allows to properly wait on all processes to finish before moving on
-**			but still implementing asynchronous processes
-** @8		Edge case: if the "exit" program name is used alongside others
+** @7		Edge case: if the "exit" program name is used alongside others
 **			simple commands we don't have to execute it. If it's the only simple
 **			simple command, we do.
 **			The way we implemented the execution, the exec_cmd() only has access
 **			to the simple command it's executing. So we set a pointer to the
-**			current cmd_table in our global variable struct
-** @10		Each time a cmd_table is executed, we need to set the env _ to the
+**			current cmd_table in our global variable struct so that it can check
+**			if the cmd_table currently being executed only has one cmd or not
+** @9		Each time a cmd_table is executed, we need to set the env _ to the
 **			last token of the cmd_table
 */
 
@@ -53,11 +51,9 @@ void	exec_ast(t_ast *ast)
 ** Executes all the simple commands inside a command table. It does it
 ** consecutively and redirecting the input and output of the commands depending
 ** on the redirections and pipes. Redirections have priority over pipes.
-** @param:	- [t_cmd_table *] current command table being executed. Struct with
-**							  a linked list of simple commands (t_cmd *) and 
-**							  a delimiter (" ", """, or "\'")
+** @param:	- [t_cmd_table *] current command table being executed
 ** Line-by-line comments:
-** @8		We need (nb_cmds - 1) pipes to make all simple commands communicate.
+** @7		We need (nb_cmds - 1) pipes to make all simple commands communicate.
 **			We allocate a 2D array where each subarray will have 2 ints:
 **			- [0] reading end of the pipe
 **			- [1] writing end of the pipe
@@ -68,6 +64,10 @@ void	exec_ast(t_ast *ast)
 **			The parent process basically:
 **			- Reaps the children processes
 **			- Sets the exit_status of the last simple command executed
+** @18-19	Exit values of the builtin function are set as soon as they are
+** 			finished. For child process, they are set when its death is reaped
+**			by the parent in exec_parent(). So in exec_builtin(), if it's the
+**			last simple command, we set the return value
 */
 
 void	exec_cmd_table(t_cmd_table *cmd_table)
@@ -98,19 +98,17 @@ void	exec_cmd_table(t_cmd_table *cmd_table)
 ** Meaning that builtin functions are executed on the parent process because
 ** functions like cd or export, need to actually change the environment
 ** variables so we can't execute them in a child process
-** @param:	- [t_cmd *] struct with 2 linked lists, one for tokens (t_token *)
+** @param:	- [t_cmd *] struct with 2 linked lists, one for tokens (char *)
 **						as nodes and the other for redirs (t_redir *)
-**			- [int] nb of simple command that are in the cmd_table. Info needed
-**					for piping (choosing where to read/write and closing them)
-**			- [int **] 2D array of ints. Each subarray is a pipe
+** 			- [t_cmd_table *] current command table being executed
 **			- [int] index of the current process
 ** Line-by-line comments:
-** @4		For both tokens and redirections, we need to replace environment
+** @6		For both tokens and redirections, we need to replace environment
 **			variables like $HOME by their value
-** @5-6		In set_redirs_pipes, we'll be messing with output and input streams
+** @7-8		In set_redirs_pipes, we'll be messing with output and input streams
 **			so we need to save the default ones to reset them back in
-**			lines 15-16
-** @8		Three cases where we don't execute anything:
+**			lines 17-18
+** @10		Three cases where we don't execute anything:
 ** 			- Something went wrong with redirections (like an invalid file) so
 **			we set exit_status to EXIT_SUCCESS if everything went well
 **			- In replace_envs(), we might have deleted all tokens if they
@@ -123,10 +121,8 @@ void	exec_cmd(t_cmd *cmd, t_cmd_table *cmd_table, int process_index)
 {
 	int	saved_stdin;
 	int	saved_stdout;
-	int	**pipes;
 	int	nb_cmds;
 
-	pipes = cmd_table->pipes;
 	nb_cmds = cmd_table->nb_cmds;
 	replace_envs(&cmd->tokens, cmd->redirs);
 	saved_stdin = dup(STDIN_FILENO);
@@ -152,6 +148,9 @@ void	exec_cmd(t_cmd *cmd, t_cmd_table *cmd_table, int process_index)
 **			- [t_list **] pointer to environment variable linked list
 ** Line-by-line comments:
 ** @8-9		We were only asked to deal with env with no arguments
+** @18-19	We only set a special return value if it's the last simple command.
+**			We might need to overwrite an exit_status set by a child process
+**			that finished after this one (e.g. sleep 5 | cd wrong_directory)
 */
 
 void	exec_builtin(t_list *tokens,
@@ -182,20 +181,19 @@ void	exec_builtin(t_list *tokens,
 
 /*
 ** Executes the program inside a child process
-** @param:	- [t_cmd *] struct with 2 linked lists, one for tokens (t_token *)
+** @param:	- [t_cmd *] struct with 2 linked lists, one for tokens (char *)
 **						as nodes and the other for redirs (t_redir *)
-**			- [int] nb of simple command that are in the cmd_table. Info needed
-**					for piping (choosing where to read/write and closing them)
-**			- [int **] 2D array of ints. Each subarray is a pipe
+** 			- [t_cmd_table *] current command table being executed
 ** Line-by-line comments:
-** @5-6		execve() requires NULL terminated array of string
-** @7		Increment nb_forks to keep track of how many child processes where
-**			created so that we can wait() for everyone of them before displaying
-**			prompt
+** @6-7		execve() requires NULL terminated array of string
 ** @8		Fork() returns twice, a 1st time inside child process with pid == 0
 **			and a 2nd time inside parent process with pid = process ID of child
 **			so a value above 0
-** @11-12	Although they are array of strings, we only need to free the
+** @16		Each time we fork(), we add a node at the back. In exec_parent(),
+**			we wait on dead child with waitpid(), for the first node of list.
+**			We remove first node everytime we reap a process. We do that as long
+**			as the queue is not empty
+** @17-18	Although they are array of strings, we only need to free the
 **			pointers because the individuals strings are still being used
 */
 
@@ -206,8 +204,8 @@ void	exec_program(t_list *lst_tokens, t_cmd_table *cmd_table)
 	long	pid;
 	t_list	*new_node;
 
-	tokens = convert_list_to_arr_tokens(lst_tokens);
-	envp = convert_list_to_arr_envp(g_msh.dup_envp);
+	tokens = convert_list_to_arr(lst_tokens);
+	envp = convert_list_to_arr(g_msh.dup_envp);
 	pid = fork();
 	if (pid < 0)
 		quit_program(EXIT_FAILURE);

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 17:53:43 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/16 18:45:06 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/25 10:45:02 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	is_builtin(t_list *tokens)
 ** @return:	[char **] NULL-terminated array of strings
 */
 
-char	**convert_list_to_arr_envp(t_list *lst)
+char	**convert_list_to_arr(t_list *lst)
 {
 	char	**strs;
 	int		i;
@@ -67,24 +67,37 @@ char	**convert_list_to_arr_envp(t_list *lst)
 }
 
 /*
-** Converts a linked list of tokens to a NULL-terminated array of strings
-** @param:	- [t_list *] list with tokens (t_token *) as data
-** @return:	[char **] NULL-terminated array of strings
+** Checks if the first token has a relative path like ./a.out or ./minishell
+** @param:	- [char *] first token of the simple command. Likely to represent
+**                     the program name
+** @return:	[int] true or false
 */
 
-char	**convert_list_to_arr_tokens(t_list *lst)
+int	has_relative_path(char *first_token)
 {
-	char	**strs;
-	int		i;
-	int		len;
+	int	check;
 
-	i = 0;
-	len = ft_lstsize(lst);
-	strs = ft_calloc(len + 1, sizeof(char *));
-	while (i < len)
-	{
-		strs[i++] = (char *)lst->data;
-		lst = lst->next;
-	}
-	return (strs);
+	if (*first_token == '.')
+		check = 1;
+	else
+		check = 0;
+	return (check);
+}
+
+/*
+** Checks if the first token has a absolute path like /bin/ls
+** @param:	- [char *] first token of the simple command. Likely to represent
+**                     the program name
+** @return:	[int] true or false
+*/
+
+int	has_absolute_path(char *first_token)
+{
+	int	check;
+
+	if (*first_token == '/')
+		check = 1;
+	else
+		check = 0;
+	return (check);
 }

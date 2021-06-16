@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/14 10:52:40 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/05/15 19:28:06 gleal            ###   ########.fr       */
+/*   Created: 2021/05/24 17:30:18 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/05/24 17:51:49 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,10 @@
 ** @param:	- [t_list *] list of token strings that will be analyzed
 **			- [t_list *] list of redirections strings that will be analyzed
 ** Line-by-line comments:
-** @6-7		Go through each token and replace it in case there is a dollar sign
-** @12-13	Go through each redirection and replace it in case there is a
+** @4-9		Go through each token and replace it in case there is a dollar sign
+** @10-11	Deletes nodes that have an empty token after executiong of
+**			replace_env_single_token() (e.g. echo $WRONG_ENV)
+** @12-17	Go through each redirection and replace it in case there is a
 **			dollar sign ($)
 */
 
@@ -49,14 +51,23 @@ void	replace_envs(t_list **tokens, t_list *redirs)
 }
 
 /*
-** Replaces token in case of environment variables and special characters
-** @param:	- [t_token] struct with token strings and delimiter
+** Replaces token in case of environment variables and special characters. The
+** token is split. For instance:
+** $ echo "$TERM"'$PATH'hello1"hel'lo2"'hel"lo3'
+** xterm-256color$PATHhello1hel'lo2hel"lo3
+** So we need to handle each subsegment of the token differently even if there
+** isn't a space separating it
+** @param:	- [char **] token
 ** Line-by-line comments:
-** @6-8		tilde expansion only occurs if tilde is first character and
-** 			is either the only character or followed by a forward slash
-** @9		these expansions don't occur if tokens are inbetween single
-** 			quotes
-** @12		replacing $? special parameter with exit status of last cmd
+** @5		Split token in a linked list for ease of manipulation
+** @6		We need to keep the head of the linked list to free it when we are
+**			done
+** @10-11	Tilde expansion only occurs if tilde is first character and is
+**			either the only character or followed by a forward slash
+** @12		These expansions don't occur if tokens are inbetween single	quotes
+** $14-16	Case: the token piece is only $PATH or $TERM
+** @19		Replacing $? special parameter with exit status of last cmd
+** @21		Deleting unnecessary quotes. See previous example
 */
 
 void	replace_env_single_token(char **token)
@@ -94,12 +105,14 @@ void	replace_env_single_token(char **token)
 ** @param:	- [char *] Tokens (which can be strings with spaces when using
 **					   double quotes) 
 ** Line-by-line comments:
-** @13		in case of executables, we don't display the whole path
+** @14		In case of executables, we don't display the whole path
 			(e.g. /bin/ls becomes ls)
-** @15		replaces the token string with another with the respective value
-** @16		replace_midstring() can be emptying the str so that there is only
+** @16		Replaces the token string with another with the respective value
+** @17		Replace_midstring() can be emptying the str so that there is only
 **			a NULL character as the only character. If we don't check before
 **			incrementing, we risk doing a segfault
+** @21		We increment for the lenght of the inserted string and decrease one
+**			index to account for the '$'
 */
 
 void	replace_vars_with_values(char **str)
@@ -117,7 +130,7 @@ void	replace_vars_with_values(char **str)
 		{
 			var = get_var_name(&str[0][i]);
 			if (ft_strcmp(var, "$_") == 0)
-				value = getlastexecname(var + 1);
+				value = get_last_exec_name(var + 1);
 			else
 				value = ft_getenv(var + 1);
 			final = replace_midstring(*str, var, value, i);
@@ -136,21 +149,21 @@ void	replace_vars_with_values(char **str)
 ** - it is the first character of the token
 ** - only character in token or followed by forward slash
 ** - token not between single quotes (they prevent expansions)
-** @param:	- [t_token *] struct with token strings and delimiter information
+** @param:	- [char **] token string
 */
 
-void	replace_tilde_with_home(char **str)
+void	replace_tilde_with_home(char **token)
 {
 	char	*home_path;
 
 	home_path = ft_getenv("HOME");
-	if (!str[0][1])
+	if (!token[0][1])
 	{
-		free(*str);
-		*str = home_path;
+		free(*token);
+		*token = home_path;
 	}
 	else
-		tilde_join(str, &home_path);
+		tilde_join(token, &home_path);
 }
 
 /*
@@ -159,11 +172,11 @@ void	replace_tilde_with_home(char **str)
 ** @param:	- [char *] "$_"
 ** @return:	[char *] value to replace $_
 ** Line-by-line comments:
-** @6	checks if underscore value is an absolute path to a file executable
-** @7	replace full path of executable with its name
+** @6		Checks if underscore value is an absolute path to a file executable
+** @7		Replace full path of executable with its name
 */
 
-char	*getlastexecname(char *underscore)
+char	*get_last_exec_name(char *underscore)
 {
 	char	*value;
 	char	*temp;

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 10:29:13 by dds               #+#    #+#             */
-/*   Updated: 2021/05/17 18:02:27 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/05/24 17:18:28 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,11 @@ int	ft_export(t_list *tokens, t_list **env)
 }
 
 /*
-** Prints all the environment variables with the proper formatting
-** @param:	- [t_list **] pointer to envp linked list
+** Prints all the environment variables with the proper formatting and sorted
+** in alphabetic order
+** @param:	- [t_list *] pointer to envp linked list
 ** Line-by-line comments:
-** @8-14	If variable is assigned (has equal sign) then we need to add double
+** @12-18	If variable is assigned (has equal sign) then we need to add double
 **			quotes
 */
 

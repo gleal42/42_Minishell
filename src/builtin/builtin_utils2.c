@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*   By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 17:33:11 by gleal             #+#    #+#             */
-/*   Updated: 2021/05/18 17:19:05 by gleal            ###   ########.fr       */
+/*   Updated: 2021/05/24 17:10:35 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	has_valid_identifier_unset(char *token_str)
 **			- [char *] pointer to array of chars where we will write the message
 ** @return:	[int] true/false
 ** Line-by-line comments:
-** @6		Preventing against "unset $ENVVAR" command (the correct formatting
+** @8		Preventing against "unset $ENVVAR" command (the correct formatting
 **			is unset ENVVAR)
 */
 
@@ -74,8 +74,9 @@ int	is_token_valid_unset(char *token_str, char *err_message)
 /*
 ** Given the node number to delete it applies the correct lst_del function
 ** (del_first, del_last or del_middle)
-** @param:	- [t_list *] linked list head pointer
+** @param:	- [t_list **] linked list head pointer
 **			- [int] index of node to be deleted (starts at node 0)
+**			- [void *] function to delete each node
 ** Line-by-line comments:
 ** @7-8		Protecting against node numbers above the lst size
 */

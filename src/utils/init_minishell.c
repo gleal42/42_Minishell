@@ -29,7 +29,7 @@ void	init_minishell(t_msh *msh, char **envp)
 	ft_bzero(msh, sizeof(t_msh));
 	duplicate_env(&msh->dup_envp, envp);
 	unset_oldpwd();
-	increase_shlvl();
+	increment_shlvl();
 	init_termcaps(&msh->termcaps);
 	signal(SIGINT, catch_sigint);
 	signal(SIGQUIT, catch_sigquit);
