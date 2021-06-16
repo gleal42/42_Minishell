@@ -42,9 +42,9 @@ ___
    4. Assynchronous Vs Synchronous (Pros, cons and our hybrid approach)
 6. [Signals](#6-signals)
 7. Pipes and Redirections
-   - Pipes
-   - Redirection
-   - Combining our executables with builtin functions
+   1. Redirections
+   2. Pipes
+   3. Combining Pipes and Redirections
 8. Using Github Branches.
 
 ___
@@ -743,7 +743,7 @@ ___
 
 ### 7. Pipes and Redirections
 
-#### 7.1 Simple Redirections
+#### 7.1 Redirections
 
 > **Functions**
 >> - `int dup2(int oldfd, int newfd);`
@@ -821,6 +821,9 @@ By having this redirection `<` what is happening is:
 
 3. We have the same problem where new_file has 2 file descriptors open so we need to close the old file descriptor:
 - `close(new_file);`
+
+Since we're on the topic, in order to do the `>>` redirection (where we append the redirected text in case there's already a file with information in it) we just need replace to the flag `O_TRUNC` by the `O_APPEND` flag.
+`new_file = open("file1", O_WRONLY | O_CREAT | O_APPEND);`
 
 Now it's time to combine this idea of redirection with the idea of pipes.
 
@@ -1142,8 +1145,172 @@ File descriptors:
 Now we'll think about how these would work for more than 2 processes and create a general rule in order to apply it to our terminal:
 
 We've already mentioned one of the rules:
+
 1. The number of pipes will be the number of commands minus 1.
 
+2. If instead of 2 processes we had 3 `ls | sort | cat`:
+- There would be 2 pipes (4 file descriptors to close).
+- ls and cat file descriptors would be treated exactly the same.
+- sort would need to receive the ls standard output, sort it and redirect the standard output to cat.
+
+```
+	pit_t ls;
+	pid_t sort;
+	pid_t cat;
+	int fd[2][2];
+
+	pipe(fd[0]);
+	pipe(fd[1]);
+	ls = fork();
+	if (ls == 0)
+	{
+		dup2(fd[0][1], STDOUT_FILENO);
+		close(fd[0][0]);
+		close(fd[0][1]);
+		close(fd[1][0]);
+		close(fd[1][1]);
+		execve(/bin/ls, NULL, NULL);
+	}
+	sort = fork();
+	if (sort == 0)
+	{
+		dup2(fd[0][0], STDIN_FILENO);
+		dup2(fd[1][1], STDOUT_FILENO);
+		close(fd[0][0]);
+		close(fd[0][1]);
+		close(fd[1][0]);
+		close(fd[1][1]);
+		execve(/bin/ls, NULL, NULL);
+	}
+	cat = fork ()
+	if (cat = 0)
+	{
+		dup2(fd[1][0], STDIN_FILENO);
+		close(fd[0][0]);
+		close(fd[0][1]);
+		close(fd[1][0]);
+		close(fd[1][1]);
+		execve(/bin/cat, NULL, NULL);
+	}
+	close(fd[0][0]);
+	close(fd[0][1]);
+	close(fd[1][0]);
+	close(fd[1][1]);
+	waitpid(ls, NULL, 0);
+	waitpid(cat, NULL, 0);
+```
+
+3. If instead of 2 processes we had 3 `ls | sort | cat`:
+- There would be 2 pipes (2 more file descriptors to close).
+- sort would need to receive the ls standard output, sort it and redirect the standard output to cat:
+  - `dup2(fd[0][0], STDIN_FILENO);`
+  - `dup2(fd[1][1], STDOUT_FILENO);`
+- ls and cat file descriptors would be treated exactly the same:
+  - The first process doesn't need to do `dup2(fd[0], STDIN)` because it is not receiving redirected output (from another process).
+  - The last process doesn't need to do `dup2(fd[1), STDOUT)` because the standard output will not be redirected (it will be printed to the screen).
+
+4. In our case, none of our builtin functions read from the standard input so `echo ola | echo baby | cat` will still work:
+
+```
+	pit_t echo1;
+	pid_t echo2;
+	pid_t cat;
+	int fd[2][2];
+
+	pipe(fd[0]);
+	pipe(fd[1]);
+
+//echo 1
+	dup2(fd[0][1], STDOUT_FILENO);
+	printf(ola\n);
+
+//echo 2
+	dup2(fd[0][0], STDIN_FILENO);
+	dup2(fd[1][1], STDOUT_FILENO);
+	printf(baby\n);
+//cat
+	cat = fork ()
+	if (cat = 0)
+	{
+		dup2(fd[1][0], STDIN_FILENO);
+		close(fd[0][0]);
+		close(fd[0][1]);
+		close(fd[1][0]);
+		close(fd[1][1]);
+		execve(/bin/cat, NULL, NULL);
+	}
+	close(fd[0][0]);
+	close(fd[0][1]);
+	close(fd[1][0]);
+	close(fd[1][1]);
+	waitpid(ls, NULL, 0);
+	waitpid(cat, NULL, 0);
+```
+
+As we can see, the initial standard output `ola\n` will be redirected to the first pipe `dup2(fd[0][1], STDOUT_FILENO);`.
+The second echo will read that `ola\n` using `dup2(fd[0][0], STDIN_FILENO);` but only redirect `baby\n` (echo 2 standard output) to cat.
+
+
+That brings us to the very last thing I will talk about. Which is how pipes and redirections are combined:
+
+#### 7.3 Multiple Redirections
+
+1. As we mentioned previously, file redirections work like pipes but they leave a trail on the way (the files that were created):
+
+What I mean by this is that if we type `echo okay > a > b > c` the standard output `okay\n` will be redirected to `a` then to `b` and finally end up in `c`:
+- File a will be empty.
+- File b will also be empty
+- File c will have the redirected standard output `okay\n`
+
+2. Another interesting thing to note is that input redirections have priority over output redirections while keeping the redirections' order:
+
+So if we create a file with a message inside: `echo hmmm > file1`
+
+HEREEEEEE
+
+Not only that but
+
+`echo hmm < test | cat > b > c > d`
+
+#### 7.4 Combining Pipes and Redirections
+
+Let's wrap everything together and analyze the original command we started with:
+`echo helllo > test; echo testiiing > a if it works | echo hmmm | cat > b > c < test`
+
+Here we have 2 command tables:
+1. `echo helllo > test`
+2. `echo testiiing > a if it works | echo hmmm | cat > b > c < test`
+
+The first command table is a simple redirection. `dup2(int test_fd, STDOUT_FILENO)`
+
+The second command table is a bit more complex:
+
+It has 3 commands:
+
+1. `echo testiiing > a if it works`
+   - tokens: `echo` `testiiing` `if` `it` `works`
+   - redirections: `> a`
+2. `echo hmmm`
+   - tokens `echo` `hmmm`
+   - no redirections
+3. `cat > b > c < test`
+   - tokens `cat`
+   - redirections: `> b` `> c` `< test`
+
+
+Okay, the most important thing we need to know is that redirections have priority over pipes.
+`echo ola > file1 > file2 baby| cat`
+
+This means that in this example
+
+```
+typedef struct s_cmd
+{
+	t_list		*tokens;
+	t_list		*redirs;
+	int			index;
+}				t_cmd;
+```
 ___
 
 ### Other Resources
