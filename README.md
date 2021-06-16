@@ -67,8 +67,7 @@ ___
 ### 2. Parsing - Abstract Synthax Tree
 
 > **Sources**
-> 
-> https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf
+>> https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf
 
 
 The best way to explain this concept is to say that instead of creating functions for every case that user writes we interpret what is being written in categories and subcategories:
@@ -84,7 +83,6 @@ else if (strncmp(input, "echo helllo", 7) == 0 && ft_strchr(input, '>')) != 0 &&
 ```
 
 We create the following categories to help us interpret the input:
-
 
 #### Command tables
 Independent groups of commands and redirections which can be separated by `;` `&&` `||`, depending on the exit status of the commands inside it (exit status will be explained in the environment variables section).
@@ -116,10 +114,9 @@ ___
 ### 3. Environment Variables
 
 > **Sources**
-> 
->https://stackoverflow.com/questions/2085302/printing-all-environment-variables-in-c-c
->https://man7.org/linux/man-pages/man7/environ.7.html
->https://stackoverflow.com/questions/23608202/can-i-setenv-using-a-envp
+>> - https://stackoverflow.com/questions/2085302/printing-all-environment-variables-in-c-c 
+>> - https://man7.org/linux/man-pages/man7/environ.7.html
+>> - https://stackoverflow.com/questions/23608202/can-i-setenv-using-a-envp
 
 These work very similarly to Makefile Variables. They are associated to specific functions and tasks and get replaced in the moment of execution.
 
@@ -152,21 +149,19 @@ ___
 ### 4. Termcaps
 
 > **Sources**
-> 
-> https://man7.org/linux/man-pages/man3/isatty.3.html
-> https://www.mkssoftware.com/docs/man5/struct_termios.5.asp
-> https://stackoverflow.com/questions/36258224/what-is-isatty-in-c-for/36258471
-> https://linux.die.net/man/3/tcgetattr
-> ibm.com/docs/en/aix/7.2?topic=library-understanding-terminals-curses
-> https://man7.org/linux/man-pages/man5/termcap.5.html
-> https://pubs.opengroup.org/onlinepubs/7990989799/xcurses/terminfo.html
-> https://www.gnu.org/software/libc/manual/html_node/Canonical-or-Not.html
-> https://pubs.opengroup.org/onlinepubs/7908799/xbd/termios.html
-> https://smnd.sk/anino/programming/c/glibc-manual-0.02/library_16.html
-> https://www.gnu.org/software/libc/manual/html_node/Noncanonical-Input.html
-> https://www.ibm.com/docs/en/aix/7.2?topic=files-termiosh-file
-> https://unix.stackexchange.com/questions/137842/what-is-the-point-of-ctrl-s
-
+>> - https://man7.org/linux/man-pages/man3/isatty.3.html
+>> - https://www.mkssoftware.com/docs/man5/struct_termios.5.asp
+>> - https://stackoverflow.com/questions/36258224/what-is-isatty-in-c-for/36258471
+>> - https://linux.die.net/man/3/tcgetattr
+>> - ibm.com/docs/en/aix/7.2?topic=library-understanding-terminals-curses
+>> - https://man7.org/linux/man-pages/man5/termcap.5.html
+>> - https://pubs.opengroup.org/onlinepubs/7990989799/xcurses/terminfo.html
+>> - https://www.gnu.org/software/libc/manual/html_node/Canonical-or-Not.html
+>> - https://pubs.opengroup.org/onlinepubs/7908799/xbd/termios.html
+>> - https://smnd.sk/anino/programming/c/glibc-manual-0.02/library_16.html
+>> - https://www.gnu.org/software/libc/manual/html_node/Noncanonical-Input.html
+>> - https://www.ibm.com/docs/en/aix/7.2?topic=files-termiosh-file
+>> - https://unix.stackexchange.com/questions/137842/what-is-the-point-of-ctrl-s
 
 Termcaps stands for terminal capabilities. This 1992 Library is not easy to understand! Shout out to **[Dimitri](https://github.com/DimitriDaSilva)** for taming this monster. In this chapter I will summarize Dimitri's code comments and the main concepts. To better understand each function please read the comments in the code. 
 
@@ -303,12 +298,11 @@ As you can see, after echo, there can be multiple arguments indicating the -n fl
 #### `cd` with only a relative or absolute path
 
 >functions
->
->`char *getcwd(char *buf, size_t size)`
->`int chdir(const char *path)`
->`DIR *opendir(const char *name);`
->`int closedir(DIR *dirp);`
->`int stat(const char *path, struct stat *buf);`
+>> - `char *getcwd(char *buf, size_t size)`
+>> - `int chdir(const char *path)`
+>> - `DIR *opendir(const char *name);`
+>> - `int closedir(DIR *dirp);`
+>> - `int stat(const char *path, struct stat *buf);`
 
 So maybe for cd we overcomplicated it a little bit and did a bit more than was asked.
 
@@ -345,9 +339,8 @@ In this case we just check the bits corresponsing to the execution permission of
 
 #### `pwd` without any options
 
->functions
->
->`char *getcwd(char *buf, size_t size)`
+> functions
+>> `char *getcwd(char *buf, size_t size)`
 
 We just load the current path directory inside an array of chars using the same function we used in the cd function.
 
@@ -753,7 +746,7 @@ ___
 >> - `int close(int fd);`
 
 > **Sources**
->> - https://www.youtube.com/watch?v=5fnVr-zH-SE
+>> https://www.youtube.com/watch?v=5fnVr-zH-SE
 
 
 Alright, we're coming close to an end. By the end of this chapter we will have covered all the main concepts needed to do this project. It was a lot of fun.
