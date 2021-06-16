@@ -35,17 +35,17 @@ ___
 3. [Environment Variables](#3-environment-variables)
 4. [Termcaps](#4-termcaps)
 5. [Execution](#5-execution)
-   1. Remaking the builtins
-   2. Running other executables from our terminal
-      - Library executables (e.g. cat, ls)
-   3. Exit status ($?)
-   4. Assynchronous Vs Synchronous (Pros, cons and our hybrid approach)
+   1. [Builtin functions](#51-builtin-functions)
+   2. [Running other executables from our terminal](#52-running-other-executables-from-our-terminal)
+   3. [Library executables (e.g. cat, ls)](#53-running-library-executables-eg-cat-ls)
+   3. [Exit status ($?)](#54-exit-status-)
+   4. [Assynchronous Vs Synchronous (Pros, cons and our hybrid approach)](#55-assynchronous-vs-synchronous-pros-cons-and-our-hybrid-approach)
 6. [Signals](#6-signals)
-7. Pipes and Redirections
-   1. Redirections
-   2. Pipes
-   3. Combining Pipes and Redirections
-8. Using Github Branches.
+7. [Pipes and Redirections](#7-pipes-and-redirections)
+   1. [Redirections](#71-redirections)
+   2. [Pipes](#72-pipes)
+   3. [Multiple Redirections](#73-multiple-redirections)
+   4. [Combining Pipes and Redirections](#74-combining-pipes-and-redirections)
 
 ___
 
@@ -57,9 +57,11 @@ To follow the initial logic, just imagine we're using get_next_line, saving each
 **Output**
 
 Full line exactly as user typed it:
-Example that we will use throughout this tutorial:
 
-`echo helllo > test; echo testiiing > a if it works | echo hmmm | cat > b > c < test`
+Example that we will try to solve in the end of this tutorial:
+`echo helllo > test; echo testiiing > a if it works | echo hmmm < a | cat > b > c < test`
+
+Don't be scared. I'll try to make the previous example a piece of cake by the end.
 ___
 
 ### 2. Parsing - Abstract Synthax Tree
@@ -260,7 +262,7 @@ In our assignement we are asked to recreate some standard library commands, whil
 
 I'll first describe how we recreated the builtins, how we can execute `.o` files from our minishell (including the minishell itself), how we can call other library functions like `cat` `ls` or `sleep` and explain how our assynchronous approach recreates the terminal expected behaviour (including the exit status behaviour).
 
-### 5.2 Builtin functions
+### 5.1 Builtin functions
 
 We were asked to remake the following builtins:
 
@@ -827,7 +829,7 @@ Since we're on the topic, in order to do the `>>` redirection (where we append t
 
 Now it's time to combine this idea of redirection with the idea of pipes.
 
-#### 7.2 Simple Pipes
+#### 7.2 Pipes
 
 > **Functions**
 >> - `int pipe(int pipefd[2]);`
@@ -1262,24 +1264,39 @@ What I mean by this is that if we type `echo okay > a > b > c` the standard outp
 - File b will also be empty
 - File c will have the redirected standard output `okay\n`
 
-2. Another interesting thing to note is that input redirections have priority over output redirections while keeping the redirections' order:
+2. Redirections work in sequence:
+   - `echo baby > b > c > d` Standard output will be redirected to `b`. Then it will be redirected to `c` (replacing the previously set in `b`) and finally it will ne redirected to `d` (replacimg the previously set in `c`).
+   - `echo baby > b; echo yeah > c; cat < b < c` First input from b would be redirected but then input c would also be redirected replace the b redirection. Only the input redirected ends up being the one from `c` (to cat as standard input).
 
-So if we create a file with a message inside: `echo hmmm > file1`
-
-HEREEEEEE
-
-Not only that but
-
-`echo hmm < test | cat > b > c > d`
+Okay. These rules should be enough.
 
 #### 7.4 Combining Pipes and Redirections
 
+First, let's start by recapping how we're organizing our input and how we're looping throught the command tables:
+
+```
+typedef struct s_cmd
+{
+	t_list		*tokens;
+	t_list		*redirs;
+	int			index;
+}				t_cmd;
+```
+
+A command table is composed by commands. Commands are divided by pipes.
+
+As you can see, commands are a combination of tokens and redirections. 
+When we execute our functions inside a command, these can either receive input from files our redirect their output to files before moving on to the next command.
+If the output is not redirected to a file then it will move to the next command as input.
+
+Okay I feel like this was a nice overview. Let's get into examples.
+
 Let's wrap everything together and analyze the original command we started with:
-`echo helllo > test; echo testiiing > a if it works | echo hmmm | cat > b > c < test`
+`echo helllo > test; echo testiiing > a if it works | echo hmmm < a | cat > b > c < test`
 
 Here we have 2 command tables:
 1. `echo helllo > test`
-2. `echo testiiing > a if it works | echo hmmm | cat > b > c < test`
+2. `echo testiiing > a if it works | echo hmmm < a | cat > b > c < test`
 
 The first command table is a simple redirection. `dup2(int test_fd, STDOUT_FILENO)`
 
@@ -1292,25 +1309,54 @@ It has 3 commands:
    - redirections: `> a`
 2. `echo hmmm`
    - tokens `echo` `hmmm`
-   - no redirections
+   - redirections `< a`
 3. `cat > b > c < test`
    - tokens `cat`
    - redirections: `> b` `> c` `< test`
 
+1. Let's start with the first command:
+First we execute the echo executable `echo testiiing if it works`
+Then we redirect the standard output `testiiing if it works` inside the file a (using the function `open("a", O_WRONLY | O_CREAT | O_TRUNC)` and `dup2(int fd, STDOUT_FILENO)`).
 
-Okay, the most important thing we need to know is that redirections have priority over pipes.
-`echo ola > file1 > file2 baby| cat`
+2. Okay now we move on to the second command:
+First we execute the echo executable `echo hmmm`
+Then we execute the input redirection (Using the function `open("file1", O_RDONLY;` `dup2(int fd, STDIN_FILENO)`). This will have absolutely no effect because echo doesn't read from the standard input.
 
-This means that in this example
 
-```
-typedef struct s_cmd
-{
-	t_list		*tokens;
-	t_list		*redirs;
-	int			index;
-}				t_cmd;
-```
+3. And for the grand finale, we have reached the third and final command:
+
+This one will be the trickiest to explain because the process logic I've been following and the way we have to written our code is not exactly the same, haha.
+But I'll try to explain both points of view as well as I can.
+
+Okay so our code sequence is:
+1. Open all the files and do the redirections like they have been described previously.
+2. In case there's no redirection then execute the pipes.
+
+This works great because:
+1. Redirections have, in fact priority over pipes (if there's redirected output from a pipe and input redirection from a file the one that will be taken into consideration will be the input redirection).
+2. Even if there's an error with the executed commands, the files from the standard output redirections are usually created.
+3. When we open the files, we have imediate access to their file descriptors, so it makes sense to execute the redirection in that moment.
+
+Now, I'll have to confirm if it would be possible to deal with pipes following the process logic I've been following so up until now:
+
+Example showcasing logic:
+- `echo hmm > a` followed by `echo iron | cat < a | cat`
+
+The process logic for me would be:
+1. Execute first command `echo iron`
+2. Redirect Standard Output using `pipe fd[0]` and `dup2(fd[0][1], STDOUT_FILENO);`
+3. Redirect Input from pipe using `dup2(fd[0][0], STDIN_FILENO);`
+4. Redirect input using `open("file1", O_RDONLY;` and `dup2(int fd, STDIN_FILENO)` (which would replace the previous pipe redirection the same way that file redirections do)
+5. `cat` standard output would be `hmmm\n` (what was inside file `a`)
+6. Redirect that output using `pipe fd[1]` and `dup2(fd[1][1], STDOUT_FILENO);`
+7. Redirect input from pipe using `dup2(fd[1][0], STDIN_FILENO);`
+
+Once I start practicing for microshell I'll definitely test this out and update this README.md with the news.
+
+I hope you enjoyed this tutorial. It took longer than I wanted but I didn't want to leave it halfway done.
+
+Any question shoot me a message on slack, email or Linkedin.
+
 ___
 
 ### Other Resources
