@@ -1318,33 +1318,16 @@ Then we execute the input redirection (Using the function `open("file1", O_RDONL
 
 3. And for the grand finale, we have reached the third and final command:
 
-This one will be the trickiest to explain because the process logic I've been following and the way we have to written our code is not exactly the same, haha.
-But I'll try to explain both points of view as well as I can.
+For this one, the most important thing to note is that redirections have priority over pipes redirections.
 
-Okay so our code sequence is:
+1. This means that if we create a file with `echo message > file`
+And then type the command `ls| cat < file`, ls will not be printed to the standard output.
+
+2. This also means that if we type `echo message > a > b | cat`, the message will not be redirected to cat, stopping the redirection at b.
+
+So, knowing this, what Dimitri did was:
 1. Open all the files and do the redirections like they have been described previously.
-2. In case there's no redirection then execute the pipes.
-
-This works great because:
-1. Redirections have, in fact priority over pipes (if there's redirected output from a pipe and input redirection from a file the one that will be taken into consideration will be the input redirection).
-2. Even if there's an error with the executed commands, the files from the standard output redirections are usually created.
-3. When we open the files, we have imediate access to their file descriptors, so it makes sense to execute the redirection in that moment.
-
-Now, I'll have to confirm if it would be possible to deal with pipes following the process logic I've been following so up until now:
-
-Example showcasing logic:
-- `echo hmm > a` followed by `echo iron | cat < a | cat`
-
-The process logic for me would be:
-1. Execute first command `echo iron`
-2. Redirect Standard Output using `pipe fd[0]` and `dup2(fd[0][1], STDOUT_FILENO);`
-3. Redirect Input from pipe using `dup2(fd[0][0], STDIN_FILENO);`
-4. Redirect input using `open("file1", O_RDONLY;` and `dup2(int fd, STDIN_FILENO)` (which would replace the previous pipe redirection the same way that file redirections do)
-5. `cat` standard output would be `hmmm\n` (what was inside file `a`)
-6. Redirect that output using `pipe fd[1]` and `dup2(fd[1][1], STDOUT_FILENO);`
-7. Redirect input from pipe using `dup2(fd[1][0], STDIN_FILENO);`
-
-Once I start practicing for microshell I'll definitely test this out and update this README.md with the news.
+2. In case there's no redirection do the pipes operations.
 
 I hope you enjoyed this tutorial. It took longer than I wanted but I didn't want to leave it halfway done.
 
