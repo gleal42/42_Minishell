@@ -31,7 +31,7 @@ ___
 ### Main challenges
 
 1. [Extracting Information](#1-extracting-information)
-2. [Parsing - Abstract Synthax Tree](2-parsing---abstract-synthax-tree)
+2. [Parsing - Abstract Synthax Tree](#2-parsing---abstract-synthax-tree)
 3. [Environment Variables](#3-environment-variables)
 4. [Termcaps](#4-termcaps)
 5. [Execution](#5-execution)
