@@ -1021,8 +1021,8 @@ Now we want to redirect the standard output that was stored in the pipe during t
 **Cat Process**
 | File descriptors |  file |
 | ---------------- | ----- |
-| STDIN_FILENO     |   0   |
-| STDOUT_FILENO    | fd[0] |
+| STDIN_FILENO     | fd[0] |
+| STDOUT_FILENO    |   1   |
 | STDERR_FILENO    |   2   | 
 | read_pipe_fd     | fd[0] |
 | write_pipe_fd    | fd[1] |
@@ -1047,8 +1047,8 @@ After this, the final file descriptors for the cat process will be
 **Cat Process**
 | File descriptors |  file |
 | ---------------- | ----- |
-| STDIN_FILENO     |   0   |
-| STDOUT_FILENO    | fd[0] |
+| STDIN_FILENO     | fd[0] |
+| STDOUT_FILENO    |   1   |
 | STDERR_FILENO    |   2   | 
 
 We're almost done. There's only one more thing we have to deal with... I think you can guess what it is...
@@ -1126,8 +1126,8 @@ File descriptors:
 **Cat Process**
 | File descriptors |  file |
 | ---------------- | ----- |
-| STDIN_FILENO     |   0   |
-| STDOUT_FILENO    | fd[0] |
+| STDIN_FILENO     | fd[0] |
+| STDOUT_FILENO    |   1   |
 | STDERR_FILENO    |   2   | 
 
 **Main Process**
